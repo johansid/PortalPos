@@ -9,6 +9,7 @@ import cn.burgeon.core.ic.ImageCacheManager;
 import cn.burgeon.core.ic.ImageCacheManager.CacheType;
 import cn.burgeon.core.net.RequestManager;
 
+// modify
 public class App extends Application {
 	private SharedPreferences mPreferences;
 
