@@ -26,6 +26,7 @@
         <activity android:name="cn.burgeon.core.ui.allot.AllotOutInActivity" />
         <activity android:name="cn.burgeon.core.ui.allot.ReplenishmentActivity" />
         <activity android:name="cn.burgeon.core.ui.allot.ReplenishmentOrderActivity" />
+        <activity android:name="cn.burgeon.core.ui.sales.SalesManagerActivity" />
     </application>
 
 </manifest>

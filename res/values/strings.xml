@@ -14,5 +14,9 @@
     <string name="allotOutIn">调拨出入库</string>
     <string name="replenishmentManager">补货管理</string>
     <string name="replenishmentOrderManager">补货订单</string>
+    <string name="sales_richangxiaoshou">日常销售</string>
+    <string name="sales_xiaoshoubaobiao">销售报表</string>
+    <string name="sales_xiaoshoushangchuan">销售上传</string>
+    <string name="sales_guanli">销售管理</string>
 
 </resources>
