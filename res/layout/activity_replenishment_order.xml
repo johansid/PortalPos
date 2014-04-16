@@ -11,13 +11,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/sysFunction"
+            android:text="@string/replenishmentOrderManager"
             android:gravity="center_horizontal"
             android:background="@drawable/corners_bg"
             android:padding="20dp" />
 
         <GridView
-            android:id="@+id/sysGV"
+            android:id="@+id/replenishmentOrderGV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:columnWidth="90dp"
@@ -27,6 +27,14 @@
             android:layout_margin="10dp"
             android:stretchMode="columnWidth"
             android:gravity="center" />
+
+        <Button
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:text="@string/back"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp" />
     </LinearLayout>
 
     <TextView
@@ -34,7 +42,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/corners_bg"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="门店：门店1+张三"
+        android:text="门店：门店1"
         android:padding="15dp"
         android:layout_alignParentBottom="true" />
 </RelativeLayout>

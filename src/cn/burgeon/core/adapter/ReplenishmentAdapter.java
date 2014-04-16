@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import cn.burgeon.core.Constant;
@@ -14,14 +13,14 @@ import cn.burgeon.core.R;
 /**
  * Created by Simon on 2014/4/16.
  */
-public class SystemAdapter extends BaseAdapter {
+public class ReplenishmentAdapter extends BaseAdapter {
     private Context mContext;
 
-    public SystemAdapter(Context c) {
+    public ReplenishmentAdapter(Context c) {
         mContext = c;
     }
 
-    private String[] mTextValues = Constant.sysTextValues;
+    private String[] mTextValues = Constant.replenishmentTextValues;
 
     @Override
     public int getCount() {
