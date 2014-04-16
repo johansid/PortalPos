@@ -57,4 +57,5 @@ public class SystemAdapter extends BaseAdapter {
     static class ViewHolder {
         TextView gridTV;
     }
+
 }

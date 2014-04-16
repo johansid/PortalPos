@@ -10,6 +10,7 @@
     <string name="login">登录</string>
     <string name="logout">退出</string>
 
+    <string name="sysFunction">系统功能</string>
     <string name="sellManager">销售管理</string>
     <string name="vipDown">会员下载</string>
     <string name="allotState">调拨说明</string>

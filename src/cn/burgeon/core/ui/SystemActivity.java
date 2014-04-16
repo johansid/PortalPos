@@ -12,6 +12,7 @@ import cn.burgeon.core.adapter.SystemAdapter;
 public class SystemActivity extends BaseActivity {
 
     private GridView sysGV;
+    private SystemAdapter mAdapter;
     private Button logoutBtn;
 
     @Override
@@ -26,7 +27,8 @@ public class SystemActivity extends BaseActivity {
     private void init() {
         logoutBtn = (Button) findViewById(R.id.logoutBtn);
         sysGV = (GridView) findViewById(R.id.sysGV);
-        sysGV.setAdapter(new SystemAdapter(this));
+        mAdapter = new SystemAdapter(this);
+        sysGV.setAdapter(mAdapter);
         sysGV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
