@@ -1,5 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
     <string name="app_name">PortalPos</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="store">店仓</string>
+    <string name="name">用户名</string>
+    <string name="password">密码</string>
+    <string name="config">配置</string>
+    <string name="login">登录</string>
+    <string name="logout">退出</string>
 
+    <string name="sellManager">销售管理</string>
+    <string name="vipDown">会员下载</string>
+    <string name="allotState">调拨说明</string>
+    <string name="checkManager">盘点管理</string>
+    <string name="inventoryManager">库存管理</string>
+    <string name="sysManager">系统管理</string>
 </resources>
