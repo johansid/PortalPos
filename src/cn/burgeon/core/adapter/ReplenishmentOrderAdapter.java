@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import cn.burgeon.core.Constant;
@@ -14,14 +13,14 @@ import cn.burgeon.core.R;
 /**
  * Created by Simon on 2014/4/16.
  */
-public class SystemAdapter extends BaseAdapter {
+public class ReplenishmentOrderAdapter extends BaseAdapter {
     private Context mContext;
 
-    public SystemAdapter(Context c) {
+    public ReplenishmentOrderAdapter(Context c) {
         mContext = c;
     }
 
-    private String[] mTextValues = Constant.sysTextValues;
+    private String[] mTextValues = Constant.replenishmentOrderTextValues;
 
     @Override
     public int getCount() {
@@ -42,7 +41,7 @@ public class SystemAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.grid_item, null);
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.replenishment_order_grid_item, null);
             holder = new ViewHolder();
             holder.gridTV = (TextView) convertView.findViewById(R.id.gridTV);
             convertView.setTag(holder);

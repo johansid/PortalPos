@@ -22,6 +22,10 @@
             </intent-filter>
         </activity>
         <activity android:name="cn.burgeon.core.ui.SystemActivity" />
+        <activity android:name="cn.burgeon.core.ui.allot.AllotManagerActivity" />
+        <activity android:name="cn.burgeon.core.ui.allot.AllotOutInActivity" />
+        <activity android:name="cn.burgeon.core.ui.allot.ReplenishmentActivity" />
+        <activity android:name="cn.burgeon.core.ui.allot.ReplenishmentOrderActivity" />
     </application>
 
 </manifest>
