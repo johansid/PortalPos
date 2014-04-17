@@ -51,6 +51,16 @@ public class DailySalesActivity extends BaseActivity {
 		data.add(new Order("2014/4/12","vip","1","2","3","4","5"));
 		data.add(new Order("2014/4/12","vip","1","2","3","4","5"));
 		data.add(new Order("2014/4/12","vip","1","2","3","4","5"));
+		data.add(new Order("2014/4/12","vip","1","2","3","4","5"));
+		data.add(new Order("2014/4/12","vip","1","2","3","4","5"));
+		data.add(new Order("2014/4/12","vip","1","2","3","4","5"));
+		data.add(new Order("2014/4/12","vip","1","2","3","4","5"));
+		data.add(new Order("2014/4/12","vip","1","2","3","4","5"));
+		data.add(new Order("2014/4/12","vip","1","2","3","4","5"));
+		data.add(new Order("2014/4/12","vip","1","2","3","4","5"));
+		data.add(new Order("2014/4/12","vip","1","2","3","4","5"));
+		data.add(new Order("2014/4/12","vip","1","2","3","4","5"));
+		data.add(new Order("2014/4/12","vip","1","2","3","4","5"));
 		return data;
 	}
 }
