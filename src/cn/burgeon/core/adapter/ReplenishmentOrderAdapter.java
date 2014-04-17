@@ -13,48 +13,10 @@ import cn.burgeon.core.R;
 /**
  * Created by Simon on 2014/4/16.
  */
-public class ReplenishmentOrderAdapter extends BaseAdapter {
-    private Context mContext;
+public class ReplenishmentOrderAdapter extends MainBaseAdapter {
 
     public ReplenishmentOrderAdapter(Context c) {
-        mContext = c;
-    }
-
-    private String[] mTextValues = Constant.replenishmentOrderTextValues;
-
-    @Override
-    public int getCount() {
-        return mTextValues.length;
-    }
-
-    @Override
-    public Object getItem(int position) {
-        return mTextValues[position];
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder;
-        if (convertView == null) {
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.replenishment_order_grid_item, null);
-            holder = new ViewHolder();
-            holder.gridTV = (TextView) convertView.findViewById(R.id.gridTV);
-            convertView.setTag(holder);
-        } else {
-            holder = (ViewHolder) convertView.getTag();
-        }
-        //赋值
-        holder.gridTV.setText(mTextValues[position]);
-        return convertView;
-    }
-
-    static class ViewHolder {
-        TextView gridTV;
+        super(c, Constant.replenishmentOrderTextValues, R.layout.replenishment_order_grid_item);
     }
 
 }
