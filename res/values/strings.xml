@@ -16,7 +16,17 @@
     <string name="sysFunction">系统功能</string>
     <string name="allotManager">调拨管理</string>
     <string name="allotOutIn">调拨出入库</string>
+    <string name="allotIn">调拨入库</string>
+    <string name="allotInQuery">调入查询</string>
+    <string name="allotInDetail">调拨入库明细</string>
+    <string name="allotOut">调拨出库</string>
+    <string name="allotOutQuery">调出查询</string>
+    <string name="allotOutApply">发货申请</string>
+    <string name="shipper">发货方</string>
+    <string name="barcode">条码</string>
     <string name="replenishmentManager">补货管理</string>
+    <string name="replenishmentQuery">补货查询</string>
+    <string name="replenishmentApply">补货申请</string>
     <string name="replenishmentOrderManager">补货订单</string>
     <string name="sales_richangxiaoshou">日常销售</string>
     <string name="sales_xiaoshoubaobiao">销售报表</string>
@@ -30,5 +40,14 @@
     <string name="sales_daily_list_title_danhao">单号</string>
     <string name="sales_daily_list_title_yinyeyuan">营业员</string>
     <string name="sales_daily_list_title_upstate">上传状态</string>
-
+    <string name="replenishmentOrderApply">补货订单申请</string>
+    <string name="replenishmentOrderQuery">补货订单查询</string>
+    <string name="add">新增</string>
+    <string name="query">查询</string>
+    <string name="del">删除</string>
+    <string name="detail">明细</string>
+    <string name="upload">上传</string>
+    <string name="check">验收</string>
+    <string name="startData">开始时间</string>
+    <string name="endData">结束时间</string>
 </resources>

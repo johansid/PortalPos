@@ -1,6 +1,5 @@
 package cn.burgeon.core.ui.allot;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -38,9 +37,9 @@ public class AllotManagerActivity extends BaseActivity {
                 if (itemValue != null && Constant.allotManagerTextValues[0].equals(itemValue)) {
                     forwardActivity(AllotOutInActivity.class);
                 } else if (itemValue != null && Constant.allotManagerTextValues[1].equals(itemValue)) {
-                    forwardActivity(ReplenishmentActivity.class);
+                    forwardActivity(AllotReplenishmentActivity.class);
                 } else if (itemValue != null && Constant.allotManagerTextValues[2].equals(itemValue)) {
-                    forwardActivity(ReplenishmentOrderActivity.class);
+                    forwardActivity(AllotReplenishmentOrderActivity.class);
                 }
             }
         });

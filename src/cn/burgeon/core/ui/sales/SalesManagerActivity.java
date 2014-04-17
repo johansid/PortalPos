@@ -1,20 +1,16 @@
 package cn.burgeon.core.ui.sales;
 
-import cn.burgeon.core.Constant;
-import cn.burgeon.core.R;
-import cn.burgeon.core.adapter.AllotManagerAdapter;
-import cn.burgeon.core.adapter.SalesManagerAdapter;
-import cn.burgeon.core.ui.BaseActivity;
-import cn.burgeon.core.ui.allot.AllotOutInActivity;
-import cn.burgeon.core.ui.allot.ReplenishmentActivity;
-import cn.burgeon.core.ui.allot.ReplenishmentOrderActivity;
-import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.GridView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.GridView;
+
+import cn.burgeon.core.Constant;
+import cn.burgeon.core.R;
+import cn.burgeon.core.adapter.SalesManagerAdapter;
+import cn.burgeon.core.ui.BaseActivity;
 
 public class SalesManagerActivity extends BaseActivity {
 	

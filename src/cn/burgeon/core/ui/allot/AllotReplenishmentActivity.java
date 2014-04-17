@@ -14,7 +14,7 @@ import cn.burgeon.core.adapter.AllotManagerAdapter;
 import cn.burgeon.core.adapter.ReplenishmentAdapter;
 import cn.burgeon.core.ui.BaseActivity;
 
-public class ReplenishmentActivity extends BaseActivity {
+public class AllotReplenishmentActivity extends BaseActivity {
 
     private GridView replenishmentGV;
     private ReplenishmentAdapter mAdapter;
@@ -36,6 +36,11 @@ public class ReplenishmentActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String itemValue = (String) parent.getItemAtPosition(position);
+                if (itemValue != null && Constant.replenishmentTextValues[0].equals(itemValue)) {
+                    forwardActivity(AllotReplenishmentApplyActivity.class);
+                } else if (itemValue != null && Constant.replenishmentTextValues[2].equals(itemValue)) {
+                    forwardActivity(AllotReplenishmentQueryActivity.class);
+                }
             }
         });
     }

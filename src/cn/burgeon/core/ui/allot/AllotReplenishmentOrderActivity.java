@@ -8,12 +8,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
+import cn.burgeon.core.Constant;
 import cn.burgeon.core.R;
 import cn.burgeon.core.adapter.ReplenishmentAdapter;
 import cn.burgeon.core.adapter.ReplenishmentOrderAdapter;
 import cn.burgeon.core.ui.BaseActivity;
 
-public class ReplenishmentOrderActivity extends BaseActivity {
+public class AllotReplenishmentOrderActivity extends BaseActivity {
 
     private GridView replenishmentOrderGV;
     private ReplenishmentOrderAdapter mAdapter;
@@ -35,6 +36,11 @@ public class ReplenishmentOrderActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String itemValue = (String) parent.getItemAtPosition(position);
+                if (itemValue != null && Constant.replenishmentOrderTextValues[0].equals(itemValue)) {
+                    forwardActivity(AllotReplenishmentOrderApplyActivity.class);
+                } else if (itemValue != null && Constant.replenishmentOrderTextValues[2].equals(itemValue)) {
+                    forwardActivity(AllotReplenishmentOrderQueryActivity.class);
+                }
             }
         });
     }

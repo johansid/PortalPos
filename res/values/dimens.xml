@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 登录编辑框 -->
+    <dimen name="login_edit_text">200dp</dimen>
+
+    <!-- 九宫格返回按钮 -->
+    <dimen name="jgg_btn">120dp</dimen>
+
+    <!-- 调拨入库页面按钮 -->
+    <dimen name="allot_in_btn">100dp</dimen>
+
+    <!-- 调拨出库页面按钮 -->
+    <dimen name="allot_out_btn">80dp</dimen>
+</resources>
