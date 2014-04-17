@@ -10,6 +10,7 @@ import cn.burgeon.core.ui.allot.ReplenishmentActivity;
 import cn.burgeon.core.ui.allot.ReplenishmentOrderActivity;
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -30,7 +31,7 @@ public class SalesManagerActivity extends BaseActivity {
 	}
 	
     private void init() {
-    	salesGV = (GridView) findViewById(R.id.allotGV);
+    	salesGV = (GridView) findViewById(R.id.salesGV);
         mAdapter = new SalesManagerAdapter(this);
         salesGV.setAdapter(mAdapter);
         salesGV.setOnItemClickListener(new OnItemClickListener() {
@@ -38,12 +39,13 @@ public class SalesManagerActivity extends BaseActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String itemValue = (String) parent.getItemAtPosition(position);
                 if (itemValue != null && Constant.salesTopMenuTextValues[0].equals(itemValue)) {
-                    forwardActivity(AllotOutInActivity.class);
-                } else if (itemValue != null && Constant.salesTopMenuTextValues[1].equals(itemValue)) {
+                	Log.d("SalesManager", "==================="+itemValue);
+                    forwardActivity(DailySalesActivity.class);
+                } /*else if (itemValue != null && Constant.salesTopMenuTextValues[1].equals(itemValue)) {
                     forwardActivity(ReplenishmentActivity.class);
                 } else if (itemValue != null && Constant.salesTopMenuTextValues[2].equals(itemValue)) {
                     forwardActivity(ReplenishmentOrderActivity.class);
-                }
+                }*/
             }
         });
     }

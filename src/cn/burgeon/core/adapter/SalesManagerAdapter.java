@@ -20,7 +20,7 @@ public class SalesManagerAdapter extends BaseAdapter {
         mContext = c;
     }
 
-    private String[] mTextValues = Constant.allotManagerTextValues;
+    private String[] mTextValues = Constant.salesTopMenuTextValues;
 
     @Override
     public int getCount() {
