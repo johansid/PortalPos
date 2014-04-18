@@ -40,6 +40,10 @@
         <activity android:name="cn.burgeon.core.ui.allot.AllotReplenishmentQueryActivity" />
         <activity android:name="cn.burgeon.core.ui.allot.AllotReplenishmentOrderApplyActivity" />
         <activity android:name="cn.burgeon.core.ui.allot.AllotReplenishmentOrderQueryActivity" />
+        <activity android:name="cn.burgeon.core.ui.inventory.InventoryManagerActivity" />
+        <activity android:name="cn.burgeon.core.ui.inventory.InventoryQueryActivity" />
+        <activity android:name="cn.burgeon.core.ui.inventory.InventoryRefreshActivity" />
+        <activity android:name="cn.burgeon.core.ui.inventory.InventoryNearActivity" />
     </application>
 
 </manifest>
