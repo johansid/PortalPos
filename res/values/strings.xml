@@ -42,6 +42,10 @@
     <string name="sales_daily_list_title_upstate">上传状态</string>
     <string name="replenishmentOrderApply">补货订单申请</string>
     <string name="replenishmentOrderQuery">补货订单查询</string>
+    <string name="inventoryManager">库存管理</string>
+    <string name="inventoryQuery">刷新查询</string>
+    <string name="inventoryRefresh">刷新库存</string>
+    <string name="inventoryNear">临店库存</string>
     <string name="add">新增</string>
     <string name="query">查询</string>
     <string name="del">删除</string>

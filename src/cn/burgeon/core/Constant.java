@@ -7,4 +7,6 @@ public class Constant {
     public static final String[] replenishmentTextValues = {"补货", "补货上传", "补货查询"};
     public static final String[] replenishmentOrderTextValues = {"补货订单", "补货订单上传", "补货订单查询"};
     public static final String[] salesTopMenuTextValues = {"日常销售", "销售报表", "销售上传"};
+    public static final String[] inventoryManagerTextValues = {"库存查询", "刷新库存", "临店库存"};
+    public static final String[] systemManagerTextValues = {"系统配置", "网络测试", "系统升级","资料下载","数据清理"};
 }
