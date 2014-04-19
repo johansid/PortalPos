@@ -30,6 +30,11 @@
         <activity android:name="cn.burgeon.core.ui.allot.AllotReplenishmentOrderActivity" />
         <activity android:name="cn.burgeon.core.ui.sales.SalesManagerActivity" />
         <activity android:name="cn.burgeon.core.ui.sales.DailySalesActivity" />
+        <activity android:name="cn.burgeon.core.ui.sales.SalesOrderSearchActivity" />
+        <activity android:name="cn.burgeon.core.ui.sales.SalesReportActivity" />
+        <activity android:name="cn.burgeon.core.ui.sales.SalesDetailActivity" />
+        <activity android:name="cn.burgeon.core.ui.sales.SalesDailyReportActivity" />
+        <activity android:name="cn.burgeon.core.ui.sales.SalesMonthlyReportActivity" />
         <activity android:name="cn.burgeon.core.ui.allot.AllotInActivity" />
         <activity android:name="cn.burgeon.core.ui.allot.AllotInDetailActivity" />
         <activity android:name="cn.burgeon.core.ui.allot.AllotOutActivity" />

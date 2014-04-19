@@ -40,6 +40,19 @@
     <string name="sales_daily_list_title_danhao">单号</string>
     <string name="sales_daily_list_title_yinyeyuan">营业员</string>
     <string name="sales_daily_list_title_upstate">上传状态</string>
+    <string name="sales_order_search_title">销售查询</string>
+    <string name="sales_detail_title">单据明细</string>
+    <string name="sales_detail_tiaoma">条码</string>
+    <string name="sales_detail_danjia">单价</string>
+    <string name="sales_detail_zhekou">折扣</string>
+    <string name="sales_detail_shuliang">数量</string>
+    <string name="sales_detail_jine">金额</string>
+    <string name="sales_detail_pinming">品名</string>
+    <string name="sales_detail_yanse">颜色</string>
+    <string name="sales_detail_chicun">尺寸</string>
+    <string name="sales_detail_saletype">销售类型</string>
+    <string name="sales_daily_report">销售日报</string>
+    <string name="sales_monthly_report">销售月报</string>
     <string name="replenishmentOrderApply">补货订单申请</string>
     <string name="replenishmentOrderQuery">补货订单查询</string>
     <string name="inventoryManager">库存管理</string>
@@ -54,4 +67,5 @@
     <string name="check">验收</string>
     <string name="startData">开始时间</string>
     <string name="endData">结束时间</string>
+    <string name="viewdetail">查看明细</string>
 </resources>

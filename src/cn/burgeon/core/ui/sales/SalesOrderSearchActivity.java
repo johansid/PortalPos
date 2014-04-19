@@ -5,6 +5,7 @@ import java.util.List;
 
 import cn.burgeon.core.R;
 import cn.burgeon.core.adapter.SalesDailyAdapter;
+import cn.burgeon.core.adapter.SalesOrderSearchAdapter;
 import cn.burgeon.core.bean.Order;
 import cn.burgeon.core.ui.BaseActivity;
 import android.os.Bundle;
@@ -12,17 +13,17 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.ListView;
 
-public class DailySalesActivity extends BaseActivity {
+public class SalesOrderSearchActivity extends BaseActivity {
 	
 	ListView mList;
-	SalesDailyAdapter mAdapter;
-	Button btnAdd, btnUpdate, btnSearch, btnDelete;
+	SalesOrderSearchAdapter mAdapter;
+	Button btnViewDetail, btnSearch;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setupFullscreen();
-        setContentView(R.layout.activity_sales_manager_dailysales);
+        setContentView(R.layout.activity_sales_order_search);
 
         init();
         bindList();
@@ -30,16 +31,14 @@ public class DailySalesActivity extends BaseActivity {
     
     private void bindList() {
     	List<Order> data = fetchData();
-    	mAdapter = new SalesDailyAdapter(data, this);
+    	mAdapter = new SalesOrderSearchAdapter(data, this);
     	mList.setAdapter(mAdapter);
 	}
 
 	private void init(){
-    	mList = (ListView) findViewById(R.id.dailySalesLV);
-    	btnAdd = (Button) findViewById(R.id.sales_daily_btn_add);
-    	btnUpdate = (Button) findViewById(R.id.sales_daily_btn_update);
+    	mList = (ListView) findViewById(R.id.salesOrderLV);
+    	btnViewDetail = (Button) findViewById(R.id.sales_daily_btn_add);
     	btnSearch = (Button) findViewById(R.id.sales_daily_btn_search);
-    	btnDelete = (Button) findViewById(R.id.sales_daily_btn_delete);
     }
 
 	private List<Order> fetchData() {

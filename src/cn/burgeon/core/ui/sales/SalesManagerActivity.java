@@ -37,9 +37,9 @@ public class SalesManagerActivity extends BaseActivity {
                 if (itemValue != null && Constant.salesTopMenuTextValues[0].equals(itemValue)) {
                 	Log.d("SalesManager", "==================="+itemValue);
                     forwardActivity(DailySalesActivity.class);
-                } /*else if (itemValue != null && Constant.salesTopMenuTextValues[1].equals(itemValue)) {
-                    forwardActivity(ReplenishmentActivity.class);
-                } else if (itemValue != null && Constant.salesTopMenuTextValues[2].equals(itemValue)) {
+                } else if (itemValue != null && Constant.salesTopMenuTextValues[1].equals(itemValue)) {
+                    forwardActivity(SalesReportActivity.class);
+                } /*else if (itemValue != null && Constant.salesTopMenuTextValues[2].equals(itemValue)) {
                     forwardActivity(ReplenishmentOrderActivity.class);
                 }*/
             }
