@@ -53,6 +53,12 @@
     <string name="sales_detail_saletype">销售类型</string>
     <string name="sales_daily_report">销售日报</string>
     <string name="sales_monthly_report">销售月报</string>
+    <string name="sales_ware_summer_title">商品汇总</string>
+    <string name="sales_ware_summer_kuanhao">款号</string>
+    <string name="sales_ware_summer_mincheng">名称</string>
+    <string name="sales_ware_summer_minxi">明细查询</string>
+    <string name="sales_archivement_summer_title">业绩汇总</string>
+    <string name="sales_archivement_summer_bianhao">编号</string>
     <string name="replenishmentOrderApply">补货订单申请</string>
     <string name="replenishmentOrderQuery">补货订单查询</string>
     <string name="inventoryManager">库存管理</string>
@@ -71,4 +77,22 @@
     <string name="startData">开始时间</string>
     <string name="endData">结束时间</string>
     <string name="viewdetail">查看明细</string>
+    <string name="memberManager">会员管理</string>
+    <string name="memberList">会员列表</string>
+    <string name="memberRegist">会员注册</string>
+    <string name="memberQuery">会员查询</string>
+    <string name="memberRegistCardNum">卡号</string>
+    <string name="memberRegistName">姓名</string>
+    <string name="memberRegistSex">性别</string>
+    <string name="memberRegistPhoneNum">手机</string>
+    <string name="memberRegistIdentityCardNum">身份证号</string>
+    <string name="memberRegistVipType">VIP类型</string>
+    <string name="memberRegistBirthday">出生日期</string>
+    <string name="memberRegistSalesAssistant">营业员</string>
+    <string name="memberRegistEmail">电子邮箱</string>
+    <string name="memberRegistCreateDate">开卡日期</string>
+    <string name="memberRegistVerification">验证</string>
+    <string name="memberRegistSave">保存</string>
+    <string name="male">男</string>
+    <string name="female">女</string>
 </resources>

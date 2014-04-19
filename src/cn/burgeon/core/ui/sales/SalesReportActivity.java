@@ -40,6 +40,10 @@ public class SalesReportActivity extends BaseActivity {
                     forwardActivity(SalesDailyReportActivity.class);
                 } else if (itemValue != null && Constant.salesReportTextValues[2].equals(itemValue)) {
                     forwardActivity(SalesMonthlyReportActivity.class);
+                } else if (itemValue != null && Constant.salesReportTextValues[3].equals(itemValue)) {
+                    forwardActivity(SalesWareSummerActivity.class);
+                }else if (itemValue != null && Constant.salesReportTextValues[4].equals(itemValue)) {
+                    forwardActivity(SalesArchiveSummerActivity.class);
                 }
             }
         });

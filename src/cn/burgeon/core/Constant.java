@@ -10,4 +10,5 @@ public class Constant {
     public static final String[] inventoryManagerTextValues = {"库存查询", "刷新库存", "临店库存"};
     public static final String[] systemManagerTextValues = {"系统配置", "网络测试", "系统升级","资料下载","数据清理"};
 	public static final String[] salesReportTextValues = {"单据查询", "销售日报", "销售月报","商品汇总","业绩查询"};
+	public static final String[] memberManagerTextValues = {"会员注册", "会员查询", "会员上传","会员下载"};
 }
