@@ -22,7 +22,7 @@
             android:orientation="horizontal" >
 
             <TextView
-                android:id="@+id/storeName"
+                android:id="@+id/inventoryStatusStoreName"
                 android:layout_height="wrap_content"
                 android:layout_weight="5"
                 android:layout_width="0dp"
@@ -30,10 +30,10 @@
                 android:background="@drawable/corners_bg"
                 android:gravity="left"
                 android:padding="10dp"
-                android:text="【yuan2】上海BURGEON" />
+                android:text="Query:上海BURGEON" />
 
             <TextView
-                android:id="@+id/time"
+                android:id="@+id/inventoryStatusTime"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:layout_width="0dp"
@@ -50,22 +50,21 @@
             android:orientation="horizontal" >
 
             <TextView
-                android:id="@+id/inventoryQueryStyleNumber"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:background="@drawable/corners_bg"
                 android:gravity="left"
                 android:padding="10dp"
-                android:text="@string/inventoryQueryStyleNumber" />
+                android:text="@string/inventoryStyleNumber" />
 
             <EditText
-                android:id="@+id/inventoryQueryStyleNumberEditText"
+                android:id="@+id/inventoryStyleNumberEditText"
                 android:layout_height="wrap_content"
                 android:layout_weight="5"
                 android:layout_width="0dp"
                 android:singleLine="true"
-                android:hint="请输入你的款号"
+                android:hint="Query:请输入你的款号"
                 android:background="@drawable/corners_bg"
                 android:gravity="left"
                 android:padding="10dp"/>
@@ -81,7 +80,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="@string/inventoryQueryStyleNumber"
+                android:text="@string/inventoryStyleNumber"
                 android:textSize="15sp" />
 
             <View
@@ -94,7 +93,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="@string/inventoryQueryCount"
+                android:text="@string/inventoryStyleCount"
                 android:textSize="15sp" />
 
             <View
@@ -107,15 +106,19 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="@string/inventoryQueryStyleName"
+                android:text="@string/inventoryStyleName"
                 android:textSize="15sp" />
 
         </LinearLayout>
 
         <ListView
-            android:id="@+id/inventoryQueryListView"
+            android:id="@+id/inventoryListView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content" 
+            android:fastScrollEnabled="true" 
+            android:transcriptMode="normal"  
+            android:scrollbarStyle="insideInset" 
+            android:layout_gravity="bottom">
         </ListView> 
     </LinearLayout>
     
@@ -126,14 +129,14 @@
  	    android:orientation="vertical">
         
         <TextView
-            android:id="@+id/inventoryQueryCountRecord"
+            android:id="@+id/inventoryCountRecord"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="15sp"
             android:background="@drawable/corners_bg"
             android:gravity="left"
             android:padding="10dp"
-            android:text="0条记录">
+            android:text="Query:0条记录">
         </TextView>
         
 	    <LinearLayout
@@ -142,7 +145,7 @@
 	        android:orientation="horizontal" >
 	
 	        <Button
-	            android:id="@+id/invertoryQueryButtonAdd"
+	            android:id="@+id/inventoryButtonAdd"
 	            android:layout_width="0dp"
 	            android:layout_height="wrap_content"
 	            android:layout_weight="1"
@@ -150,7 +153,7 @@
 	            android:textAppearance="?android:attr/textAppearanceMedium" />
 	
 	        <Button
-	            android:id="@+id/invertoryQueryButtonUpdate"
+	            android:id="@+id/inventoryButtonUpdate"
 	            android:layout_width="0dp"
 	            android:layout_height="wrap_content"
 	            android:layout_weight="1"
@@ -158,7 +161,7 @@
 	            android:textAppearance="?android:attr/textAppearanceMedium" />
 	
 	        <Button
-	            android:id="@+id/invertoryQueryButtonSearch"
+	            android:id="@+id/inventoryButtonSearch"
 	            android:layout_width="0dp"
 	            android:layout_height="wrap_content"
 	            android:layout_weight="1"
@@ -166,7 +169,7 @@
 	            android:textAppearance="?android:attr/textAppearanceMedium" />
 	
 	        <Button
-	            android:id="@+id/invertoryQueryButtonDelete"
+	            android:id="@+id/inventoryButtonDelete"
 	            android:layout_width="0dp"
 	            android:layout_height="wrap_content"
 	            android:layout_weight="1"
