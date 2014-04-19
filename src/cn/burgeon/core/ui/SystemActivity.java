@@ -11,6 +11,7 @@ import cn.burgeon.core.R;
 import cn.burgeon.core.adapter.AllotManagerAdapter;
 import cn.burgeon.core.adapter.SystemAdapter;
 import cn.burgeon.core.ui.allot.AllotManagerActivity;
+import cn.burgeon.core.ui.check.CheckManagerActivity;
 import cn.burgeon.core.ui.inventory.InventoryManagerActivity;
 import cn.burgeon.core.ui.member.MemberManagerActivity;
 import cn.burgeon.core.ui.sales.SalesManagerActivity;
@@ -45,6 +46,8 @@ public class SystemActivity extends BaseActivity {
                     forwardActivity(InventoryManagerActivity.class);
                 }else if (itemValue != null && Constant.sysTextValues[1].equals(itemValue)) {
                     forwardActivity(MemberManagerActivity.class);
+                }else if (itemValue != null && Constant.sysTextValues[3].equals(itemValue)) {
+                    forwardActivity(CheckManagerActivity.class);
                 }
             }
         });

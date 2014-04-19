@@ -15,6 +15,10 @@
     <string name="btn_delete">删除</string>
     <string name="sysFunction">系统功能</string>
     <string name="allotManager">调拨管理</string>
+    <string name="checkManager">盘点管理</string>
+    <string name="checkScan">盘点扫描</string>
+    <string name="checkDocManager">盘点单据管理</string>
+    <string name="checkQuery">盘点查询</string>
     <string name="allotOutIn">调拨出入库</string>
     <string name="allotIn">调拨入库</string>
     <string name="allotInQuery">调入查询</string>
@@ -23,6 +27,8 @@
     <string name="allotOutQuery">调出查询</string>
     <string name="allotOutApply">发货申请</string>
     <string name="shipper">发货方</string>
+    <string name="shelf">货架</string>
+    <string name="delshelf">删除货架</string>
     <string name="barcode">条码</string>
     <string name="replenishmentManager">补货管理</string>
     <string name="replenishmentQuery">补货查询</string>
@@ -74,6 +80,9 @@
     <string name="detail">明细</string>
     <string name="upload">上传</string>
     <string name="check">验收</string>
+    <string name="gather">汇总</string>
+    <string name="review">审核</string>
+    <string name="continuecheck">续盘</string>
     <string name="startData">开始时间</string>
     <string name="endData">结束时间</string>
     <string name="viewdetail">查看明细</string>
