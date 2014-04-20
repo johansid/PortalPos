@@ -16,9 +16,20 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.security.MessageDigest;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,88 +38,66 @@ import cn.burgeon.core.net.RequestManager;
 
 public class LoginActivity extends BaseActivity {
 
-    private String[] stores = {"门店1", "门店2", "门店3"};
-    private Spinner storeSpinner;
-    private Button configBtn;
-    private Button loginBtn;
-    private Button logoutBtn;
+	private String[] stores = { "门店1", "门店2", "门店3" };
+	private Spinner storeSpinner;
+	private Button configBtn;
+	private Button loginBtn;
+	private Button logoutBtn;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setupFullscreen();
-        setContentView(R.layout.activity_login);
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setupFullscreen();
+		setContentView(R.layout.activity_login);
 
-        init();
-    }
+		init();
+	}
 
-    private void init() {
-        storeSpinner = (Spinner) findViewById(R.id.storeSpin);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(LoginActivity.this, android.R.layout.simple_spinner_item, stores);
-        storeSpinner.setAdapter(adapter);
+	private void init() {
+		storeSpinner = (Spinner) findViewById(R.id.storeSpin);
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+				LoginActivity.this, android.R.layout.simple_spinner_item,
+				stores);
+		storeSpinner.setAdapter(adapter);
 
-        configBtn = (Button) findViewById(R.id.configBtn);
-        configBtn.setOnClickListener(new ClickEvent());
-        loginBtn = (Button) findViewById(R.id.loginBtn);
-        loginBtn.setOnClickListener(new ClickEvent());
-        logoutBtn = (Button) findViewById(R.id.logoutBtn);
-    }
+		configBtn = (Button) findViewById(R.id.configBtn);
+		configBtn.setOnClickListener(new ClickEvent());
+		loginBtn = (Button) findViewById(R.id.loginBtn);
+		loginBtn.setOnClickListener(new ClickEvent());
+		logoutBtn = (Button) findViewById(R.id.logoutBtn);
+	}
 
-    class ClickEvent implements View.OnClickListener {
+	class ClickEvent implements View.OnClickListener {
 
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.configBtn:
-                    StringRequest request = new StringRequest(Request.Method.POST, "http://g.burgeon.cn:90/servlets/binserv/Rest", createMyReqSuccessListener(), createMyReqErrorListener()) {
+		@Override
+		public void onClick(View v) {
+			switch (v.getId()) {
+			case R.id.configBtn:
+				Map<String,String> params = new HashMap<String, String>();
+				JSONArray array;
+				JSONObject transactions;
+				try {
+					array = new JSONArray();
+					transactions = new JSONObject();
+					transactions.put("id", 112);
+					transactions.put("command", "Query");
+					//transactions.put("columns", "[\"VIPNAME\",\"IDNO\"]");
+					JSONObject paramsInTransactions = new JSONObject();
+					paramsInTransactions.put("table", 10028);
+					transactions.put("params", paramsInTransactions);
+					array.put(transactions);
+					params.put("transactions", array.toString());
+					sendRequest(params);
+				} catch (JSONException e) {}
+				break;
+			case R.id.loginBtn:
+				forwardActivity(SystemActivity.class);
+				break;
+			case R.id.logoutBtn:
+				break;
+			}
+		}
+	}
 
-                        protected Map<String, String> getParams() throws AuthFailureError {
-                            HashMap<String, String> params = new HashMap<String, String>();
-                            params.put("appkey", "nea@burgeon.com.cn");
-                            params.put("password", "pbdev");
-                            params.put("command", "GetObject");
-
-                            /*
-                            JSONObject obj = new JSONObject();
-                            try {
-                                obj.put("table", M_IN);
-                                obj.put("id", 524376);
-                                obj.put("reftables", [1024,2063]);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                            */
-                            params.put("params", "{\"table\":\"M_IN\", \"id\":524376, \"reftables\":[1024,2063]}");
-                            return params;
-                        }
-                    };
-                    RequestManager.getRequestQueue().add(request);
-
-                    break;
-                case R.id.loginBtn:
-                    forwardActivity(SystemActivity.class);
-                    break;
-                case R.id.logoutBtn:
-                    break;
-            }
-        }
-    }
-
-    private Response.Listener<String> createMyReqSuccessListener() {
-        return new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Log.d("zhang.h", response);
-            }
-        };
-    }
-
-    private Response.ErrorListener createMyReqErrorListener() {
-        return new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d("zhang.h", error.getMessage());
-            }
-        };
-    }
+	
 }
