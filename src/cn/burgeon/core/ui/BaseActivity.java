@@ -5,10 +5,12 @@ import java.util.Map;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Window;
 import cn.burgeon.core.App;
+import cn.burgeon.core.db.DbHelper;
 import cn.burgeon.core.net.RequestManager;
 
 import com.android.volley.AuthFailureError;
@@ -23,11 +25,17 @@ import com.android.volley.toolbox.StringRequest;
 public class BaseActivity extends Activity {
 	
 	App mApp;
+	private DbHelper helper;  
+    protected SQLiteDatabase db;  
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mApp = (App) getApplication();
+        helper = new DbHelper(this);  
+        //因为getWritableDatabase内部调用了mContext.openOrCreateDatabase(mName, 0, mFactory);  
+        //所以要确保context已初始化,我们可以把实例化DBManager的步骤放在Activity的onCreate里  
+        db = helper.getWritableDatabase();  
     }
 
     // 设置程序全屏显示
