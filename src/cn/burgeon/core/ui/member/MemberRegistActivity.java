@@ -1,21 +1,34 @@
 package cn.burgeon.core.ui.member;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.android.volley.Response;
+
 import cn.burgeon.core.R;
 import cn.burgeon.core.bean.Member;
 import cn.burgeon.core.ui.BaseActivity;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.provider.ContactsContract.CommonDataKinds.Email;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 public class MemberRegistActivity extends BaseActivity {
 	
 	Button saveBtn,veryfiyBtn;
-	EditText cardNOET,nameET,identityET,employeeET;
-	EditText createDateET,mobilePhoneET,birthdayET;
+	EditText cardNOET,nameET,identityET,employeeET,emailET;
+	EditText createDateET,mobilePhoneET,birthdayET,typeET;
+	RadioGroup radioGroup;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -35,17 +48,16 @@ public class MemberRegistActivity extends BaseActivity {
 		createDateET = (EditText) findViewById(R.id.memberRegistCreateDateET);
 		mobilePhoneET = (EditText) findViewById(R.id.memberRegistPhoneNumET);
 		birthdayET = (EditText) findViewById(R.id.memberRegistBirthdayET);
-		
+		radioGroup = (RadioGroup) findViewById(R.id.memberRegistRG);
+		emailET = (EditText) findViewById(R.id.memberRegistEmailET);
+		employeeET = (EditText) findViewById(R.id.memberRegistSalesAssistantET);
+		typeET = (EditText) findViewById(R.id.memberRegistVipTypeET);
 		saveBtn.setOnClickListener(mOnclickListener);
 		veryfiyBtn.setOnClickListener(mOnclickListener);
 	}
 	
 	OnClickListener mOnclickListener = new OnClickListener() {
-		
-		/* "(_id INTEGER PRIMARY KEY AUTOINCREMENT, cardno VARCHAR,"+
-					"name VARCHAR, sex VARCHAR,idno VARCHAR,mobile VARCHAR,birthday VARCHAR"+
-	                "employee VARCHAR,email VARCHAR,createTime VARCHAR)");*/
-		
+	
 		@Override
 		public void onClick(View v) {
 			switch (v.getId()) {
@@ -65,22 +77,31 @@ public class MemberRegistActivity extends BaseActivity {
 				save();
 				break;
 			case R.id.memberRegistVerifyBtn:
-				query();
+				verify();
 				break;
 			default:
 				break;
 			}
 		}
+
 	};
 	
 	public void save(){
 		db.beginTransaction();
-        try {  
-        	db.execSQL("insert into c_vip('cardno','name','idno','mobile') values(?,?,?,?)",
+        try {
+        	db.execSQL("insert into c_vip('cardno','name','idno','mobile','sex','email','birthday','createTime','employee','type')"+
+        				" values(?,?,?,?,?,?,?,?,?,?)",
 					new Object[]{cardNOET.getText().toString().trim(),
 								nameET.getText().toString().trim(),
 								identityET.getText().toString().trim(),
-								mobilePhoneET.getText().toString().trim()});
+								mobilePhoneET.getText().toString().trim(),
+								radioGroup.getCheckedRadioButtonId()==R.id.radioMale?1:0,
+								emailET.getText().toString().trim(),
+								birthdayET.getText().toString().trim(),
+								createDateET.getText().toString().trim(),
+								employeeET.getText().toString().trim(),
+								typeET.getText().toString().trim(),
+								});
             db.setTransactionSuccessful();
         } finally {  
             db.endTransaction();
@@ -94,6 +115,43 @@ public class MemberRegistActivity extends BaseActivity {
 			Log.d("zhang.h", c.getString(c.getColumnIndex("name")));
 			Log.d("zhang.h", c.getString(c.getColumnIndex("idno")));
 			Log.d("zhang.h", c.getString(c.getColumnIndex("mobile")));
+			Log.d("zhang.h", c.getString(c.getColumnIndex("birthday")));
+			Log.d("zhang.h", c.getString(c.getColumnIndex("employee")));
+			Log.d("zhang.h", c.getString(c.getColumnIndex("email")));
+			Log.d("zhang.h", c.getString(c.getColumnIndex("createTime")));
+			Log.d("zhang.h", c.getString(c.getColumnIndex("type")));
+			Log.d("zhang.h", Integer.toString(c.getInt(c.getColumnIndex("sex"))));
 		}
+	}
+	
+	private void verify() {
+		Map<String,String> params = new HashMap<String, String>();
+		JSONArray array;
+		JSONObject transactions;
+		try {
+			array = new JSONArray();
+			transactions = new JSONObject();
+			transactions.put("id", 112);
+			transactions.put("command", "Query");
+			JSONObject paramsInTransactions = new JSONObject();
+			paramsInTransactions.put("table", 12899);
+			
+			//查询条件的params
+			JSONObject queryParams = new JSONObject();
+			queryParams.put("column", "cardno");
+			queryParams.put("condition", cardNOET.getText().toString().trim());
+			paramsInTransactions.put("params", queryParams);
+			
+			transactions.put("params", paramsInTransactions);
+			array.put(transactions);
+			params.put("transactions", array.toString());
+			sendRequest(params,new Response.Listener<String>() {
+				@Override
+				public void onResponse(String response) {
+					//Log.d("zhang.h", response);
+					
+				}
+			});
+		} catch (JSONException e) {}
 	}
 }

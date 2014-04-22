@@ -7,7 +7,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.android.volley.Response;
+
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -44,6 +47,14 @@ public class LoginActivity extends BaseActivity {
 		loginBtn.setOnClickListener(new ClickEvent());
 		logoutBtn = (Button) findViewById(R.id.logoutBtn);
 	}
+	
+/*	Response.Listener responseListener = new Response.Listener<String>() {
+		@Override
+		public void onResponse(String response) {
+			//Log.d("zhang.h", response);
+			returnResponse(response,btnID);
+		}
+	};*/
 
 	class ClickEvent implements View.OnClickListener {
 
@@ -59,13 +70,21 @@ public class LoginActivity extends BaseActivity {
 					transactions = new JSONObject();
 					transactions.put("id", 112);
 					transactions.put("command", "Query");
-					//transactions.put("columns", "[\"VIPNAME\",\"IDNO\"]");
+					
 					JSONObject paramsInTransactions = new JSONObject();
-					paramsInTransactions.put("table", 10028);
+					paramsInTransactions.put("table", 12899);
+					paramsInTransactions.put("columns", new JSONArray().put("cardno").put("vipname"));
 					transactions.put("params", paramsInTransactions);
+					
 					array.put(transactions);
 					params.put("transactions", array.toString());
-					sendRequest(params);
+					sendRequest(params, new Response.Listener<String>() {
+						@Override
+						public void onResponse(String response) {
+							//Log.d("zhang.h", response);
+							
+						}
+					});
 				} catch (JSONException e) {}
 				break;
 			case R.id.loginBtn:

@@ -102,6 +102,7 @@
     <string name="memberRegistPhoneNum">手机</string>
     <string name="memberRegistIdentityCardNum">身份证号</string>
     <string name="memberRegistVipType">VIP类型</string>
+    <string name="memberRegistType">类型</string>
     <string name="memberRegistBirthday">出生日期</string>
     <string name="memberRegistSalesAssistant">营业员</string>
     <string name="memberRegistEmail">电子邮箱</string>

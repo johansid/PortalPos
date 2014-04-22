@@ -22,11 +22,12 @@ import com.android.volley.toolbox.StringRequest;
 /**
  * Created by Simon on 2014/4/16.
  */
-public class BaseActivity extends Activity {
+public class BaseActivity extends Activity{
 	
 	App mApp;
 	private DbHelper helper;  
     protected SQLiteDatabase db;  
+    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +52,9 @@ public class BaseActivity extends Activity {
         startActivity(intent);
     }
     
-    public void sendRequest(final Map<String, String> params){
-		StringRequest request = new StringRequest(Request.Method.POST,App.getHosturl(),createMyReqSuccessListener(),createMyReqErrorListener()) {
+    public void sendRequest(final Map<String, String> params, Response.Listener<String> successListener){
+    	
+		StringRequest request = new StringRequest(Request.Method.POST,App.getHosturl(),successListener,createMyReqErrorListener()) {
 
 			protected Map<String, String> getParams()
 					throws AuthFailureError {
@@ -68,15 +70,16 @@ public class BaseActivity extends Activity {
 		};
 		RequestManager.getRequestQueue().add(request);
     }
-
-    private Response.Listener<String> createMyReqSuccessListener() {
+    
+/*    private Response.Listener<String> createMyReqSuccessListener(final int btnID) {
 		return new Response.Listener<String>() {
 			@Override
 			public void onResponse(String response) {
-				Log.d("zhang.h", response);
+				//Log.d("zhang.h", response);
+				returnResponse(response,btnID);
 			}
 		};
-	}
+	}*/
 
 	private Response.ErrorListener createMyReqErrorListener() {
 		return new Response.ErrorListener() {
