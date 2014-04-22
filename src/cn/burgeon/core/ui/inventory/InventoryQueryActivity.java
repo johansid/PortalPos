@@ -95,7 +95,6 @@ public class InventoryQueryActivity extends BaseActivity {
 					transactions.put("params", paramsInTransactions);
 					
 					params.put("transactions", new JSONArray().put(transactions).toString());
-					
 					sendRequest(params,new Response.Listener<String>() {
 						@Override
 						public void onResponse(String response) {

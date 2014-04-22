@@ -3,7 +3,7 @@ package cn.burgeon.core.adapter;
 import java.util.List;
 
 import cn.burgeon.core.R;
-import cn.burgeon.core.bean.Order;
+import cn.burgeon.core.bean.Member;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -14,10 +14,10 @@ import android.widget.TextView;
 
 public class MemberListAdapter extends BaseAdapter {
 
-	private List<Order> list;
+	private List<Member> list;
 	private Context context;
 
-	public MemberListAdapter(List<Order> list, Context context) {
+	public MemberListAdapter(List<Member> list, Context context) {
 		super();
 		this.list = list;
 		this.context = context;
@@ -59,13 +59,13 @@ public class MemberListAdapter extends BaseAdapter {
 			holder = (ViewHolder) convertView.getTag();
 		}
 		
-		Order order = list.get(position);
-		holder.textView1.setText(order.getOrderDate());
-		holder.textView2.setText(order.getCardNum());
-		holder.textView3.setText(order.getKuanHao());
-		holder.textView4.setText(order.getKuanHao());
-		holder.textView5.setText(order.getKuanHao());
-		holder.textView6.setText(order.getSaleAsistant());
+		Member member = list.get(position);
+		holder.textView1.setText(member.getCardNum());
+		holder.textView2.setText(member.getName());
+		holder.textView3.setText(member.getType());
+		holder.textView4.setText(member.getSex());
+		holder.textView5.setText(member.getBirthday());
+		holder.textView6.setText("未上传");
 		
 		int[] colors = { Color.WHITE, Color.rgb(219, 238, 244) };//RGB颜色  
 		  

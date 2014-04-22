@@ -54,6 +54,7 @@
         <activity android:name="cn.burgeon.core.ui.inventory.InventoryNearActivity" />
         <activity android:name="cn.burgeon.core.ui.member.MemberManagerActivity" />
         <activity android:name="cn.burgeon.core.ui.member.MemberRegistActivity"/>
+        <activity android:name="cn.burgeon.core.ui.member.MemberListActivity"/>
         <activity android:name="cn.burgeon.core.ui.check.CheckManagerActivity" />
         <activity android:name="cn.burgeon.core.ui.check.CheckScanActivity" />
         <activity android:name="cn.burgeon.core.ui.check.CheckDocManagerActivity" />

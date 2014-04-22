@@ -1,5 +1,6 @@
 package cn.burgeon.core.ui.member;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,15 +9,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.android.volley.Response;
-
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ListView;
 import cn.burgeon.core.R;
 import cn.burgeon.core.adapter.MemberListAdapter;
-import cn.burgeon.core.bean.Order;
+import cn.burgeon.core.bean.Member;
 import cn.burgeon.core.ui.BaseActivity;
+
+import com.android.volley.Response;
 
 public class MemberListActivity extends BaseActivity {
 	
@@ -35,16 +36,12 @@ public class MemberListActivity extends BaseActivity {
 
 	private void init() {
 		mListView = (ListView) findViewById(R.id.memberLV);
-		mAdapter = new MemberListAdapter(getData(), this);
-		mListView.setAdapter(mAdapter);
+		mAdapter = new MemberListAdapter(postRequest(), this);
+		
 	}
 
-	private List<Order> getData() {
-		postRequest();
-		return null;
-	}
-
-	private void postRequest() {
+	private List<Member> postRequest() {
+		final List<Member> data = new ArrayList<Member>();
 		Map<String,String> params = new HashMap<String, String>();
 		JSONArray array;
 		JSONObject transactions;
@@ -57,23 +54,44 @@ public class MemberListActivity extends BaseActivity {
 			//第一个params
 			JSONObject paramsInTransactions = new JSONObject();
 			paramsInTransactions.put("table", 12899);
-			paramsInTransactions.put("columns", new JSONArray().put("cardno").put("vipname"));
-			transactions.put("params", paramsInTransactions);
-			
+			paramsInTransactions.put("columns", new JSONArray().put("cardno").put("vipname").put("sex").put("birthday").put("C_VIPTYPE_ID;name"));
 			//在params中的params
-			//JSONObject paramsInTransactions = new JSONObject();
-			//paramsInTransactions.put("table", 12899);
-			//paramsInTransactions.put("columns", new JSONArray().put("cardno").put("vipname"));
-	
+			paramsInTransactions.put("params", new JSONObject().put("column", "C_STORE_ID").put("condition", 3865));
+			transactions.put("params", paramsInTransactions);
 			array.put(transactions);
 			params.put("transactions", array.toString());
 			sendRequest(params,new Response.Listener<String>() {
 				@Override
 				public void onResponse(String response) {
-					//Log.d("zhang.h", response);
-					
+					Log.d("zhang.h", response);
+					parseResult(response,data);
+					mListView.setAdapter(mAdapter);
 				}
 			});
 		} catch (JSONException e) {}
+		return data;
+	}
+	
+	private void parseResult(String result,List<Member> data){
+		try {
+			JSONArray array = new JSONArray(result);
+			JSONObject obj = array.getJSONObject(0);
+			JSONArray rows = obj.getJSONArray("rows");
+			Member member = null;
+			for(int i = 0; i < rows.length(); i++){
+				String row = rows.get(i).toString();
+				String[] rowArr = row.split(",");
+				
+				member = new Member();
+				member.setCardNum(rowArr[0]);
+				member.setName(rowArr[1]);
+				member.setSex(rowArr[2]);
+				member.setBirthday(rowArr[3]);
+				member.setType(rowArr[4]);
+				data.add(member);
+			}
+		} catch (JSONException e) {
+			Log.d("MemberListActivity", e.toString());
+		}
 	}
 }

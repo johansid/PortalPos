@@ -3,19 +3,19 @@ package cn.burgeon.core.bean;
 public class Member {
 	private int id;
 	private String name;
-	private char sex;
+	private String sex;
 	private String cardNum;
 	private String iDentityCardNum;
 	private String phoneNum;
-	private int type;
+	private String type;
 	private String birthday;
 	private String email;
 	private String createCardDate;
 	public Member() {
 		super();
 	}
-	public Member(String name, char sex, String cardNum,
-			String iDentityCardNum, String phoneNum, int type, String birthday,
+	public Member(String name, String sex, String cardNum,
+			String iDentityCardNum, String phoneNum, String type, String birthday,
 			String email, String createCardDate) {
 		super();
 		this.name = name;
@@ -40,10 +40,10 @@ public class Member {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public char getSex() {
+	public String getSex() {
 		return sex;
 	}
-	public void setSex(char sex) {
+	public void setSex(String sex) {
 		this.sex = sex;
 	}
 	public String getCardNum() {
@@ -64,10 +64,10 @@ public class Member {
 	public void setPhoneNum(String phoneNum) {
 		this.phoneNum = phoneNum;
 	}
-	public int getType() {
+	public String getType() {
 		return type;
 	}
-	public void setType(int type) {
+	public void setType(String type) {
 		this.type = type;
 	}
 	public String getBirthday() {

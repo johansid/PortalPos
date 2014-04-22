@@ -55,6 +55,20 @@ public class LoginActivity extends BaseActivity {
 			returnResponse(response,btnID);
 		}
 	};*/
+	
+	private void parseResult(String result){
+		try {
+			JSONArray array = new JSONArray(result);
+			JSONObject obj = array.getJSONObject(0);
+			JSONArray rows = obj.getJSONArray("rows");
+			for(int i = 0; i < rows.length(); i++){
+				JSONObject row = rows.getJSONObject(i);
+				Log.d("MemberListActivity", row.getString(""));
+			}
+		} catch (JSONException e) {
+			Log.d("MemberListActivity", e.toString());
+		}
+	}
 
 	class ClickEvent implements View.OnClickListener {
 
@@ -70,19 +84,21 @@ public class LoginActivity extends BaseActivity {
 					transactions = new JSONObject();
 					transactions.put("id", 112);
 					transactions.put("command", "Query");
-					
+					//第一个params
 					JSONObject paramsInTransactions = new JSONObject();
 					paramsInTransactions.put("table", 12899);
 					paramsInTransactions.put("columns", new JSONArray().put("cardno").put("vipname"));
+					//在params中的params
+					paramsInTransactions.put("params", new JSONObject().put("column", "C_STORE_ID").put("condition", 3865));
 					transactions.put("params", paramsInTransactions);
-					
 					array.put(transactions);
 					params.put("transactions", array.toString());
+					Log.d("zhang.h", array.toString());
 					sendRequest(params, new Response.Listener<String>() {
 						@Override
 						public void onResponse(String response) {
-							//Log.d("zhang.h", response);
-							
+							Log.d("zhang.h", response);
+							parseResult(response);
 						}
 					});
 				} catch (JSONException e) {}
