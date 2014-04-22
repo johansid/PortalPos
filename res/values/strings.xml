@@ -21,6 +21,12 @@
     <string name="checkQuery">盘点查询</string>
     <string name="allotOutIn">调拨出入库</string>
     <string name="allotIn">调拨入库</string>
+    <string name="docno">单据编号</string>
+    <string name="upload_state">上传状态</string>
+    <string name="docstate">单据状态</string>
+    <string name="billdate">单据日期</string>
+    <string name="c_orig_id">发货店仓</string>
+    <string name="tot_qtyout">出库数量</string>
     <string name="allotInQuery">调入查询</string>
     <string name="allotInDetail">调拨入库明细</string>
     <string name="allotOut">调拨出库</string>
