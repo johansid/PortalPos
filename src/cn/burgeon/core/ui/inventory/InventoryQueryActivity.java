@@ -9,12 +9,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.android.volley.Response;
+
 import cn.burgeon.core.R;
 import cn.burgeon.core.adapter.InventoryQueryAdapter;
 import cn.burgeon.core.bean.InventorySelf;
 import cn.burgeon.core.ui.BaseActivity;
 import cn.burgeon.core.ui.SystemActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -93,7 +96,13 @@ public class InventoryQueryActivity extends BaseActivity {
 					
 					params.put("transactions", new JSONArray().put(transactions).toString());
 					
-					sendRequest(params);
+					sendRequest(params,new Response.Listener<String>() {
+						@Override
+						public void onResponse(String response) {
+							Log.d("_____________我草___________", response);
+							
+						}
+					});
 				} catch (JSONException e) {}
 				break;
 			case R.id.loginBtn:
