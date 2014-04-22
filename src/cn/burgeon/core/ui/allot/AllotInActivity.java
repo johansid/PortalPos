@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListView;
 
 import com.android.volley.Response;
 
@@ -18,13 +19,15 @@ import java.util.List;
 import java.util.Map;
 
 import cn.burgeon.core.R;
+import cn.burgeon.core.adapter.AllotInLVAdapter;
 import cn.burgeon.core.bean.AllotIn;
 import cn.burgeon.core.ui.BaseActivity;
 
 public class AllotInActivity extends BaseActivity {
 
-    private ArrayList<AllotIn> lists;
     private Button detailBtn;
+    private ListView allotinLV;
+    private ArrayList<AllotIn> lists;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +46,10 @@ public class AllotInActivity extends BaseActivity {
     private void init() {
         detailBtn = (Button) findViewById(R.id.detailBtn);
         detailBtn.setOnClickListener(new ClickEvent());
+
+        allotinLV = (ListView) findViewById(R.id.allotinLV);
+        AllotInLVAdapter mAdapter = new AllotInLVAdapter(this, lists, R.layout.allot_in_item);
+        allotinLV.setAdapter(mAdapter);
     }
 
     private void initLVData() {
