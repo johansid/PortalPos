@@ -22,8 +22,17 @@ public class Constant {
     public static final int[] replenishmentOrderImgValues = {R.drawable.replenishment_order, R.drawable.replenishment_order_upload, R.drawable.replenishment_order_query};
 
     public static final String[] salesTopMenuTextValues = {"日常销售", "销售报表", "销售上传"};
+    public static final int[] salesTopMenuImgValues = {R.drawable.sales_daily, R.drawable.sales_report, R.drawable.sales_upload};
+
     public static final String[] inventoryManagerTextValues = {"库存查询", "刷新库存", "临店库存"};
-    public static final String[] systemManagerTextValues = {"系统配置", "网络测试", "系统升级", "资料下载", "数据清理"};
+    public static final int[] inventoryManagerImgValues = {R.drawable.inventory_query, R.drawable.inventory_refresh, R.drawable.inventory_near};
+
     public static final String[] salesReportTextValues = {"单据查询", "销售日报", "销售月报", "商品汇总", "业绩查询"};
+    public static final int[] salesReportImgValues = {R.drawable.sales_report_doc_query, R.drawable.sales_report_daily, R.drawable.sales_report_monthly,
+            R.drawable.sales_report_summer_total, R.drawable.sales_report_summer_query};
+
     public static final String[] memberManagerTextValues = {"会员注册", "会员查询", "会员上传", "会员下载"};
+    public static final int[] memberManagerImgValues = {R.drawable.member_regist, R.drawable.member_query, R.drawable.member_upload, R.drawable.member_down};
+
+    public static final String[] systemManagerTextValues = {"系统配置", "网络测试", "系统升级", "资料下载", "数据清理"};
 }
