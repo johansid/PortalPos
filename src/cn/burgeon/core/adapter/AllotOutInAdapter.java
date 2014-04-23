@@ -13,10 +13,10 @@ import cn.burgeon.core.R;
 /**
  * Created by Simon on 2014/4/16.
  */
-public class AllotOutInAdapter extends MainBaseAdapter {
+public class AllotOutInAdapter extends JGGBaseAdapter {
 
     public AllotOutInAdapter(Context c) {
-        super(c, Constant.allotOutInTextValues, R.layout.grid_item);
+        super(c, Constant.allotOutInTextValues, Constant.allotOutInImgValues, R.layout.grid_item);
     }
 
 }

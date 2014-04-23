@@ -1,14 +1,14 @@
 package cn.burgeon.core;
 
-import java.security.MessageDigest;
-import java.text.SimpleDateFormat;
-
 import android.app.Application;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap.CompressFormat;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
+
+import java.security.MessageDigest;
+import java.text.SimpleDateFormat;
 
 import cn.burgeon.core.ic.ImageCacheManager;
 import cn.burgeon.core.ic.ImageCacheManager.CacheType;

@@ -6,6 +6,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.Toast;
+
 import cn.burgeon.core.Constant;
 import cn.burgeon.core.R;
 import cn.burgeon.core.adapter.AllotManagerAdapter;
@@ -40,13 +41,13 @@ public class SystemActivity extends BaseActivity {
                 String itemValue = (String) parent.getItemAtPosition(position);
                 if (itemValue != null && Constant.sysTextValues[2].equals(itemValue)) {
                     forwardActivity(AllotManagerActivity.class);
-                }else if (itemValue != null && Constant.sysTextValues[0].equals(itemValue)) {
+                } else if (itemValue != null && Constant.sysTextValues[0].equals(itemValue)) {
                     forwardActivity(SalesManagerActivity.class);
-                }else if (itemValue != null && Constant.sysTextValues[4].equals(itemValue)) {
+                } else if (itemValue != null && Constant.sysTextValues[4].equals(itemValue)) {
                     forwardActivity(InventoryManagerActivity.class);
-                }else if (itemValue != null && Constant.sysTextValues[1].equals(itemValue)) {
+                } else if (itemValue != null && Constant.sysTextValues[1].equals(itemValue)) {
                     forwardActivity(MemberManagerActivity.class);
-                }else if (itemValue != null && Constant.sysTextValues[3].equals(itemValue)) {
+                } else if (itemValue != null && Constant.sysTextValues[3].equals(itemValue)) {
                     forwardActivity(CheckManagerActivity.class);
                 }
             }

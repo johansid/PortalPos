@@ -5,13 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/gridLL"
-    android:background="@drawable/corners_bg"
     android:gravity="center">
+
+    <ImageView
+        android:id="@+id/gridIV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
     <TextView
         android:id="@+id/gridTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="30dp"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 </LinearLayout>

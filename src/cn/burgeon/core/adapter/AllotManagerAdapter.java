@@ -8,10 +8,10 @@ import cn.burgeon.core.R;
 /**
  * Created by Simon on 2014/4/16.
  */
-public class AllotManagerAdapter extends MainBaseAdapter {
+public class AllotManagerAdapter extends JGGBaseAdapter {
 
     public AllotManagerAdapter(Context c) {
-        super(c, Constant.allotManagerTextValues, R.layout.grid_item);
+        super(c, Constant.allotManagerTextValues, Constant.allotManagerImgValues, R.layout.grid_item);
     }
 
 }

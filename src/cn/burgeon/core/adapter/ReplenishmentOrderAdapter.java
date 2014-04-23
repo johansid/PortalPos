@@ -13,10 +13,10 @@ import cn.burgeon.core.R;
 /**
  * Created by Simon on 2014/4/16.
  */
-public class ReplenishmentOrderAdapter extends MainBaseAdapter {
+public class ReplenishmentOrderAdapter extends JGGBaseAdapter {
 
     public ReplenishmentOrderAdapter(Context c) {
-        super(c, Constant.replenishmentOrderTextValues, R.layout.replenishment_order_grid_item);
+        super(c, Constant.replenishmentOrderTextValues, Constant.replenishmentOrderImgValues, R.layout.grid_item);
     }
 
 }
