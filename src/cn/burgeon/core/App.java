@@ -13,6 +13,7 @@ import java.text.SimpleDateFormat;
 import cn.burgeon.core.ic.ImageCacheManager;
 import cn.burgeon.core.ic.ImageCacheManager.CacheType;
 import cn.burgeon.core.net.RequestManager;
+import cn.burgeon.core.utils.PreferenceUtils;
 
 public class App extends Application {
     private SharedPreferences mPreferences;
@@ -25,6 +26,12 @@ public class App extends Application {
     private static final String SIPPSWD = "pbdev";
     private SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
     private String SIPPSWDMD5;
+
+    private static PreferenceUtils preferenceUtils;
+
+    public static PreferenceUtils getPreferenceUtils() {
+        return preferenceUtils;
+    }
 
     private static DisplayMetrics DM;
 
@@ -49,6 +56,7 @@ public class App extends Application {
         createImageCache();
         SIPPSWDMD5 = MD5(SIPPSWD);
 
+        preferenceUtils = new PreferenceUtils(getApplicationContext());
         DM = getResources().getDisplayMetrics();
     }
 
