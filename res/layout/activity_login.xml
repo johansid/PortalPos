@@ -1,121 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="fill_parent"
+    <!-- 登陆界面的登录按钮 -->
+    <ImageButton
+        android:id="@+id/configBtn"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:id="@+id/linearLayout">
+        android:layout_width="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="35dp"
+        android:src="@drawable/login_config_btn"
+        android:background="#00000000" />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal">
+    <ImageButton
+        android:id="@+id/loginBtn"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="@string/login"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        android:src="@drawable/login_login_btn"
+        android:background="#00000000" />
+    <!-- 登陆界面的登录按钮 -->
 
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+    <!-- 登录输入框 -->
+    <ImageView
+        android:id="@+id/pswIV"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_above="@id/loginBtn"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="80dp"
+        android:src="@drawable/login_psw_icon" />
 
-                <TextView
-                    android:id="@+id/storeTV"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="店    仓"
-                    android:layout_centerVertical="true" />
+    <EditText
+        android:id="@+id/pswET"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_above="@id/loginBtn"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="70dp"
+        android:layout_marginBottom="80dp"
+        android:inputType="textPassword"
+        android:maxLength="20"
+        android:hint="@string/input_psw_hint" />
 
-                <Spinner
-                    android:id="@+id/storeSpin"
-                    android:layout_width="@dimen/login_edit_text"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/storeTV"/>
-            </RelativeLayout>
-        </LinearLayout>
+    <ImageView
+        android:id="@+id/userIV"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_above="@id/pswIV"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="35dp"
+        android:src="@drawable/login_user_icon" />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="15dp">
+    <EditText
+        android:id="@+id/userET"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_above="@id/pswET"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="30dp"
+        android:layout_marginLeft="70dp"
+        android:layout_marginRight="10dp"
+        android:hint="@string/input_user_name_hint" />
 
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+    <ImageView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="@string/store"
+        android:layout_above="@id/userIV"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="35dp"
+        android:src="@drawable/login_store_icon" />
 
-                <TextView
-                    android:id="@+id/nameTV"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="@string/name"
-                    android:layout_centerVertical="true" />
-
-                <EditText
-                    android:layout_width="@dimen/login_edit_text"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/nameTV"
-                    android:layout_centerVertical="true" />
-            </RelativeLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="15dp">
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/pswTV"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="密    码"
-                    android:layout_centerVertical="true" />
-
-                <EditText
-                    android:layout_width="@dimen/login_edit_text"
-                    android:layout_height="wrap_content"
-                    android:inputType="textPassword"
-                    android:layout_toRightOf="@id/pswTV"
-                    android:layout_centerVertical="true" />
-            </RelativeLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="15dp">
-
-            <Button
-                android:id="@+id/configBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/config" />
-
-            <Button
-                android:id="@+id/loginBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/login"
-                android:layout_marginLeft="5dp" />
-
-            <Button
-                android:id="@+id/logoutBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/logout"
-                android:layout_marginLeft="5dp" />
-
-        </LinearLayout>
-
-    </LinearLayout>
+    <Spinner
+        android:id="@+id/storeSpin"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_above="@id/userET"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="30dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="70dp" />
+    <!-- 登录输入框 -->
 
 </RelativeLayout>

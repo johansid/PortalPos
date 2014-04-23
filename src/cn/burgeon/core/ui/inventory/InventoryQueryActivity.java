@@ -107,8 +107,6 @@ public class InventoryQueryActivity extends BaseActivity {
 			case R.id.loginBtn:
 				forwardActivity(SystemActivity.class);
 				break;
-			case R.id.logoutBtn:
-				break;
 			}
 		}
 	}	

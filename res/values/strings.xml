@@ -4,6 +4,8 @@
     <string name="app_name">伯俊POS</string>
     <string name="store">店仓</string>
     <string name="name">用户名</string>
+    <string name="input_psw_hint">请输入密码</string>
+    <string name="input_user_name_hint">请输入用户名</string>
     <string name="password">密码</string>
     <string name="config">配置</string>
     <string name="login">登录</string>
