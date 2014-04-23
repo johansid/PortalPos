@@ -159,6 +159,7 @@ public class HttpClientStack implements HttpStack {
      */
     protected void onPrepareRequest(HttpUriRequest request) throws IOException {
         // Nothing.
+
     }
 
     /**

@@ -77,6 +77,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
             array.put(transactions);
             params.put("transactions", array.toString());
+
             sendRequest(params, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {

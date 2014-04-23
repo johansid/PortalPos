@@ -6,12 +6,15 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Window;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+
+import org.apache.http.client.methods.HttpUriRequest;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -20,6 +23,7 @@ import java.util.Map;
 import cn.burgeon.core.App;
 import cn.burgeon.core.db.DbHelper;
 import cn.burgeon.core.net.RequestManager;
+import cn.burgeon.core.net.SimonHttpStack;
 
 /**
  * Created by Simon on 2014/4/16.
@@ -56,6 +60,14 @@ public class BaseActivity extends Activity {
     }
 
     public void sendRequest(final Map<String, String> params, Response.Listener<String> successListener) {
+
+        App.getHttpStack().setOnStartListener(new SimonHttpStack.OnStartListener() {
+            @Override
+            public void onStart(HttpUriRequest request) {
+                // show loading
+                // Toast.makeText(getApplicationContext(), "请求准备", Toast.LENGTH_LONG).show();
+            }
+        });
 
         StringRequest request = new StringRequest(Request.Method.POST, App.getHosturl(), successListener, createMyReqErrorListener()) {
             protected Map<String, String> getParams() throws AuthFailureError {
