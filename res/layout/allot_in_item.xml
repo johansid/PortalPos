@@ -10,6 +10,7 @@
         android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:layout_gravity="center"
         android:text="@string/docno"
         android:textSize="15sp" />
 
@@ -23,6 +24,7 @@
         android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:layout_gravity="center"
         android:text="已"
         android:textSize="15sp" />
 
@@ -36,6 +38,7 @@
         android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:layout_gravity="center"
         android:text="是"
         android:textSize="15sp" />
 
@@ -49,6 +52,7 @@
         android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:layout_gravity="center"
         android:text="@string/billdate"
         android:textSize="15sp" />
 
@@ -62,6 +66,7 @@
         android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:layout_gravity="center"
         android:text="@string/c_orig_id"
         android:textSize="15sp" />
 
@@ -75,6 +80,7 @@
         android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:layout_gravity="center"
         android:text="@string/tot_qtyout"
         android:textSize="15sp" />
 </LinearLayout>

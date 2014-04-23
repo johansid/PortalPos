@@ -1,33 +1,37 @@
 package cn.burgeon.core.ui.allot;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.HorizontalScrollView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.android.volley.Response;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import cn.burgeon.core.R;
 import cn.burgeon.core.adapter.AllotInLVAdapter;
 import cn.burgeon.core.bean.AllotIn;
 import cn.burgeon.core.ui.BaseActivity;
+import cn.burgeon.core.utils.ScreenUtils;
 
 public class AllotInActivity extends BaseActivity {
 
     private Button detailBtn;
     private ListView allotinLV;
-    private ArrayList<AllotIn> lists;
+    private TextView recodeNumTV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,12 +48,18 @@ public class AllotInActivity extends BaseActivity {
 
 
     private void init() {
-        detailBtn = (Button) findViewById(R.id.detailBtn);
-        detailBtn.setOnClickListener(new ClickEvent());
+        TextView currTimeTV = (TextView) findViewById(R.id.currTimeTV);
+        currTimeTV.setText(getCurrDate());
+
+        HorizontalScrollView hsv = (HorizontalScrollView) findViewById(R.id.hsv);
+        ViewGroup.LayoutParams params = hsv.getLayoutParams();
+        params.height = (int) ScreenUtils.getAllotInLVHeight(this);
 
         allotinLV = (ListView) findViewById(R.id.allotinLV);
-        AllotInLVAdapter mAdapter = new AllotInLVAdapter(this, lists, R.layout.allot_in_item);
-        allotinLV.setAdapter(mAdapter);
+        recodeNumTV = (TextView) findViewById(R.id.recodeNumTV);
+
+        detailBtn = (Button) findViewById(R.id.detailBtn);
+        detailBtn.setOnClickListener(new ClickEvent());
     }
 
     private void initLVData() {
@@ -73,13 +83,16 @@ public class AllotInActivity extends BaseActivity {
                 @Override
                 public void onResponse(String response) {
                     try {
-                        resJAToList(response);
+                        ArrayList<AllotIn> lists = resJAToList(response);
+                        AllotInLVAdapter mAdapter = new AllotInLVAdapter(AllotInActivity.this, lists, R.layout.allot_in_item);
+                        allotinLV.setAdapter(mAdapter);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
             });
         } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 
@@ -89,16 +102,18 @@ public class AllotInActivity extends BaseActivity {
         JSONArray resJA = new JSONArray(response);
         JSONObject resJO = resJA.getJSONObject(0);
         JSONArray rowsJA = resJO.getJSONArray("rows");
-        for (int i = 0; i < rowsJA.length(); i++) {
+        int len = rowsJA.length();
+        recodeNumTV.setText(len + "条记录");
+        for (int i = 0; i < len; i++) {
             // ["TF0912140000005", 20091214, 3909, 11]
             String currRow = rowsJA.get(i).toString();
             String[] currRows = currRow.split(",");
 
             AllotIn allotIn = new AllotIn();
-            allotIn.setDOCNO(currRows[0]);
+            allotIn.setDOCNO(currRows[0].substring(2, currRows[0].length() - 1));
             allotIn.setBILLDATE(currRows[1]);
             allotIn.setC_ORIG_ID(currRows[2]);
-            allotIn.setTOT_QTYOUT(currRows[3]);
+            allotIn.setTOT_QTYOUT(currRows[3].substring(0, currRows[3].length() - 1));
             lists.add(allotIn);
         }
         return lists;
