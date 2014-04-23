@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">PortalPos</string>
+    <string name="app_name">伯俊POS</string>
     <string name="store">店仓</string>
     <string name="name">用户名</string>
     <string name="password">密码</string>
