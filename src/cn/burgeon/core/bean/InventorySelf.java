@@ -3,14 +3,14 @@ package cn.burgeon.core.bean;
 public class InventorySelf {
 	
 	private String styleNumber;
-	private int styleCount;
+	private String styleCount;
 	private String styleName;
 	
 	public InventorySelf() {
 		super();
 	}
 	
-	public InventorySelf(String styleNumber, int styleCount, String styleName) {
+	public InventorySelf(String styleNumber, String styleCount, String styleName) {
 		super();
 		this.styleNumber = styleNumber;
 		this.styleCount = styleCount;
@@ -25,11 +25,11 @@ public class InventorySelf {
 		this.styleNumber = styleNumber;
 	}
 	
-	public int getStyleCount() {
+	public String getStyleCount() {
 		return styleCount;
 	}
 	
-	public void setStyleCount(int styleCount) {
+	public void setStyleCount(String styleCount) {
 		this.styleCount = styleCount;
 	}
 	

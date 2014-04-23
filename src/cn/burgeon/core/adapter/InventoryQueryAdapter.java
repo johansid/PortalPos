@@ -58,7 +58,7 @@ public class InventoryQueryAdapter extends BaseAdapter {
 		
 		InventorySelf inventorySelf = list.get(position);
 		holder.textView1.setText(inventorySelf.getStyleNumber());
-		holder.textView2.setText("Query: " + inventorySelf.getStyleCount());
+		holder.textView2.setText(inventorySelf.getStyleCount());
 		holder.textView3.setText(inventorySelf.getStyleName());
 		
 		int[] colors = { Color.WHITE, Color.rgb(219, 238, 244) };//RGB颜色  
