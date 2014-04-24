@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Window;
+import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -19,6 +20,7 @@ import java.util.Date;
 import java.util.Map;
 
 import cn.burgeon.core.App;
+import cn.burgeon.core.bean.IntentData;
 import cn.burgeon.core.db.DbHelper;
 import cn.burgeon.core.net.RequestManager;
 import cn.burgeon.core.net.SimonHttpStack;
@@ -28,6 +30,7 @@ import cn.burgeon.core.widget.CustomProgressDialog;
  * Created by Simon on 2014/4/16.
  */
 public class BaseActivity extends Activity {
+    public final static String PAR_KEY = "ParcelableKey";
 
     App mApp;
     private DbHelper helper;
@@ -57,6 +60,19 @@ public class BaseActivity extends Activity {
     public void forwardActivity(Class<?> cls) {
         Intent intent = new Intent();
         intent.setClass(this, cls);
+        startActivity(intent);
+    }
+
+    // 跳转(可传递对象数据)
+    public void forwardActivity(Class<?> cls, IntentData intentData) {
+        Intent intent = new Intent();
+        intent.setClass(this, cls);
+
+        // 传递对象数据
+        Bundle mBundle = new Bundle();
+        mBundle.putParcelable(PAR_KEY, intentData);
+        intent.putExtras(mBundle);
+
         startActivity(intent);
     }
 
@@ -118,5 +134,10 @@ public class BaseActivity extends Activity {
             progressDialog.dismiss();
             progressDialog = null;
         }
+    }
+
+    // 初始化门店和用户信息
+    public void initData(IntentData iData, TextView tv) {
+        tv.setText("门店：" + iData.getStore() + "+" + iData.getUser());
     }
 }

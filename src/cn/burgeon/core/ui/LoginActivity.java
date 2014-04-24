@@ -4,8 +4,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.android.volley.Response;
 
@@ -18,11 +20,13 @@ import java.util.Map;
 
 import cn.burgeon.core.App;
 import cn.burgeon.core.R;
+import cn.burgeon.core.bean.IntentData;
 import cn.burgeon.core.utils.PreferenceUtils;
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
 
     private Spinner storeSpinner;
+    private EditText userET, pswET;
     private ImageView configBtn, loginBtn;
 
     @Override
@@ -53,6 +57,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
             }
         });
+
+        userET = (EditText) findViewById(R.id.userET);
+        pswET = (EditText) findViewById(R.id.pswET);
 
         configBtn = (ImageView) findViewById(R.id.configBtn);
         configBtn.setOnClickListener(this);
@@ -106,6 +113,72 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         }
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.configBtn:
+                break;
+            case R.id.loginBtn:
+                try {
+                    Map<String, String> params = new HashMap<String, String>();
+                    JSONArray array = new JSONArray();
+
+                    JSONObject transactions = new JSONObject();
+                    transactions.put("id", 112);
+                    transactions.put("command", "Query");
+
+                    JSONObject paramsTable = new JSONObject();
+                    paramsTable.put("table", "14630");
+                    paramsTable.put("columns", new JSONArray().put("name").put("C_STORE_ID"));
+                    JSONObject paramsCombine = new JSONObject();
+                    paramsCombine.put("combine", "and");
+                    JSONObject expr1JO = new JSONObject();
+                    expr1JO.put("column", "name");
+                    expr1JO.put("condition", userET.getText());
+                    paramsCombine.put("expr1", expr1JO);
+                    JSONObject expr2JO = new JSONObject();
+                    expr2JO.put("column", "C_STORE_ID");
+                    expr2JO.put("condition", "3890");
+                    paramsCombine.put("expr2", expr2JO);
+                    paramsTable.put("params", paramsCombine);
+
+                    transactions.put("params", paramsTable);
+                    array.put(transactions);
+                    params.put("transactions", array.toString());
+                    sendRequest(params, new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            // 取消进度条
+                            stopProgressDialog();
+
+                            try {
+                                JSONArray resJA = new JSONArray(response);
+                                JSONObject resJO = resJA.getJSONObject(0);
+                                JSONArray rowsJA = resJO.getJSONArray("rows");
+                                int len = rowsJA.length();
+                                // 有效用户
+                                if (len > 0) {
+                                    // 跳转并传递数据
+                                    IntentData intentData = new IntentData();
+                                    intentData.setStore(storeSpinner.getSelectedItem().toString());
+                                    intentData.setUser(userET.getText().toString());
+                                    forwardActivity(SystemActivity.class, intentData);
+                                } else {
+                                    // 提示用户不存在
+                                    Toast.makeText(LoginActivity.this, "用户不存在", Toast.LENGTH_LONG).show();
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                break;
+        }
+    }
+
     private String[] resJAToList(String response) throws JSONException {
         String[] stores = null;
 
@@ -121,16 +194,4 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         }
         return stores;
     }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.configBtn:
-                break;
-            case R.id.loginBtn:
-                forwardActivity(SystemActivity.class);
-                break;
-        }
-    }
-
 }

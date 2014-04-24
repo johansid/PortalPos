@@ -3,14 +3,13 @@ package cn.burgeon.core.ui;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.GridView;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import cn.burgeon.core.Constant;
 import cn.burgeon.core.R;
-import cn.burgeon.core.adapter.AllotManagerAdapter;
 import cn.burgeon.core.adapter.SystemAdapter;
+import cn.burgeon.core.bean.IntentData;
 import cn.burgeon.core.ui.allot.AllotManagerActivity;
 import cn.burgeon.core.ui.check.CheckManagerActivity;
 import cn.burgeon.core.ui.inventory.InventoryManagerActivity;
@@ -21,6 +20,7 @@ public class SystemActivity extends BaseActivity {
 
     private GridView sysGV;
     private SystemAdapter mAdapter;
+    private TextView storeTV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +29,9 @@ public class SystemActivity extends BaseActivity {
         setContentView(R.layout.activity_system);
 
         init();
+
+        IntentData iData = (IntentData) getIntent().getParcelableExtra(PAR_KEY);
+        initData(iData, storeTV);
     }
 
     private void init() {
@@ -52,5 +55,7 @@ public class SystemActivity extends BaseActivity {
                 }
             }
         });
+
+        storeTV = (TextView) findViewById(R.id.storeTV);
     }
 }

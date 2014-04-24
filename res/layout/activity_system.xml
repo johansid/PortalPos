@@ -30,6 +30,7 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/storeTV"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/corners_bg"
