@@ -22,6 +22,8 @@ import cn.burgeon.core.App;
 import cn.burgeon.core.R;
 import cn.burgeon.core.bean.IntentData;
 import cn.burgeon.core.utils.PreferenceUtils;
+import cn.burgeon.core.widget.UndoBarController;
+import cn.burgeon.core.widget.UndoBarStyle;
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
 
@@ -165,7 +167,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                                     forwardActivity(SystemActivity.class, intentData);
                                 } else {
                                     // 提示用户不存在
-                                    Toast.makeText(LoginActivity.this, "用户不存在", Toast.LENGTH_LONG).show();
+                                    // Toast.makeText(LoginActivity.this, "用户不存在", Toast.LENGTH_LONG).show();
+                                    UndoBarStyle MESSAGESTYLE = new UndoBarStyle(-1, -1, 3000);
+                                    UndoBarController.show(LoginActivity.this, "用户不存在", null, MESSAGESTYLE);
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();

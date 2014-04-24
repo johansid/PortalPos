@@ -23,4 +23,9 @@
 
     <!-- padding补差高度(根据实际情况而定)，用于计算列表高度 -->
     <dimen name="padding_reserve">25dp</dimen>
+
+    <!-- Undobar -->
+    <dimen name="marginLeft">8dp</dimen>
+    <dimen name="marginRight">8dp</dimen>
+    <dimen name="marginBottom">16dp</dimen>
 </resources>
