@@ -16,6 +16,7 @@ import cn.burgeon.core.adapter.InventoryQueryAdapter;
 import cn.burgeon.core.bean.InventorySelf;
 import cn.burgeon.core.ui.BaseActivity;
 import android.os.Bundle;
+import android.text.Editable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -24,6 +25,7 @@ import android.widget.ListView;
 
 public class InventoryQueryActivity extends BaseActivity {
 	
+	private final String TAG = "InventoryQueryActivity";
 	private ListView mListView;
 	private InventoryQueryAdapter mQueryAdapter;
 	private Button buttonAdd;
@@ -70,22 +72,33 @@ public class InventoryQueryActivity extends BaseActivity {
 		public void onClick(View v) {
 			switch (v.getId()) {
 			case R.id.inventoryButtonAdd:
-				startSearch();
+				startSearch("searchAll");
 				break;
 			case R.id.inventoryButtonUpdate:
-				startSearch();
+				startSearch("searchAll");
 				break;					
-			case R.id.inventoryButtonSearch:
-				startSearch();
+			case R.id.inventoryButtonSearch:				;
+				startSearch(getInput());
 				break;
 			case R.id.inventoryButtonDelete:
+				startSearch("searchAll");
 				break;
 			}
 		}
 	}
+
+
+	private String getInput(){
+		return styleNumberEditText.getText().toString();
+	}
 	
 	//响应 查询 按钮
-	private void startSearch(){
+	private void startSearch(String searchWhat){
+		
+		if(searchWhat == null || searchWhat.equals("")){
+			Log.d(TAG,"亲，啥也没输入，查个毛啊");
+			return;
+		}
 		
 		Map<String,String> params = new HashMap<String, String>();
 		
@@ -101,6 +114,15 @@ public class InventoryQueryActivity extends BaseActivity {
 			JSONObject paramsInTransactions = new JSONObject();
 			paramsInTransactions.put("table", 15632);
 			paramsInTransactions.put("columns", new JSONArray().put("M_PRODUCT_ID").put("QTY").put("AD_ORG_ID"));
+			
+			//在params中的params
+			//根据输入的款号构造查询参数
+			if(!searchWhat.equals("searchAll")){
+				Log.d(TAG,"亲，您刚才输入的是："+searchWhat);
+				paramsInTransactions.put("params",
+						new JSONObject().put("column", "M_PRODUCT_ID").put("condition", Integer.parseInt(searchWhat)));
+			}
+			
 			paramsInTransactions.put("count", true);
 			transactions.put("params", paramsInTransactions);
 			
