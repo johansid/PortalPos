@@ -54,6 +54,14 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:background="@drawable/corners_bg">
+                    
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="ID"
+                        android:textSize="15sp" 
+                        android:visibility="gone"/>
 
                     <TextView
                         android:layout_width="80dp"
