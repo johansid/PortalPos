@@ -1,5 +1,12 @@
 package cn.burgeon.core.ui;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -11,22 +18,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
-
-import com.android.volley.Response;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import cn.burgeon.core.App;
 import cn.burgeon.core.R;
 import cn.burgeon.core.bean.IntentData;
 import cn.burgeon.core.utils.PreferenceUtils;
-import cn.burgeon.core.widget.UndoBarController;
-import cn.burgeon.core.widget.UndoBarStyle;
+
+import com.android.volley.Response;
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
 
@@ -124,6 +121,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             case R.id.configBtn:
                 break;
             case R.id.loginBtn:
+            	// 跳转并传递数据
+                IntentData intentData = new IntentData();
+                intentData.setStore(storeSpinner.getSelectedItem().toString());
+                intentData.setUser(userET.getText().toString());
+                forwardActivity(SystemActivity.class, intentData);
+                
+            	/*
                 try {
                     Map<String, String> params = new HashMap<String, String>();
                     JSONArray array = new JSONArray();
@@ -184,6 +188,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                */
                 break;
         }
     }

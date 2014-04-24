@@ -1,14 +1,6 @@
 package cn.burgeon.core.adapter;
 
 import android.content.Context;
-import android.media.Image;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.TextView;
-
 import cn.burgeon.core.Constant;
 import cn.burgeon.core.R;
 
