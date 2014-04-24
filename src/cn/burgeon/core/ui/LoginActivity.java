@@ -1,6 +1,9 @@
 package cn.burgeon.core.ui;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -137,6 +140,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     JSONObject expr1JO = new JSONObject();
                     expr1JO.put("column", "name");
                     expr1JO.put("condition", userET.getText());
+
+
                     paramsCombine.put("expr1", expr1JO);
                     JSONObject expr2JO = new JSONObject();
                     expr2JO.put("column", "C_STORE_ID");
@@ -198,4 +203,38 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         }
         return stores;
     }
+
+    // 定义一个变量，来标识是否退出
+    private static boolean isExit = false;
+
+    Handler mHandler = new Handler() {
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            isExit = false;
+        }
+    };
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            exit();
+            return false;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    private void exit() {
+        if (!isExit) {
+            isExit = true;
+            Toast.makeText(LoginActivity.this, "再按一次退出伯俊POS", Toast.LENGTH_SHORT).show();
+            // 利用handler延迟发送更改状态信息
+            mHandler.sendEmptyMessageDelayed(0, 2000);
+        } else {
+            finish();
+            System.exit(0);
+        }
+    }
+
 }
