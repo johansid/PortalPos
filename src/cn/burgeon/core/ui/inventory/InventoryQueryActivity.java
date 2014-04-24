@@ -13,10 +13,8 @@ import com.android.volley.Response;
 
 import cn.burgeon.core.R;
 import cn.burgeon.core.adapter.InventoryQueryAdapter;
-import cn.burgeon.core.bean.AllotIn;
 import cn.burgeon.core.bean.InventorySelf;
 import cn.burgeon.core.ui.BaseActivity;
-import cn.burgeon.core.ui.SystemActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -103,7 +101,6 @@ public class InventoryQueryActivity extends BaseActivity {
 			JSONObject paramsInTransactions = new JSONObject();
 			paramsInTransactions.put("table", 15632);
 			paramsInTransactions.put("columns", new JSONArray().put("M_PRODUCT_ID").put("QTY").put("AD_ORG_ID"));
-			paramsInTransactions.put("params", new JSONArray().put("condition").put(1212).put("AD_ORG_ID"));
 			paramsInTransactions.put("count", true);
 			transactions.put("params", paramsInTransactions);
 			
@@ -113,6 +110,9 @@ public class InventoryQueryActivity extends BaseActivity {
 				@Override
 				public void onResponse(String response) {
 					Log.d("_____________我草___________", response);
+                    // 取消进度条
+                    stopProgressDialog();
+                    
                     try {
                     	bindList(resJAToList(response));
                     } catch (JSONException e) {

@@ -4,14 +4,14 @@ public class InventoryNear {
 	
 	private String storeName;
 	private String styleNumber;
-	private int styleCount;
+	private String styleCount;
 	private String barCode;
 	
 	public InventoryNear() {
 		super();
 	}
 	
-	public InventoryNear(String storeName,String styleNumber, int styleCount, String barCode) {
+	public InventoryNear(String storeName,String styleNumber, String styleCount, String barCode) {
 		super();
 		this.storeName = storeName;
 		this.styleNumber = styleNumber;
@@ -35,11 +35,11 @@ public class InventoryNear {
 		this.styleNumber = styleNumber;
 	}
 	
-	public int getStyleCount() {
+	public String getStyleCount() {
 		return styleCount;
 	}
 	
-	public void setStyleCount(int styleCount) {
+	public void setStyleCount(String styleCount) {
 		this.styleCount = styleCount;
 	}
 	
