@@ -81,6 +81,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             sendRequest(params, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
+                    // 取消进度条
+                    stopProgressDialog();
+
                     try {
                         String[] stores = resJAToList(response);
                         ArrayAdapter<String> adapter = new ArrayAdapter<String>(LoginActivity.this, android.R.layout.simple_spinner_item, stores);

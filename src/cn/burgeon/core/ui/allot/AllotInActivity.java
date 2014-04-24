@@ -79,6 +79,9 @@ public class AllotInActivity extends BaseActivity {
             sendRequest(params, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
+                    // 取消进度条
+                    stopProgressDialog();
+
                     try {
                         ArrayList<AllotIn> lists = resJAToList(response);
                         AllotInLVAdapter mAdapter = new AllotInLVAdapter(AllotInActivity.this, lists, R.layout.allot_in_item);

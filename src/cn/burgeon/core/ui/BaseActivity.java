@@ -4,9 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Window;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -24,6 +22,7 @@ import cn.burgeon.core.App;
 import cn.burgeon.core.db.DbHelper;
 import cn.burgeon.core.net.RequestManager;
 import cn.burgeon.core.net.SimonHttpStack;
+import cn.burgeon.core.widget.CustomProgressDialog;
 
 /**
  * Created by Simon on 2014/4/16.
@@ -34,6 +33,8 @@ public class BaseActivity extends Activity {
     private DbHelper helper;
     protected SQLiteDatabase db;
 
+    // 进度条
+    protected CustomProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +66,13 @@ public class BaseActivity extends Activity {
             @Override
             public void onStart(HttpUriRequest request) {
                 // show loading
-                // Toast.makeText(getApplicationContext(), "请求准备", Toast.LENGTH_LONG).show();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        // mProgress = ProgressDialog.show(BaseActivity.this, null, "加载中...", true, true);
+                        startProgressDialog();
+                    }
+                });
             }
         });
 
@@ -87,7 +94,6 @@ public class BaseActivity extends Activity {
         return new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("zhang.h", error.getMessage());
             }
         };
     }
@@ -96,5 +102,21 @@ public class BaseActivity extends Activity {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Date curDate = new Date(System.currentTimeMillis());//获取当前时间
         return formatter.format(curDate);
+    }
+
+    public void startProgressDialog() {
+        if (progressDialog == null) {
+            progressDialog = CustomProgressDialog.createDialog(this);
+            // 设置加载文字
+            // progressDialog.setMessage("正在加载中...");
+        }
+        progressDialog.show();
+    }
+
+    public void stopProgressDialog() {
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+            progressDialog = null;
+        }
     }
 }

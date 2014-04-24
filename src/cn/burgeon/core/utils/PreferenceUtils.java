@@ -16,7 +16,7 @@ public class PreferenceUtils {
         mContext = context;
     }
 
-    public static boolean savePreferenceStr(String PrefKey, String PrefValue) {
+    public boolean savePreferenceStr(String PrefKey, String PrefValue) {
         try {
             SharedPreferences cbhPref = new ContextWrapper(mContext).getSharedPreferences(Burgeon_PREF, PRIVATE_MODE);
             SharedPreferences.Editor editor = cbhPref.edit();
@@ -28,7 +28,7 @@ public class PreferenceUtils {
         }
     }
 
-    public static boolean savePreferenceInt(String PrefKey, Integer PrefValue) {
+    public boolean savePreferenceInt(String PrefKey, Integer PrefValue) {
         try {
             SharedPreferences cbhPref = new ContextWrapper(mContext).getSharedPreferences(Burgeon_PREF, PRIVATE_MODE);
             SharedPreferences.Editor editor = cbhPref.edit();
@@ -40,7 +40,7 @@ public class PreferenceUtils {
         }
     }
 
-    public static boolean savePreferenceLong(String PrefKey, long PrefValue) {
+    public boolean savePreferenceLong(String PrefKey, long PrefValue) {
         try {
             SharedPreferences cbhPref = new ContextWrapper(mContext).getSharedPreferences(Burgeon_PREF, PRIVATE_MODE);
             SharedPreferences.Editor editor = cbhPref.edit();
@@ -52,7 +52,7 @@ public class PreferenceUtils {
         }
     }
 
-    public static String getPreferenceStr(String RefKey) {
+    public String getPreferenceStr(String RefKey) {
         try {
             SharedPreferences cbhPref = new ContextWrapper(mContext).getSharedPreferences(Burgeon_PREF, PRIVATE_MODE);
             return cbhPref.getString(RefKey, "");
@@ -61,7 +61,7 @@ public class PreferenceUtils {
         }
     }
 
-    public static Integer getPreferenceInt(String RefKey) {
+    public Integer getPreferenceInt(String RefKey) {
         try {
             SharedPreferences cbhPref = new ContextWrapper(mContext).getSharedPreferences(Burgeon_PREF, PRIVATE_MODE);
             return cbhPref.getInt(RefKey, 0);
@@ -70,7 +70,7 @@ public class PreferenceUtils {
         }
     }
 
-    public static long getPreferenceLong(String RefKey) {
+    public long getPreferenceLong(String RefKey) {
         try {
             SharedPreferences cbhPref = new ContextWrapper(mContext).getSharedPreferences(Burgeon_PREF, PRIVATE_MODE);
             return cbhPref.getLong(RefKey, 0);
