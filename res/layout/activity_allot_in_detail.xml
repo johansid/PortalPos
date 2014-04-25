@@ -227,12 +227,6 @@
                 android:layout_width="@dimen/allot_in_btn"
                 android:layout_height="wrap_content"
                 android:text="@string/check" />
-
-            <Button
-                android:layout_width="@dimen/allot_in_btn"
-                android:layout_height="wrap_content"
-                android:text="@string/back"
-                android:layout_marginLeft="10dp" />
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

@@ -27,6 +27,7 @@
     <string name="upload_state">上传状态</string>
     <string name="docstate">单据状态</string>
     <string name="billdate">单据日期</string>
+    <string name="c_dest_id">出货店仓</string>
     <string name="c_orig_id">发货店仓</string>
     <string name="tot_qtyout">出库数量</string>
     <string name="allotInQuery">调入查询</string>
