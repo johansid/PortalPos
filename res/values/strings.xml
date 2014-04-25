@@ -15,6 +15,9 @@
     <string name="btn_update">修改</string>
     <string name="btn_search">查询</string>
     <string name="btn_delete">删除</string>
+    <string name="btn_help">帮助</string>
+    <string name="btn_detail">明细</string>
+    <string name="btn_back">退出</string>
     <string name="sysFunction">系统功能</string>
     <string name="allotManager">调拨管理</string>
     <string name="checkManager">盘点管理</string>

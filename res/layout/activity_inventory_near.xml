@@ -180,20 +180,13 @@
 	        android:orientation="horizontal" >
 	
 	        <Button
-	            android:id="@+id/inventoryButtonAdd"
+	            android:id="@+id/inventoryButtonHelp"
 	            android:layout_width="0dp"
 	            android:layout_height="wrap_content"
 	            android:layout_weight="1"
-	            android:text="@string/btn_add"
+	            android:text="@string/btn_help"
 	            android:textAppearance="?android:attr/textAppearanceMedium" />
 	
-	        <Button
-	            android:id="@+id/inventoryButtonUpdate"
-	            android:layout_width="0dp"
-	            android:layout_height="wrap_content"
-	            android:layout_weight="1"
-	            android:text="@string/btn_update"
-	            android:textAppearance="?android:attr/textAppearanceMedium" />
 	
 	        <Button
 	            android:id="@+id/inventoryButtonSearch"
@@ -204,11 +197,11 @@
 	            android:textAppearance="?android:attr/textAppearanceMedium" />
 	
 	        <Button
-	            android:id="@+id/inventoryButtonDelete"
+	            android:id="@+id/inventoryButtonBack"
 	            android:layout_width="0dp"
 	            android:layout_height="wrap_content"
 	            android:layout_weight="1"
-	            android:text="@string/btn_delete"
+	            android:text="@string/btn_back"
 	            android:textAppearance="?android:attr/textAppearanceMedium" />
 	    </LinearLayout>
 	</LinearLayout>

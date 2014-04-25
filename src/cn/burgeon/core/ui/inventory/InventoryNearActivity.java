@@ -21,7 +21,9 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -34,10 +36,9 @@ public class InventoryNearActivity extends BaseActivity {
 	private InventoryNearAdapter mNearAdapter;
 	private TextView inventoryStatusStoreName;
 	private TextView inventoryStatusTime;
-	private Button buttonAdd;
-	private Button buttonUpdate;
+	private Button buttonHelp;
 	private Button buttonSearch;
-	private Button buttonDelete;
+	private Button buttonBack;
 	private EditText barCodeEditText;
 	private EditText styleNumberEditText;
 	private boolean barCodeInputing = false;
@@ -66,22 +67,48 @@ public class InventoryNearActivity extends BaseActivity {
 		inventoryStatusTime = (TextView) findViewById(R.id.inventoryStatusTime);
 		initStoreNameAndTime();
 		
-    	buttonAdd = (Button) findViewById(R.id.inventoryButtonAdd);
-    	buttonUpdate = (Button) findViewById(R.id.inventoryButtonUpdate);
+		buttonHelp = (Button) findViewById(R.id.inventoryButtonHelp);
     	buttonSearch = (Button) findViewById(R.id.inventoryButtonSearch);
-    	buttonDelete = (Button) findViewById(R.id.inventoryButtonDelete);
+    	buttonBack = (Button) findViewById(R.id.inventoryButtonBack);
     	
     	inventoryCountRecordTextView = (TextView) findViewById(R.id.inventoryCountRecord);
     	styleNumberEditText = (EditText) findViewById(R.id.inventoryStyleNumberEditText);
     	barCodeEditText = (EditText) findViewById(R.id.inventoryBarCodeEditText);
+    	//初始化初始化款号跟条码框的输入状态
     	initInputStatus();
+    	//监听回车键
+    	listenInputEnterKey();
     	
-    	buttonAdd.setOnClickListener(new ClickEvent());
-    	buttonUpdate.setOnClickListener(new ClickEvent());
+    	buttonHelp.setOnClickListener(new ClickEvent());
     	buttonSearch.setOnClickListener(new ClickEvent());
-    	buttonAdd.setOnClickListener(new ClickEvent());
+    	buttonSearch.setOnClickListener(new ClickEvent());
     }
 
+	//监听回车键输入
+	private void listenInputEnterKey(){
+    	styleNumberEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+			@Override
+			public boolean onEditorAction(TextView arg0, int arg1, KeyEvent arg2) {
+                if (arg1 == EditorInfo.IME_ACTION_DONE) {
+                	startSearch(getInput());
+                    return true;
+                }
+                return false;
+			}
+        });
+    	
+    	barCodeEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+			@Override
+			public boolean onEditorAction(TextView arg0, int arg1, KeyEvent arg2) {
+                if (arg1 == EditorInfo.IME_ACTION_DONE) {
+                	startSearch(getInput());
+                    return true;
+                }
+                return false;
+			}
+        });
+	}
+	
 	//从扫描仪输入数据
 	private void getDataFromScanner(){
 		//扫描到的是款号
@@ -110,7 +137,7 @@ public class InventoryNearActivity extends BaseActivity {
         inventoryStatusTime.setText(getCurrDate());				
 	}
 	
-	//初始化两个款号跟条码框的输入状态,要求同时只能录入一个
+	//初始化款号跟条码框的输入状态,要求同时只能录入一个
 	private void initInputStatus(){
 		//款号
     	styleNumberEditText.addTextChangedListener(new TextWatcher(){
@@ -167,16 +194,13 @@ public class InventoryNearActivity extends BaseActivity {
 		@Override
 		public void onClick(View v) {
 			switch (v.getId()) {
-			case R.id.inventoryButtonAdd:
+			case R.id.inventoryButtonHelp:
 				startSearch("searchAll");
-				break;
-			case R.id.inventoryButtonUpdate:
-				startSearch("searchAll");
-				break;					
+				break;				
 			case R.id.inventoryButtonSearch:
 				startSearch(getInput());
 				break;
-			case R.id.inventoryButtonDelete:
+			case R.id.inventoryButtonBack:
 				startSearch("searchAll");
 				break;
 			}
@@ -194,7 +218,12 @@ public class InventoryNearActivity extends BaseActivity {
 	
 	//响应 查询 按钮  param <searchWhat> to Identify search type
 	private void startSearch(String searchWhat){
+		if(searchWhat == null || searchWhat.equals("")){
+			Log.d(TAG,searchWhat + "亲，啥也没输入，查个毛啊");
+			return;
+		}
 		searchWhat = searchWhat.trim();
+		
 		Map<String,String> params = new HashMap<String, String>();
 		
 		JSONObject transactions;
@@ -212,7 +241,7 @@ public class InventoryNearActivity extends BaseActivity {
 			
 			//根据输入构造 params中的param
 			if(!searchWhat.equals("searchAll")){
-				Log.d(TAG,"亲，您刚才输入的是："+searchWhat);
+				Log.d(TAG,"亲，您刚才输入的是："+ searchWhat);
 				String searchColumn = "";
 				
 				if(styleNumberInputing || styleNumberScanned){
@@ -222,7 +251,7 @@ public class InventoryNearActivity extends BaseActivity {
 				}
 
 				paramsInTransactions.put("params",
-						new JSONObject().put("column", searchColumn).put("condition", Integer.parseInt(searchWhat)));
+						new JSONObject().put("column", searchColumn).put("condition", searchWhat));
 			}
 			
 			paramsInTransactions.put("count", true);

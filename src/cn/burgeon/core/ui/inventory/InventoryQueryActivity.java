@@ -18,7 +18,6 @@ import cn.burgeon.core.bean.InventorySelf;
 import cn.burgeon.core.ui.BaseActivity;
 import cn.burgeon.core.utils.PreferenceUtils;
 import android.os.Bundle;
-import android.text.Editable;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -35,10 +34,10 @@ public class InventoryQueryActivity extends BaseActivity {
 	private InventoryQueryAdapter mQueryAdapter;
 	private TextView inventoryStatusStoreName;
 	private TextView inventoryStatusTime;
-	private Button buttonAdd;
-	private Button buttonUpdate;
+	private Button buttonHelp;
 	private Button buttonSearch;
-	private Button buttonDelete;
+	private Button buttonDetail;
+	private Button buttonBack;
 	private EditText styleNumberEditText;
 	private TextView inventoryCountRecordTextView;
 	private int inventoryCountRecord = 0;
@@ -58,19 +57,19 @@ public class InventoryQueryActivity extends BaseActivity {
 		inventoryStatusTime = (TextView) findViewById(R.id.inventoryStatusTime);
 		initStoreNameAndTime();
 		
-    	buttonAdd = (Button) findViewById(R.id.inventoryButtonAdd);
-    	buttonUpdate = (Button) findViewById(R.id.inventoryButtonUpdate);
-    	buttonSearch = (Button) findViewById(R.id.inventoryButtonSearch);
-    	buttonDelete = (Button) findViewById(R.id.inventoryButtonDelete);
+		buttonHelp = (Button) findViewById(R.id.inventoryButtonHelp);
+		buttonSearch = (Button) findViewById(R.id.inventoryButtonSearch);
+		buttonDetail = (Button) findViewById(R.id.inventoryButtonDetail);
+		buttonBack = (Button) findViewById(R.id.inventoryButtonBack);
     	
     	styleNumberEditText = (EditText) findViewById(R.id.inventoryStyleNumberEditText);
     	inventoryCountRecordTextView = (TextView) findViewById(R.id.inventoryCountRecord); 
-    	enterToSearch();
+    	listenEnterKey();
     	
-    	buttonAdd.setOnClickListener(new ClickEvent());
-    	buttonUpdate.setOnClickListener(new ClickEvent());
+    	buttonHelp.setOnClickListener(new ClickEvent());
     	buttonSearch.setOnClickListener(new ClickEvent());
-    	buttonAdd.setOnClickListener(new ClickEvent());
+    	buttonDetail.setOnClickListener(new ClickEvent());
+    	buttonBack.setOnClickListener(new ClickEvent());
     }
 
     // 初始化门店信息
@@ -80,7 +79,7 @@ public class InventoryQueryActivity extends BaseActivity {
 	}
 	
 	//监听回车键输入
-	private void enterToSearch(){
+	private void listenEnterKey(){
     	styleNumberEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 			@Override
 			public boolean onEditorAction(TextView arg0, int arg1, KeyEvent arg2) {
@@ -107,16 +106,16 @@ public class InventoryQueryActivity extends BaseActivity {
 		@Override
 		public void onClick(View v) {
 			switch (v.getId()) {
-			case R.id.inventoryButtonAdd:
+			case R.id.inventoryButtonHelp:
 				startSearch("searchAll");
 				break;
-			case R.id.inventoryButtonUpdate:
-				startSearch("searchAll");
-				break;					
-			case R.id.inventoryButtonSearch:				;
+			case R.id.inventoryButtonSearch:
 				startSearch(getInput());
+				break;					
+			case R.id.inventoryButtonDetail:				;
+				startSearch("searchAll");
 				break;
-			case R.id.inventoryButtonDelete:
+			case R.id.inventoryButtonBack:
 				startSearch("searchAll");
 				break;
 			}
@@ -129,11 +128,12 @@ public class InventoryQueryActivity extends BaseActivity {
 	
 	//响应 查询 按钮
 	private void startSearch(String searchWhat){
-		searchWhat = searchWhat.trim();
 		if(searchWhat == null || searchWhat.equals("")){
-			Log.d(TAG,"亲，啥也没输入，查个毛啊");
+			Log.d(TAG,searchWhat + "亲，啥也没输入，查个毛啊");
 			return;
 		}
+		
+		searchWhat = searchWhat.trim();
 		
 		Map<String,String> params = new HashMap<String, String>();
 		
@@ -155,7 +155,7 @@ public class InventoryQueryActivity extends BaseActivity {
 			if(!searchWhat.equals("searchAll")){
 				Log.d(TAG,"亲，您刚才输入的是："+searchWhat);
 				paramsInTransactions.put("params",
-						new JSONObject().put("column", "M_PRODUCT_ID").put("condition", Integer.parseInt(searchWhat)));
+						new JSONObject().put("column", "M_PRODUCT_ID").put("condition", searchWhat));
 			}
 			
 			paramsInTransactions.put("count", true);
