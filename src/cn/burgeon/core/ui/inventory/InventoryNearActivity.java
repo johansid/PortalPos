@@ -11,10 +11,12 @@ import org.json.JSONObject;
 
 import com.android.volley.Response;
 
+import cn.burgeon.core.App;
 import cn.burgeon.core.R;
 import cn.burgeon.core.adapter.InventoryNearAdapter;
 import cn.burgeon.core.bean.InventoryNear;
 import cn.burgeon.core.ui.BaseActivity;
+import cn.burgeon.core.utils.PreferenceUtils;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -30,6 +32,8 @@ public class InventoryNearActivity extends BaseActivity {
 	private final String TAG = "InventoryNearActivity";
 	private ListView mListView;
 	private InventoryNearAdapter mNearAdapter;
+	private TextView inventoryStatusStoreName;
+	private TextView inventoryStatusTime;
 	private Button buttonAdd;
 	private Button buttonUpdate;
 	private Button buttonSearch;
@@ -53,11 +57,16 @@ public class InventoryNearActivity extends BaseActivity {
     
 	private void init(){
 		mListView = (ListView) findViewById(R.id.inventoryListView);
+
+		inventoryStatusStoreName = (TextView) findViewById(R.id.inventoryStatusStoreName);
+		inventoryStatusTime = (TextView) findViewById(R.id.inventoryStatusTime);
+		initStoreNameAndTime();
 		
     	buttonAdd = (Button) findViewById(R.id.inventoryButtonAdd);
     	buttonUpdate = (Button) findViewById(R.id.inventoryButtonUpdate);
     	buttonSearch = (Button) findViewById(R.id.inventoryButtonSearch);
     	buttonDelete = (Button) findViewById(R.id.inventoryButtonDelete);
+    	
     	inventoryCountRecordTextView = (TextView) findViewById(R.id.inventoryCountRecord);
     	styleNumberEditText = (EditText) findViewById(R.id.inventoryStyleNumberEditText);
     	barCodeEditText = (EditText) findViewById(R.id.inventoryBarCodeEditText);
@@ -69,6 +78,12 @@ public class InventoryNearActivity extends BaseActivity {
     	buttonAdd.setOnClickListener(new ClickEvent());
     }
 
+    // 初始化门店信息
+	private void initStoreNameAndTime(){
+        inventoryStatusStoreName.setText(App.getPreferenceUtils().getPreferenceStr(PreferenceUtils.store_key));
+        inventoryStatusTime.setText(getCurrDate());				
+	}
+	
 	//初始化两个款号跟条码框的输入状态,要求同时只能录入一个
 	private void initInputStatus(){
 		//款号
@@ -118,7 +133,7 @@ public class InventoryNearActivity extends BaseActivity {
 	}
  
     private void updateInventoryCountRecord(final String count){
-    	inventoryCountRecordTextView.setText(count);
+    	inventoryCountRecordTextView.setText(count + " 条记录");
     }
     
 	public class ClickEvent implements View.OnClickListener {
@@ -223,10 +238,10 @@ public class InventoryNearActivity extends BaseActivity {
             String[] currRows = currRow.split(",");
 
             InventoryNear inventoryNear = new InventoryNear();
-            inventoryNear.setStoreName(currRows[0]);
+            inventoryNear.setStoreName(currRows[0].substring(1, currRows[0].length()));
             inventoryNear.setStyleNumber(currRows[1]);
             inventoryNear.setStyleCount(currRows[2]);
-            inventoryNear.setBarCode(currRows[3]);
+            inventoryNear.setBarCode(currRows[3].substring(0, currRows[3].length() - 1));
             lists.add(inventoryNear);
         }
         return lists;

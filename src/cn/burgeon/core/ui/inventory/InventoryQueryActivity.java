@@ -11,10 +11,12 @@ import org.json.JSONObject;
 
 import com.android.volley.Response;
 
+import cn.burgeon.core.App;
 import cn.burgeon.core.R;
 import cn.burgeon.core.adapter.InventoryQueryAdapter;
 import cn.burgeon.core.bean.InventorySelf;
 import cn.burgeon.core.ui.BaseActivity;
+import cn.burgeon.core.utils.PreferenceUtils;
 import android.os.Bundle;
 import android.text.Editable;
 import android.util.Log;
@@ -31,12 +33,15 @@ public class InventoryQueryActivity extends BaseActivity {
 	private final String TAG = "InventoryQueryActivity";
 	private ListView mListView;
 	private InventoryQueryAdapter mQueryAdapter;
+	private TextView inventoryStatusStoreName;
+	private TextView inventoryStatusTime;
 	private Button buttonAdd;
 	private Button buttonUpdate;
 	private Button buttonSearch;
 	private Button buttonDelete;
 	private EditText styleNumberEditText;
-	private TextView inventoryCountRecord;
+	private TextView inventoryCountRecordTextView;
+	private int inventoryCountRecord = 0;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,21 +54,32 @@ public class InventoryQueryActivity extends BaseActivity {
     
 	private void init(){
 		mListView = (ListView) findViewById(R.id.inventoryListView);
+		inventoryStatusStoreName = (TextView) findViewById(R.id.inventoryStatusStoreName);
+		inventoryStatusTime = (TextView) findViewById(R.id.inventoryStatusTime);
+		initStoreNameAndTime();
 		
     	buttonAdd = (Button) findViewById(R.id.inventoryButtonAdd);
     	buttonUpdate = (Button) findViewById(R.id.inventoryButtonUpdate);
     	buttonSearch = (Button) findViewById(R.id.inventoryButtonSearch);
     	buttonDelete = (Button) findViewById(R.id.inventoryButtonDelete);
+    	
     	styleNumberEditText = (EditText) findViewById(R.id.inventoryStyleNumberEditText);
-    	inventoryCountRecord = (TextView) findViewById(R.id.inventoryCountRecord); 
-    	enterToSearch();    	
+    	inventoryCountRecordTextView = (TextView) findViewById(R.id.inventoryCountRecord); 
+    	enterToSearch();
+    	
     	buttonAdd.setOnClickListener(new ClickEvent());
     	buttonUpdate.setOnClickListener(new ClickEvent());
     	buttonSearch.setOnClickListener(new ClickEvent());
     	buttonAdd.setOnClickListener(new ClickEvent());
     }
 
-	//监听回车键
+    // 初始化门店信息
+	private void initStoreNameAndTime(){
+        inventoryStatusStoreName.setText(App.getPreferenceUtils().getPreferenceStr(PreferenceUtils.store_key));
+        inventoryStatusTime.setText(getCurrDate());				
+	}
+	
+	//监听回车键输入
 	private void enterToSearch(){
     	styleNumberEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 			@Override
@@ -83,7 +99,7 @@ public class InventoryQueryActivity extends BaseActivity {
 	}
  
     private void updateInventoryCountRecord(final String count){
-    	inventoryCountRecord.setText(count);
+    	inventoryCountRecordTextView.setText(count + " 条记录");
     }
     
 	public class ClickEvent implements View.OnClickListener {
@@ -156,7 +172,7 @@ public class InventoryQueryActivity extends BaseActivity {
                     
                     try {
                     	bindList(resJAToList(response));
-                    	updateInventoryCountRecord( mListView.getChildCount() + "");
+                    	updateInventoryCountRecord( inventoryCountRecord + "");
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }				
@@ -172,15 +188,16 @@ public class InventoryQueryActivity extends BaseActivity {
         JSONArray resJA = new JSONArray(response);
         JSONObject resJO = resJA.getJSONObject(0);
         JSONArray rowsJA = resJO.getJSONArray("rows");
+        inventoryCountRecord = rowsJA.length();
         for (int i = 0; i < rowsJA.length(); i++) {
             // ["TF0912140000005", 20091214, 3909, 11]
             String currRow = rowsJA.get(i).toString();
             String[] currRows = currRow.split(",");
 
             InventorySelf inventorySelf = new InventorySelf();
-            inventorySelf.setStyleNumber(currRows[0]);
+            inventorySelf.setStyleNumber(currRows[0].substring(1, currRows[0].length()));
             inventorySelf.setStyleCount(currRows[1]);
-            inventorySelf.setStyleName(currRows[2]);
+            inventorySelf.setStyleName(currRows[2].substring(0, currRows[2].length() - 1));
             lists.add(inventorySelf);
         }
         return lists;

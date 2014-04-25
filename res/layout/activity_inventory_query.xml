@@ -29,8 +29,7 @@
                 android:singleLine="true"
                 android:background="@drawable/corners_bg"
                 android:gravity="left"
-                android:padding="10dp"
-                android:text="Query:上海BURGEON" />
+                android:padding="10dp"/>
 
             <TextView
                 android:id="@+id/inventoryStatusTime"
@@ -40,8 +39,7 @@
                 android:singleLine="true"
                 android:background="@drawable/corners_bg"
                 android:gravity="left"
-                android:padding="10dp"
-                android:text="04-20-2014"/>
+                android:padding="10dp"/>
         </LinearLayout>        
         
         <LinearLayout
