@@ -16,21 +16,31 @@ import cn.burgeon.core.adapter.InventoryNearAdapter;
 import cn.burgeon.core.bean.InventoryNear;
 import cn.burgeon.core.ui.BaseActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 public class InventoryNearActivity extends BaseActivity {
 	
+	private final String TAG = "InventoryNearActivity";
 	private ListView mListView;
 	private InventoryNearAdapter mNearAdapter;
 	private Button buttonAdd;
 	private Button buttonUpdate;
 	private Button buttonSearch;
 	private Button buttonDelete;
+	private EditText barCodeEditText;
 	private EditText styleNumberEditText;
+	private boolean barCodeInputing = false;
+	private boolean styleNumberInputing = false;
+	private TextView inventoryCountRecordTextView;
+	private int inventoryCountRecord = 0;
+	
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +51,6 @@ public class InventoryNearActivity extends BaseActivity {
         init();
     }
     
-
-
 	private void init(){
 		mListView = (ListView) findViewById(R.id.inventoryListView);
 		
@@ -50,8 +58,10 @@ public class InventoryNearActivity extends BaseActivity {
     	buttonUpdate = (Button) findViewById(R.id.inventoryButtonUpdate);
     	buttonSearch = (Button) findViewById(R.id.inventoryButtonSearch);
     	buttonDelete = (Button) findViewById(R.id.inventoryButtonDelete);
+    	inventoryCountRecordTextView = (TextView) findViewById(R.id.inventoryCountRecord);
     	styleNumberEditText = (EditText) findViewById(R.id.inventoryStyleNumberEditText);
-    	
+    	barCodeEditText = (EditText) findViewById(R.id.inventoryBarCodeEditText);
+    	initInputStatus();
     	
     	buttonAdd.setOnClickListener(new ClickEvent());
     	buttonUpdate.setOnClickListener(new ClickEvent());
@@ -59,10 +69,57 @@ public class InventoryNearActivity extends BaseActivity {
     	buttonAdd.setOnClickListener(new ClickEvent());
     }
 
+	//初始化两个款号跟条码框的输入状态,要求同时只能录入一个
+	private void initInputStatus(){
+		//款号
+    	styleNumberEditText.addTextChangedListener(new TextWatcher(){
+			@Override
+			public void afterTextChanged(Editable arg0) {}
+			@Override
+			public void beforeTextChanged(CharSequence arg0, int arg1,
+					int arg2, int arg3) {}
+			@Override
+			public void onTextChanged(CharSequence arg0, int arg1, int arg2,
+					int arg3) {
+				if(arg0.length() > 0){
+					styleNumberInputing = true;
+					barCodeEditText.setEnabled(false);
+				}else if(arg0.length() == 0){
+					styleNumberInputing = false;
+					barCodeEditText.setEnabled(true);
+				}				
+			}  		
+    	});
+    	//条码
+    	barCodeEditText.addTextChangedListener(new TextWatcher(){
+			@Override
+			public void afterTextChanged(Editable arg0) {}
+			@Override
+			public void beforeTextChanged(CharSequence arg0, int arg1,
+					int arg2, int arg3) {}
+			@Override
+			public void onTextChanged(CharSequence arg0, int arg1, int arg2,
+					int arg3) {
+				if(arg0.length() > 0){
+					barCodeInputing = true;
+					styleNumberEditText.setEnabled(false);
+				}else if(arg0.length() == 0){
+					barCodeInputing = false;
+					styleNumberEditText.setEnabled(true);
+				}				
+			}  		
+    	});	    	
+		
+	}
+	
     private void bindList(List<InventoryNear> data) {
     	mNearAdapter = new InventoryNearAdapter(data, this);
     	mListView.setAdapter(mNearAdapter);
 	}
+ 
+    private void updateInventoryCountRecord(final String count){
+    	inventoryCountRecordTextView.setText(count);
+    }
     
 	public class ClickEvent implements View.OnClickListener {
 
@@ -70,23 +127,33 @@ public class InventoryNearActivity extends BaseActivity {
 		public void onClick(View v) {
 			switch (v.getId()) {
 			case R.id.inventoryButtonAdd:
-				startSearch();
+				startSearch("searchAll");
 				break;
 			case R.id.inventoryButtonUpdate:
-				startSearch();
+				startSearch("searchAll");
 				break;					
 			case R.id.inventoryButtonSearch:
-				startSearch();
+				startSearch(getInput());
 				break;
 			case R.id.inventoryButtonDelete:
+				startSearch("searchAll");
 				break;
 			}
 		}
 	}
+
+	private String getInput(){
+		if(barCodeInputing){
+			return barCodeEditText.getText().toString();
+		}else if(styleNumberInputing){
+			return styleNumberEditText.getText().toString();
+		}
+		return null;
+	}
 	
-	//响应 查询 按钮
-	private void startSearch(){
-		
+	//响应 查询 按钮  param <searchWhat> to Identify search type
+	private void startSearch(String searchWhat){
+		searchWhat = searchWhat.trim();
 		Map<String,String> params = new HashMap<String, String>();
 		
 		JSONObject transactions;
@@ -101,20 +168,38 @@ public class InventoryNearActivity extends BaseActivity {
 			JSONObject paramsInTransactions = new JSONObject();
 			paramsInTransactions.put("table", 15632);
 			paramsInTransactions.put("columns", new JSONArray().put("C_STORE_ID").put("M_PRODUCT_ID").put("QTY").put("M_PRODUCTALIAS_ID"));
+			
+			//根据输入构造 params中的param
+			if(!searchWhat.equals("searchAll")){
+				Log.d(TAG,"亲，您刚才输入的是："+searchWhat);
+				String searchColumn = "";
+				
+				if(styleNumberInputing){
+					searchColumn = "M_PRODUCT_ID";
+				}else if(barCodeInputing){
+					searchColumn = "M_PRODUCTALIAS_ID";
+				}
+
+				paramsInTransactions.put("params",
+						new JSONObject().put("column", searchColumn).put("condition", Integer.parseInt(searchWhat)));
+			}
+			
 			paramsInTransactions.put("count", true);
 			transactions.put("params", paramsInTransactions);
 			
 			params.put("transactions", new JSONArray().put(transactions).toString());
 			
+			//ok，baby 现在我们来发送请求
 			sendRequest(params,new Response.Listener<String>() {
 				@Override
 				public void onResponse(String response) {
-					Log.d("_____________我草___________", response);
+					Log.d("onResponse", response);
                     // 取消进度条
                     stopProgressDialog();
                     
                     try {
                     	bindList(resJAToList(response));
+                    	updateInventoryCountRecord( inventoryCountRecord + "");
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -131,6 +216,7 @@ public class InventoryNearActivity extends BaseActivity {
         JSONArray resJA = new JSONArray(response);
         JSONObject resJO = resJA.getJSONObject(0);
         JSONArray rowsJA = resJO.getJSONArray("rows");
+        inventoryCountRecord = rowsJA.length();
         for (int i = 0; i < rowsJA.length(); i++) {
             // ["TF0912140000005", 20091214, 3909, 11]
             String currRow = rowsJA.get(i).toString();

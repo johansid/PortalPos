@@ -65,6 +65,7 @@
                 android:layout_width="0dp"
                 android:singleLine="true"
                 android:hint="Near:请输入你的条码"
+                android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                 android:background="@drawable/corners_bg"
                 android:gravity="left"
                 android:padding="10dp"/>
@@ -172,8 +173,7 @@
             android:textSize="15sp"
             android:background="@drawable/corners_bg"
             android:gravity="left"
-            android:padding="10dp"
-            android:text="Near:0条记录">
+            android:padding="10dp">
         </TextView>
         
 	    <LinearLayout

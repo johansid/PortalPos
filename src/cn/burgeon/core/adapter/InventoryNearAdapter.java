@@ -60,7 +60,7 @@ public class InventoryNearAdapter extends BaseAdapter {
 		InventoryNear inventoryNear = list.get(position);
 		holder.textView1.setText(inventoryNear.getStoreName());
 		holder.textView2.setText(inventoryNear.getStyleNumber());
-		holder.textView3.setText( "Near: " + inventoryNear.getStyleCount());
+		holder.textView3.setText(inventoryNear.getStyleCount());
 		holder.textView4.setText(inventoryNear.getBarCode());
 		
 		int[] colors = { Color.WHITE, Color.rgb(219, 238, 244) };//RGB颜色  
@@ -75,5 +75,4 @@ public class InventoryNearAdapter extends BaseAdapter {
 		TextView textView3;
 		TextView textView4;
 	}
-
 }

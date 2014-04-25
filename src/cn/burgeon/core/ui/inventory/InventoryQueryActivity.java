@@ -18,10 +18,13 @@ import cn.burgeon.core.ui.BaseActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 public class InventoryQueryActivity extends BaseActivity {
 	
@@ -33,6 +36,7 @@ public class InventoryQueryActivity extends BaseActivity {
 	private Button buttonSearch;
 	private Button buttonDelete;
 	private EditText styleNumberEditText;
+	private TextView inventoryCountRecord;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +47,6 @@ public class InventoryQueryActivity extends BaseActivity {
         init();
     }
     
-
-
 	private void init(){
 		mListView = (ListView) findViewById(R.id.inventoryListView);
 		
@@ -53,18 +55,36 @@ public class InventoryQueryActivity extends BaseActivity {
     	buttonSearch = (Button) findViewById(R.id.inventoryButtonSearch);
     	buttonDelete = (Button) findViewById(R.id.inventoryButtonDelete);
     	styleNumberEditText = (EditText) findViewById(R.id.inventoryStyleNumberEditText);
-    	
-    	
+    	inventoryCountRecord = (TextView) findViewById(R.id.inventoryCountRecord); 
+    	enterToSearch();    	
     	buttonAdd.setOnClickListener(new ClickEvent());
     	buttonUpdate.setOnClickListener(new ClickEvent());
     	buttonSearch.setOnClickListener(new ClickEvent());
     	buttonAdd.setOnClickListener(new ClickEvent());
     }
 
+	//监听回车键
+	private void enterToSearch(){
+    	styleNumberEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+			@Override
+			public boolean onEditorAction(TextView arg0, int arg1, KeyEvent arg2) {
+                if (arg1 == EditorInfo.IME_ACTION_DONE) {
+                	startSearch(getInput());
+                    return true;
+                }
+                return false;
+			}
+        });				
+	}
+	
     private void bindList(List<InventorySelf> data) {
     	mQueryAdapter = new InventoryQueryAdapter(data, this);
     	mListView.setAdapter(mQueryAdapter);
 	}
+ 
+    private void updateInventoryCountRecord(final String count){
+    	inventoryCountRecord.setText(count);
+    }
     
 	public class ClickEvent implements View.OnClickListener {
 
@@ -87,14 +107,13 @@ public class InventoryQueryActivity extends BaseActivity {
 		}
 	}
 
-
 	private String getInput(){
 		return styleNumberEditText.getText().toString();
 	}
 	
 	//响应 查询 按钮
 	private void startSearch(String searchWhat){
-		
+		searchWhat = searchWhat.trim();
 		if(searchWhat == null || searchWhat.equals("")){
 			Log.d(TAG,"亲，啥也没输入，查个毛啊");
 			return;
@@ -131,16 +150,16 @@ public class InventoryQueryActivity extends BaseActivity {
 			sendRequest(params,new Response.Listener<String>() {
 				@Override
 				public void onResponse(String response) {
-					Log.d("_____________我草___________", response);
+					Log.d("onResponse", response);
                     // 取消进度条
                     stopProgressDialog();
                     
                     try {
                     	bindList(resJAToList(response));
+                    	updateInventoryCountRecord( mListView.getChildCount() + "");
                     } catch (JSONException e) {
                         e.printStackTrace();
-                    }
-					
+                    }				
 				}
 			});
 		} catch (JSONException e) {}		
