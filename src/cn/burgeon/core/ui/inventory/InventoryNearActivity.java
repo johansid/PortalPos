@@ -41,7 +41,9 @@ public class InventoryNearActivity extends BaseActivity {
 	private EditText barCodeEditText;
 	private EditText styleNumberEditText;
 	private boolean barCodeInputing = false;
+	private boolean barCodeScanned = false;
 	private boolean styleNumberInputing = false;
+	private boolean styleNumberScanned = false;
 	private TextView inventoryCountRecordTextView;
 	private int inventoryCountRecord = 0;
 	
@@ -53,6 +55,8 @@ public class InventoryNearActivity extends BaseActivity {
         setContentView(R.layout.activity_inventory_near);
 
         init();
+        //从扫描仪得到条码或者款号
+        getDataFromScanner();
     }
     
 	private void init(){
@@ -78,6 +82,28 @@ public class InventoryNearActivity extends BaseActivity {
     	buttonAdd.setOnClickListener(new ClickEvent());
     }
 
+	//从扫描仪输入数据
+	private void getDataFromScanner(){
+		//扫描到的是款号
+		if(styleNumberScanned){
+			barCodeScanned = false;
+			startSearch(getScannedStyleNumber());
+		}
+		//扫描到的是条码
+		else if(barCodeScanned){
+			styleNumberScanned = false;
+			startSearch(getScannedBarCode());			
+		}
+	}
+	
+	private String getScannedStyleNumber(){
+		return null;
+	}
+	
+	private String getScannedBarCode(){
+		return null;
+	}
+	
     // 初始化门店信息
 	private void initStoreNameAndTime(){
         inventoryStatusStoreName.setText(App.getPreferenceUtils().getPreferenceStr(PreferenceUtils.store_key));
@@ -189,9 +215,9 @@ public class InventoryNearActivity extends BaseActivity {
 				Log.d(TAG,"亲，您刚才输入的是："+searchWhat);
 				String searchColumn = "";
 				
-				if(styleNumberInputing){
+				if(styleNumberInputing || styleNumberScanned){
 					searchColumn = "M_PRODUCT_ID";
-				}else if(barCodeInputing){
+				}else if(barCodeInputing || barCodeScanned){
 					searchColumn = "M_PRODUCTALIAS_ID";
 				}
 
