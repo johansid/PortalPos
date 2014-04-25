@@ -7,12 +7,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.TextView;
 
+import cn.burgeon.core.App;
 import cn.burgeon.core.Constant;
 import cn.burgeon.core.R;
 import cn.burgeon.core.adapter.AllotManagerAdapter;
 import cn.burgeon.core.adapter.ReplenishmentAdapter;
 import cn.burgeon.core.ui.BaseActivity;
+import cn.burgeon.core.utils.PreferenceUtils;
 
 public class AllotReplenishmentActivity extends BaseActivity {
 
@@ -29,6 +32,10 @@ public class AllotReplenishmentActivity extends BaseActivity {
     }
 
     private void init() {
+        // 初始化门店信息
+        TextView storeTV = (TextView) findViewById(R.id.storeTV);
+        storeTV.setText(App.getPreferenceUtils().getPreferenceStr(PreferenceUtils.store_key));
+
         replenishmentGV = (GridView) findViewById(R.id.replenishmentGV);
         mAdapter = new ReplenishmentAdapter(this);
         replenishmentGV.setAdapter(mAdapter);

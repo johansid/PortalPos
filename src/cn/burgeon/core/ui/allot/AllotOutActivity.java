@@ -76,7 +76,7 @@ public class AllotOutActivity extends BaseActivity {
 
             JSONObject paramsInTransactions = new JSONObject();
             paramsInTransactions.put("table", "M_TRANSFER");
-            paramsInTransactions.put("columns", new JSONArray().put("DOCNO").put("BILLDATE").put("C_DEST_ID").put("TOT_QTYOUT"));
+            paramsInTransactions.put("columns", new JSONArray().put("ID").put("DOCNO").put("BILLDATE").put("C_DEST_ID").put("TOT_QTYOUT"));
             transactions.put("params", paramsInTransactions);
 
             array.put(transactions);
@@ -115,10 +115,11 @@ public class AllotOutActivity extends BaseActivity {
             String[] currRows = currRow.split(",");
 
             AllotOut allotOut = new AllotOut();
-            allotOut.setDOCNO(currRows[0].substring(2, currRows[0].length() - 1));
-            allotOut.setBILLDATE(currRows[1]);
-            allotOut.setC_DEST_ID(currRows[2]);
-            allotOut.setTOT_QTYOUT(currRows[3].substring(0, currRows[3].length() - 1));
+            allotOut.setID(currRows[0].substring(1, currRows[0].length()));
+            allotOut.setDOCNO(currRows[1].substring(1, currRows[1].length() - 1));
+            allotOut.setBILLDATE(currRows[2]);
+            allotOut.setC_DEST_ID(currRows[3]);
+            allotOut.setTOT_QTYOUT(currRows[4].substring(0, currRows[4].length() - 1));
             lists.add(allotOut);
         }
         return lists;

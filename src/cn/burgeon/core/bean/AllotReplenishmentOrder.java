@@ -4,11 +4,20 @@ package cn.burgeon.core.bean;
  * Created by Simon on 2014/4/22.
  */
 public class AllotReplenishmentOrder {
+    private String ID; // 调拨表单ID
     private String DOCNO; // 单据编号
     private String BILLDATE; // 单据日期
     private String C_DEST_ID; // 出货店仓
     private String STATUSERID; // 申请人
     private String DESCRIPTION; // 备注
+
+    public String getID() {
+        return ID;
+    }
+
+    public void setID(String ID) {
+        this.ID = ID;
+    }
 
     public String getDOCNO() {
         return DOCNO;

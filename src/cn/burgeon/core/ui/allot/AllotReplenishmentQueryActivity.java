@@ -66,7 +66,7 @@ public class AllotReplenishmentQueryActivity extends BaseActivity {
 
             JSONObject paramsInTransactions = new JSONObject();
             paramsInTransactions.put("table", "M_TRANSFER");
-            paramsInTransactions.put("columns", new JSONArray().put("DOCNO").put("BILLDATE").put("C_DEST_ID").put("STATUSERID").put("DESCRIPTION"));
+            paramsInTransactions.put("columns", new JSONArray().put("ID").put("DOCNO").put("BILLDATE").put("C_DEST_ID").put("STATUSERID").put("DESCRIPTION"));
             transactions.put("params", paramsInTransactions);
 
             array.put(transactions);
@@ -101,16 +101,17 @@ public class AllotReplenishmentQueryActivity extends BaseActivity {
         int len = rowsJA.length();
         recodeNumTV.setText("共" + len + "个补货单");
         for (int i = 0; i < len; i++) {
-            // ["TF0912140000005",20091214,3860,1692,null]
+            // [2766,"TF0912140000005",20091214,3860,1692,null]
             String currRow = rowsJA.get(i).toString();
             String[] currRows = currRow.split(",");
 
             AllotReplenishment allotReplenishment = new AllotReplenishment();
-            allotReplenishment.setDOCNO(currRows[0].substring(2, currRows[0].length() - 1));
-            allotReplenishment.setBILLDATE(currRows[1]);
-            allotReplenishment.setC_DEST_ID(currRows[2]);
-            allotReplenishment.setSTATUSERID(currRows[3]);
-            allotReplenishment.setDESCRIPTION(("null".equals(currRows[4].substring(0, currRows[4].length() - 1)) ? "" : (currRows[4].substring(0, currRows[4].length() - 1))));
+            allotReplenishment.setID(currRows[0].substring(1, currRows[0].length()));
+            allotReplenishment.setDOCNO(currRows[1].substring(1, currRows[1].length() - 1));
+            allotReplenishment.setBILLDATE(currRows[2]);
+            allotReplenishment.setC_DEST_ID(currRows[3]);
+            allotReplenishment.setSTATUSERID(currRows[4]);
+            allotReplenishment.setDESCRIPTION(("null".equals(currRows[5].substring(0, currRows[5].length() - 1)) ? "" : (currRows[5].substring(0, currRows[5].length() - 1))));
             lists.add(allotReplenishment);
         }
         return lists;

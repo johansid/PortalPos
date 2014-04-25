@@ -68,7 +68,7 @@ public class AllotReplenishmentOrderQueryActivity extends BaseActivity {
 
             JSONObject paramsInTransactions = new JSONObject();
             paramsInTransactions.put("table", "M_TRANSFER");
-            paramsInTransactions.put("columns", new JSONArray().put("DOCNO").put("BILLDATE").put("C_DEST_ID").put("STATUSERID").put("DESCRIPTION"));
+            paramsInTransactions.put("columns", new JSONArray().put("ID").put("DOCNO").put("BILLDATE").put("C_DEST_ID").put("STATUSERID").put("DESCRIPTION"));
             transactions.put("params", paramsInTransactions);
 
             array.put(transactions);
@@ -108,11 +108,12 @@ public class AllotReplenishmentOrderQueryActivity extends BaseActivity {
             String[] currRows = currRow.split(",");
 
             AllotReplenishmentOrder allotReplenishmentOrder = new AllotReplenishmentOrder();
-            allotReplenishmentOrder.setDOCNO(currRows[0].substring(2, currRows[0].length() - 1));
-            allotReplenishmentOrder.setBILLDATE(currRows[1]);
-            allotReplenishmentOrder.setC_DEST_ID(currRows[2]);
-            allotReplenishmentOrder.setSTATUSERID(currRows[3]);
-            allotReplenishmentOrder.setDESCRIPTION(("null".equals(currRows[4].substring(0, currRows[4].length() - 1)) ? "" : (currRows[4].substring(0, currRows[4].length() - 1))));
+            allotReplenishmentOrder.setID(currRows[0].substring(1, currRows[0].length()));
+            allotReplenishmentOrder.setDOCNO(currRows[1].substring(1, currRows[1].length() - 1));
+            allotReplenishmentOrder.setBILLDATE(currRows[2]);
+            allotReplenishmentOrder.setC_DEST_ID(currRows[3]);
+            allotReplenishmentOrder.setSTATUSERID(currRows[4]);
+            allotReplenishmentOrder.setDESCRIPTION(("null".equals(currRows[5].substring(0, currRows[5].length() - 1)) ? "" : (currRows[5].substring(0, currRows[5].length() - 1))));
             lists.add(allotReplenishmentOrder);
         }
         return lists;

@@ -4,11 +4,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.TextView;
 
+import cn.burgeon.core.App;
 import cn.burgeon.core.Constant;
 import cn.burgeon.core.R;
 import cn.burgeon.core.adapter.AllotManagerAdapter;
 import cn.burgeon.core.ui.BaseActivity;
+import cn.burgeon.core.utils.PreferenceUtils;
 
 import static android.widget.AdapterView.*;
 
@@ -27,6 +30,10 @@ public class AllotManagerActivity extends BaseActivity {
     }
 
     private void init() {
+        // 初始化门店信息
+        TextView storeTV = (TextView) findViewById(R.id.storeTV);
+        storeTV.setText(App.getPreferenceUtils().getPreferenceStr(PreferenceUtils.store_key));
+
         allotGV = (GridView) findViewById(R.id.allotGV);
         mAdapter = new AllotManagerAdapter(this);
         allotGV.setAdapter(mAdapter);

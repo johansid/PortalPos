@@ -49,6 +49,7 @@ public class AllotReplenishmentOrderLVAdapter extends BaseAdapter {
         if (convertView == null) {
             convertView = LayoutInflater.from(mContext).inflate(mLayoutRes, null);
             holder = new ViewHolder();
+            holder.idTV = (TextView) convertView.findViewById(R.id.idTV);
             holder.docnoTV = (TextView) convertView.findViewById(R.id.docnoTV);
             holder.uploadStateTV = (TextView) convertView.findViewById(R.id.uploadStateTV);
             holder.billdateIV = (TextView) convertView.findViewById(R.id.billdateIV);
@@ -61,6 +62,7 @@ public class AllotReplenishmentOrderLVAdapter extends BaseAdapter {
         }
 
         // 赋值
+        holder.idTV.setText(list.get(position).getID());
         holder.docnoTV.setText(list.get(position).getDOCNO());
         holder.billdateIV.setText(list.get(position).getBILLDATE());
         holder.cdestidIV.setText(list.get(position).getC_DEST_ID());
@@ -70,6 +72,7 @@ public class AllotReplenishmentOrderLVAdapter extends BaseAdapter {
     }
 
     static class ViewHolder {
+        TextView idTV;
         TextView docnoTV;
         TextView uploadStateTV;
         TextView billdateIV;
