@@ -126,7 +126,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 intentData.setStore(storeSpinner.getSelectedItem().toString());
                 intentData.setUser(userET.getText().toString());
                 forwardActivity(SystemActivity.class, intentData);
-                
+
             	/*
                 try {
                     Map<String, String> params = new HashMap<String, String>();

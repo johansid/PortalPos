@@ -87,6 +87,25 @@ public class ScreenUtils {
     }
 
     /**
+     * 获取调拨入库明细listview高度(总高度-通知栏高度-标题栏高度-门店显示区高度-发货方-条码-记录条数区高度-操作按钮高度-padding补差高度)
+     *
+     * @param activity
+     * @return
+     */
+    public static float getAllotInDetailLVHeight(Activity activity) {
+        Resources res = activity.getResources();
+        int allotInHeightNotLV = getStatusBarHeight(activity) +
+                (int) res.getDimension(R.dimen.title_height) +
+                (int) res.getDimension(R.dimen.store_height) +
+                (int) res.getDimension(R.dimen.shipper_height) +
+                (int) res.getDimension(R.dimen.scan_height) +
+                (int) res.getDimension(R.dimen.store_height) +
+                (int) res.getDimension(R.dimen.operate_height) +
+                (int) res.getDimension(R.dimen.padding_reserve1);
+        return ScreenUtils.screenHeight() - allotInHeightNotLV;
+    }
+
+    /**
      * 通知栏的高度
      *
      * @param activity

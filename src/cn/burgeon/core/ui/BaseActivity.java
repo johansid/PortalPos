@@ -70,7 +70,7 @@ public class BaseActivity extends Activity {
 
         // 传递对象数据
         Bundle mBundle = new Bundle();
-        mBundle.putSerializable(PAR_KEY, intentData);
+        mBundle.putParcelable(PAR_KEY, intentData);
         intent.putExtras(mBundle);
 
         startActivity(intent);

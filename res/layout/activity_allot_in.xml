@@ -23,6 +23,7 @@
             android:paddingRight="10dp">
 
             <TextView
+                android:id="@+id/storeTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
@@ -166,19 +167,6 @@
                 android:layout_width="@dimen/allot_in_btn"
                 android:layout_height="wrap_content"
                 android:text="@string/query" />
-
-            <Button
-                android:id="@+id/detailBtn"
-                android:layout_width="@dimen/allot_in_btn"
-                android:layout_height="wrap_content"
-                android:text="@string/detail"
-                android:layout_marginLeft="10dp" />
-
-            <Button
-                android:layout_width="@dimen/allot_in_btn"
-                android:layout_height="wrap_content"
-                android:text="@string/back"
-                android:layout_marginLeft="10dp" />
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

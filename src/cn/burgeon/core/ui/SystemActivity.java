@@ -30,7 +30,7 @@ public class SystemActivity extends BaseActivity {
 
         init();
 
-        IntentData iData = (IntentData) getIntent().getSerializableExtra(PAR_KEY);
+        IntentData iData = (IntentData) getIntent().getParcelableExtra(PAR_KEY);
         initData(iData, storeTV);
     }
 
