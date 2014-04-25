@@ -5,10 +5,14 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
+import android.widget.TextView;
+
+import cn.burgeon.core.App;
 import cn.burgeon.core.Constant;
 import cn.burgeon.core.R;
 import cn.burgeon.core.adapter.CheckManagerAdapter;
 import cn.burgeon.core.ui.BaseActivity;
+import cn.burgeon.core.utils.PreferenceUtils;
 
 public class CheckManagerActivity extends BaseActivity {
 
@@ -25,6 +29,10 @@ public class CheckManagerActivity extends BaseActivity {
 	}
 
 	private void init() {
+        // 初始化门店信息
+        TextView storeTV = (TextView) findViewById(R.id.storeTV);
+        storeTV.setText(App.getPreferenceUtils().getPreferenceStr(PreferenceUtils.store_key));
+
 		checkGV = (GridView) findViewById(R.id.checkGV);
 		mAdapter = new CheckManagerAdapter(this);
 		checkGV.setAdapter(mAdapter);

@@ -24,7 +24,6 @@ public class AllotInDetailActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setupFullscreen();
         setContentView(R.layout.activity_allot_in_detail);
 
         iData = (IntentData) getIntent().getParcelableExtra(PAR_KEY);

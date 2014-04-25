@@ -32,7 +32,6 @@ public class AllotReplenishmentQueryActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setupFullscreen();
         setContentView(R.layout.activity_allot_replenishment_query);
 
         init();
@@ -79,7 +78,7 @@ public class AllotReplenishmentQueryActivity extends BaseActivity {
 
                     try {
                         ArrayList<AllotReplenishment> lists = resJAToList(response);
-                        AllotReplenishmentLVAdapter mAdapter = new AllotReplenishmentLVAdapter(AllotReplenishmentQueryActivity.this, lists, R.layout.allot_replenishment);
+                        AllotReplenishmentLVAdapter mAdapter = new AllotReplenishmentLVAdapter(AllotReplenishmentQueryActivity.this, lists, R.layout.allot_replenishment_item);
                         allotreplenishmentLV.setAdapter(mAdapter);
                     } catch (JSONException e) {
                         e.printStackTrace();

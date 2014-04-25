@@ -18,9 +18,7 @@ import java.util.Map;
 
 import cn.burgeon.core.App;
 import cn.burgeon.core.R;
-import cn.burgeon.core.adapter.AllotReplenishmentLVAdapter;
 import cn.burgeon.core.adapter.AllotReplenishmentOrderLVAdapter;
-import cn.burgeon.core.bean.AllotReplenishment;
 import cn.burgeon.core.bean.AllotReplenishmentOrder;
 import cn.burgeon.core.ui.BaseActivity;
 import cn.burgeon.core.utils.PreferenceUtils;
@@ -81,7 +79,7 @@ public class AllotReplenishmentOrderQueryActivity extends BaseActivity {
 
                     try {
                         ArrayList<AllotReplenishmentOrder> lists = resJAToList(response);
-                        AllotReplenishmentOrderLVAdapter mAdapter = new AllotReplenishmentOrderLVAdapter(AllotReplenishmentOrderQueryActivity.this, lists, R.layout.allot_replenishment_order);
+                        AllotReplenishmentOrderLVAdapter mAdapter = new AllotReplenishmentOrderLVAdapter(AllotReplenishmentOrderQueryActivity.this, lists, R.layout.allot_replenishment_order_item);
                         allotreplenishmentorderLV.setAdapter(mAdapter);
                     } catch (JSONException e) {
                         e.printStackTrace();
