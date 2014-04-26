@@ -51,9 +51,9 @@
         <activity android:name="cn.burgeon.core.ui.allot.AllotReplenishmentOrderApplyActivity" android:windowSoftInputMode="adjustPan|stateHidden"/>
         <activity android:name="cn.burgeon.core.ui.allot.AllotReplenishmentOrderQueryActivity" android:windowSoftInputMode="adjustPan|stateHidden"/>
         <activity android:name="cn.burgeon.core.ui.inventory.InventoryManagerActivity" />
-        <activity android:name="cn.burgeon.core.ui.inventory.InventoryQueryActivity" />
+        <activity android:name="cn.burgeon.core.ui.inventory.InventoryQueryActivity" android:windowSoftInputMode="adjustPan|stateHidden"/>
         <activity android:name="cn.burgeon.core.ui.inventory.InventoryRefreshActivity" />
-        <activity android:name="cn.burgeon.core.ui.inventory.InventoryNearActivity" />
+        <activity android:name="cn.burgeon.core.ui.inventory.InventoryNearActivity" android:windowSoftInputMode="adjustPan|stateHidden"/>
         <activity android:name="cn.burgeon.core.ui.member.MemberManagerActivity" />
         <activity android:name="cn.burgeon.core.ui.member.MemberRegistActivity" android:windowSoftInputMode="adjustPan|stateHidden"/>
         <activity android:name="cn.burgeon.core.ui.member.MemberListActivity"/>
@@ -61,6 +61,12 @@
         <activity android:name="cn.burgeon.core.ui.check.CheckScanActivity" android:windowSoftInputMode="adjustPan|stateHidden"/>
         <activity android:name="cn.burgeon.core.ui.check.CheckDocManagerActivity" android:windowSoftInputMode="adjustPan|stateHidden"/>
         <activity android:name="cn.burgeon.core.ui.check.CheckQueryActivity" android:windowSoftInputMode="adjustPan|stateHidden"/>
+        <activity android:name="cn.burgeon.core.ui.system.SystemManagerActivity"/>
+        <activity android:name="cn.burgeon.core.ui.system.SystemConfigurationActivity"/>
+        <activity android:name="cn.burgeon.core.ui.system.SystemNetTestActivity"/>
+        <activity android:name="cn.burgeon.core.ui.system.SystemUpdateActivity"/>
+        <activity android:name="cn.burgeon.core.ui.system.SystemDataDownloadActivity"/>
+        <activity android:name="cn.burgeon.core.ui.system.SystemDataCleanActivity"/>
     </application>
 
 </manifest>

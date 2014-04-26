@@ -35,4 +35,6 @@ public class Constant {
     public static final int[] memberManagerImgValues = {R.drawable.member_regist, R.drawable.member_query, R.drawable.member_upload, R.drawable.member_down};
 
     public static final String[] systemManagerTextValues = {"系统配置", "网络测试", "系统升级", "资料下载", "数据清理"};
+    public static final int[] systemManagerImgValues = {R.drawable.system_configuration, R.drawable.system_net_test, R.drawable.system_update, R.drawable.system_data_download,R.drawable.system_data_clean};
+
 }

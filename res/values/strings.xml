@@ -114,6 +114,7 @@
     <string name="confirm">确定</string>
     <string name="inventoryCanotRefreshTips">当前存在未上传的调拨或者销售数据，请先上传</string>
     <string name="inventoryRefreshingTips">刷新中，请稍后</string>
+    <string name="systemManager">系统管理</string>
     <string name="add">新增</string>
     <string name="query">查询</string>
     <string name="del">删除</string>

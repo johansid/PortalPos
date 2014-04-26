@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView;
+import cn.burgeon.core.App;
 import cn.burgeon.core.Constant;
 import cn.burgeon.core.R;
 import cn.burgeon.core.adapter.InventoryManagerAdapter;
@@ -17,6 +18,7 @@ import cn.burgeon.core.ui.BaseActivity;
 import cn.burgeon.core.ui.inventory.InventoryQueryActivity;
 import cn.burgeon.core.ui.inventory.InventoryRefreshActivity;
 import cn.burgeon.core.ui.inventory.InventoryNearActivity;
+import cn.burgeon.core.utils.PreferenceUtils;
 
 public class InventoryManagerActivity extends BaseActivity{
 	
@@ -36,7 +38,11 @@ public class InventoryManagerActivity extends BaseActivity{
 		init();
 	} 
 	
-    private void init() {
+    private void init() {  	
+        // 初始化门店信息
+        TextView storeTV = (TextView) findViewById(R.id.storeTV);
+        storeTV.setText(App.getPreferenceUtils().getPreferenceStr(PreferenceUtils.store_key));
+        
     	inventoryGridView = (GridView) findViewById(R.id.inventoryGridView);
     	inventoryAdapter = new InventoryManagerAdapter(this);
     	inventoryGridView.setAdapter(inventoryAdapter);
@@ -88,10 +94,11 @@ public class InventoryManagerActivity extends BaseActivity{
     	TextView tipsText = (TextView) tipsLayout.findViewById(R.id.inventoryRefreshingTipsText);
     	tipsText.setText(whichTips);
     	
-    	new AlertDialog.Builder(this).setTitle(
-    			getString(R.string.inventoryRefreshing)).setView(
-    					tipsLayout).setPositiveButton(
-    							getString(R.string.confirm),null).show();
+    	new AlertDialog.Builder(this)
+    		.setTitle(getString(R.string.inventoryRefreshing))
+    		.setView(tipsLayout)
+    		.setPositiveButton(getString(R.string.confirm),null)
+    		.show();
     	
     }
 }
