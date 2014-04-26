@@ -39,7 +39,7 @@ public class AllotOutApplyActivity extends BaseActivity implements OnClickListen
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_out_apply);
+		setContentView(R.layout.activity_allot_out_apply);
 
 		init();
 

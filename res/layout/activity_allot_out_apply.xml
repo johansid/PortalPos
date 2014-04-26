@@ -99,8 +99,8 @@
                 android:id="@+id/barcodeET"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.90" 
-                android:text="109454D334620"/>
+                android:layout_weight="0.90"
+                android:text="109454D334620" />
 
             <Button
                 android:id="@+id/okBtn"
