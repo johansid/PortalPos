@@ -1,27 +1,26 @@
 package cn.burgeon.core.adapter;
 
+import java.util.ArrayList;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-
-import java.util.ArrayList;
-
 import cn.burgeon.core.R;
-import cn.burgeon.core.bean.AllotIn;
+import cn.burgeon.core.bean.AllotInQuery;
 
 /**
  * Created by Simon on 2014/4/16.
  */
-public class AllotInLVAdapter extends BaseAdapter {
+public class AllotInQueryLVAdapter extends BaseAdapter {
 
     private Context mContext;
-    private ArrayList<AllotIn> list;
+    private ArrayList<AllotInQuery> list;
     private int mLayoutRes;
 
-    public AllotInLVAdapter(Context c, ArrayList<AllotIn> l, int layoutRes) {
+    public AllotInQueryLVAdapter(Context c, ArrayList<AllotInQuery> l, int layoutRes) {
         this.mContext = c;
         this.list = l;
         this.mLayoutRes = layoutRes;
@@ -51,7 +50,6 @@ public class AllotInLVAdapter extends BaseAdapter {
             holder.idTV = (TextView) convertView.findViewById(R.id.idTV);
             holder.docnoTV = (TextView) convertView.findViewById(R.id.docnoTV);
             holder.uploadStateTV = (TextView) convertView.findViewById(R.id.uploadStateTV);
-            holder.docStateTV = (TextView) convertView.findViewById(R.id.docStateTV);
             holder.billdateTV = (TextView) convertView.findViewById(R.id.billdateTV);
             holder.corigidTV = (TextView) convertView.findViewById(R.id.corigidTV);
             holder.totqtyoutTV = (TextView) convertView.findViewById(R.id.totqtyoutTV);
@@ -73,7 +71,6 @@ public class AllotInLVAdapter extends BaseAdapter {
     	TextView idTV;
         TextView docnoTV;
         TextView uploadStateTV;
-        TextView docStateTV;
         TextView billdateTV;
         TextView corigidTV;
         TextView totqtyoutTV;

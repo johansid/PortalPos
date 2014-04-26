@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal" >
+    android:orientation="horizontal">
 
     <TextView
         android:id="@+id/idTV"
@@ -11,8 +11,7 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:text="ID"
-        android:textSize="15sp"
-        android:visibility="gone" />
+        android:textSize="15sp" />
 
     <TextView
         android:id="@+id/docnoTV"
@@ -35,20 +34,6 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:text="已"
-        android:textSize="15sp" />
-
-    <View
-        android:layout_width="0.5dp"
-        android:layout_height="match_parent"
-        android:background="@android:color/black" />
-
-    <TextView
-        android:id="@+id/docStateTV"
-        android:layout_width="80dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:text="是"
         android:textSize="15sp" />
 
     <View

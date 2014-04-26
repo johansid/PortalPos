@@ -42,7 +42,7 @@
         android:background="@android:color/black" />
 
     <TextView
-        android:id="@+id/docStateIV"
+        android:id="@+id/docStateTV"
         android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -56,7 +56,7 @@
         android:background="@android:color/black" />
 
     <TextView
-        android:id="@+id/billdateIV"
+        android:id="@+id/billdateTV"
         android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -70,7 +70,7 @@
         android:background="@android:color/black" />
 
     <TextView
-        android:id="@+id/cdestidIV"
+        android:id="@+id/cdestidTV"
         android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -84,7 +84,7 @@
         android:background="@android:color/black" />
 
     <TextView
-        android:id="@+id/totqtyoutIV"
+        android:id="@+id/totqtyoutTV"
         android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

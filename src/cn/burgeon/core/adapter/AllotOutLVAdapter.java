@@ -51,10 +51,10 @@ public class AllotOutLVAdapter extends BaseAdapter {
             holder.idTV = (TextView) convertView.findViewById(R.id.idTV);
             holder.docnoTV = (TextView) convertView.findViewById(R.id.docnoTV);
             holder.uploadStateTV = (TextView) convertView.findViewById(R.id.uploadStateTV);
-            holder.docStateIV = (TextView) convertView.findViewById(R.id.docStateIV);
-            holder.billdateIV = (TextView) convertView.findViewById(R.id.billdateIV);
-            holder.cdestidIV = (TextView) convertView.findViewById(R.id.cdestidIV);
-            holder.totqtyoutIV = (TextView) convertView.findViewById(R.id.totqtyoutIV);
+            holder.docStateTV = (TextView) convertView.findViewById(R.id.docStateTV);
+            holder.billdateTV = (TextView) convertView.findViewById(R.id.billdateTV);
+            holder.cdestidTV = (TextView) convertView.findViewById(R.id.cdestidTV);
+            holder.totqtyoutTV = (TextView) convertView.findViewById(R.id.totqtyoutTV);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -63,9 +63,9 @@ public class AllotOutLVAdapter extends BaseAdapter {
         // 赋值
         holder.idTV.setText(list.get(position).getID());
         holder.docnoTV.setText(list.get(position).getDOCNO());
-        holder.billdateIV.setText(list.get(position).getBILLDATE());
-        holder.cdestidIV.setText(list.get(position).getC_DEST_ID());
-        holder.totqtyoutIV.setText(list.get(position).getTOT_QTYOUT());
+        holder.billdateTV.setText(list.get(position).getBILLDATE());
+        holder.cdestidTV.setText(list.get(position).getC_DEST_ID());
+        holder.totqtyoutTV.setText(list.get(position).getTOT_QTYOUT());
         return convertView;
     }
 
@@ -73,9 +73,9 @@ public class AllotOutLVAdapter extends BaseAdapter {
         TextView idTV;
         TextView docnoTV;
         TextView uploadStateTV;
-        TextView docStateIV;
-        TextView billdateIV;
-        TextView cdestidIV;
-        TextView totqtyoutIV;
+        TextView docStateTV;
+        TextView billdateTV;
+        TextView cdestidTV;
+        TextView totqtyoutTV;
     }
 }

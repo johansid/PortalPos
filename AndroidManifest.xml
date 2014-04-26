@@ -25,10 +25,10 @@
             </intent-filter>
         </activity>
         <activity android:name="cn.burgeon.core.ui.SystemActivity" />
-        <activity android:name="cn.burgeon.core.ui.allot.AllotManagerActivity" />
-        <activity android:name="cn.burgeon.core.ui.allot.AllotOutInActivity" />
-        <activity android:name="cn.burgeon.core.ui.allot.AllotReplenishmentActivity" />
-        <activity android:name="cn.burgeon.core.ui.allot.AllotReplenishmentOrderActivity" />
+        <activity android:name="cn.burgeon.core.ui.allot.AllotManagerActivity" android:windowSoftInputMode="adjustPan|stateHidden"/>
+        <activity android:name="cn.burgeon.core.ui.allot.AllotOutInActivity" android:windowSoftInputMode="adjustPan|stateHidden"/>
+        <activity android:name="cn.burgeon.core.ui.allot.AllotReplenishmentActivity" android:windowSoftInputMode="adjustPan|stateHidden"/>
+        <activity android:name="cn.burgeon.core.ui.allot.AllotReplenishmentOrderActivity" android:windowSoftInputMode="adjustPan|stateHidden"/>
         <activity android:name="cn.burgeon.core.ui.sales.SalesManagerActivity" />
         <activity android:name="cn.burgeon.core.ui.sales.DailySalesActivity" />
         <activity android:name="cn.burgeon.core.ui.sales.SalesOrderSearchActivity" />
@@ -40,16 +40,16 @@
         <activity android:name="cn.burgeon.core.ui.sales.SalesArchiveSummerActivity" />
         <activity android:name="cn.burgeon.core.ui.sales.SalesNewOrderActivity" android:windowSoftInputMode="adjustPan|stateHidden"/>
         <activity android:name="cn.burgeon.core.ui.sales.SalesSettleActivity" android:windowSoftInputMode="adjustPan|stateHidden"/>
-        <activity android:name="cn.burgeon.core.ui.allot.AllotInActivity" />
-        <activity android:name="cn.burgeon.core.ui.allot.AllotInDetailActivity" />
-        <activity android:name="cn.burgeon.core.ui.allot.AllotOutActivity" />
+        <activity android:name="cn.burgeon.core.ui.allot.AllotInActivity" android:windowSoftInputMode="adjustPan|stateHidden"/>
+        <activity android:name="cn.burgeon.core.ui.allot.AllotInDetailActivity" android:windowSoftInputMode="adjustPan|stateHidden"/>
+        <activity android:name="cn.burgeon.core.ui.allot.AllotOutActivity" android:windowSoftInputMode="adjustPan|stateHidden"/>
         <activity android:name="cn.burgeon.core.ui.allot.AllotOutApplyActivity" android:windowSoftInputMode="adjustPan|stateHidden"/>
-        <activity android:name="cn.burgeon.core.ui.allot.AllotInQueryActivity" />
-        <activity android:name="cn.burgeon.core.ui.allot.AllotOutQueryActivity" />
-        <activity android:name="cn.burgeon.core.ui.allot.AllotReplenishmentApplyActivity" />
-        <activity android:name="cn.burgeon.core.ui.allot.AllotReplenishmentQueryActivity" />
-        <activity android:name="cn.burgeon.core.ui.allot.AllotReplenishmentOrderApplyActivity" />
-        <activity android:name="cn.burgeon.core.ui.allot.AllotReplenishmentOrderQueryActivity" />
+        <activity android:name="cn.burgeon.core.ui.allot.AllotInQueryActivity" android:windowSoftInputMode="adjustPan|stateHidden"/>
+        <activity android:name="cn.burgeon.core.ui.allot.AllotOutQueryActivity" android:windowSoftInputMode="adjustPan|stateHidden"/>
+        <activity android:name="cn.burgeon.core.ui.allot.AllotReplenishmentApplyActivity" android:windowSoftInputMode="adjustPan|stateHidden"/>
+        <activity android:name="cn.burgeon.core.ui.allot.AllotReplenishmentQueryActivity" android:windowSoftInputMode="adjustPan|stateHidden"/>
+        <activity android:name="cn.burgeon.core.ui.allot.AllotReplenishmentOrderApplyActivity" android:windowSoftInputMode="adjustPan|stateHidden"/>
+        <activity android:name="cn.burgeon.core.ui.allot.AllotReplenishmentOrderQueryActivity" android:windowSoftInputMode="adjustPan|stateHidden"/>
         <activity android:name="cn.burgeon.core.ui.inventory.InventoryManagerActivity" />
         <activity android:name="cn.burgeon.core.ui.inventory.InventoryQueryActivity" />
         <activity android:name="cn.burgeon.core.ui.inventory.InventoryRefreshActivity" />
@@ -57,10 +57,10 @@
         <activity android:name="cn.burgeon.core.ui.member.MemberManagerActivity" />
         <activity android:name="cn.burgeon.core.ui.member.MemberRegistActivity" android:windowSoftInputMode="adjustPan|stateHidden"/>
         <activity android:name="cn.burgeon.core.ui.member.MemberListActivity"/>
-        <activity android:name="cn.burgeon.core.ui.check.CheckManagerActivity" />
-        <activity android:name="cn.burgeon.core.ui.check.CheckScanActivity" />
-        <activity android:name="cn.burgeon.core.ui.check.CheckDocManagerActivity" />
-        <activity android:name="cn.burgeon.core.ui.check.CheckQueryActivity" />
+        <activity android:name="cn.burgeon.core.ui.check.CheckManagerActivity" android:windowSoftInputMode="adjustPan|stateHidden"/>
+        <activity android:name="cn.burgeon.core.ui.check.CheckScanActivity" android:windowSoftInputMode="adjustPan|stateHidden"/>
+        <activity android:name="cn.burgeon.core.ui.check.CheckDocManagerActivity" android:windowSoftInputMode="adjustPan|stateHidden"/>
+        <activity android:name="cn.burgeon.core.ui.check.CheckQueryActivity" android:windowSoftInputMode="adjustPan|stateHidden"/>
     </application>
 
 </manifest>
