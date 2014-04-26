@@ -41,7 +41,7 @@
         <activity android:name="cn.burgeon.core.ui.allot.AllotInActivity" />
         <activity android:name="cn.burgeon.core.ui.allot.AllotInDetailActivity" />
         <activity android:name="cn.burgeon.core.ui.allot.AllotOutActivity" />
-        <activity android:name="cn.burgeon.core.ui.allot.AllotOutApplyActivity" />
+        <activity android:name="cn.burgeon.core.ui.allot.AllotOutApplyActivity" android:windowSoftInputMode="adjustPan|stateHidden"/>
         <activity android:name="cn.burgeon.core.ui.allot.AllotInQueryActivity" />
         <activity android:name="cn.burgeon.core.ui.allot.AllotOutQueryActivity" />
         <activity android:name="cn.burgeon.core.ui.allot.AllotReplenishmentApplyActivity" />

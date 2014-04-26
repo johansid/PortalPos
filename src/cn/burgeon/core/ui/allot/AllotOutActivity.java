@@ -1,5 +1,13 @@
 package cn.burgeon.core.ui.allot;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,27 +15,15 @@ import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import com.android.volley.Response;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
 import cn.burgeon.core.App;
 import cn.burgeon.core.R;
-import cn.burgeon.core.adapter.AllotInLVAdapter;
 import cn.burgeon.core.adapter.AllotOutLVAdapter;
-import cn.burgeon.core.bean.AllotIn;
 import cn.burgeon.core.bean.AllotOut;
 import cn.burgeon.core.ui.BaseActivity;
 import cn.burgeon.core.utils.PreferenceUtils;
 import cn.burgeon.core.utils.ScreenUtils;
+
+import com.android.volley.Response;
 
 public class AllotOutActivity extends BaseActivity {
     private ListView allotOutLV;
@@ -37,7 +33,6 @@ public class AllotOutActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setupFullscreen();
         setContentView(R.layout.activity_allot_out);
 
         init();
