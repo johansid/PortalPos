@@ -1,3 +1,4 @@
+
 package cn.burgeon.core.bean;
 
 import java.util.ArrayList;
@@ -14,8 +15,17 @@ public class IntentData implements Parcelable {
     private String user;
 
     private ArrayList<AllotInDetail> allotInDetails;
+    private ArrayList<Product> products;
 
-    public String getStore() {
+    public ArrayList<Product> getProducts() {
+		return products;
+	}
+
+	public void setProducts(ArrayList<Product> products) {
+		this.products = products;
+	}
+
+	public String getStore() {
         return store;
     }
 
@@ -49,6 +59,7 @@ public class IntentData implements Parcelable {
         dest.writeString(this.store);
         dest.writeString(this.user);
         dest.writeTypedList(allotInDetails);
+        dest.writeTypedList(products);
     }
 
     public IntentData() {
@@ -60,6 +71,9 @@ public class IntentData implements Parcelable {
 
         this.allotInDetails = new ArrayList<AllotInDetail>();
         in.readTypedList(allotInDetails, AllotInDetail.CREATOR);
+        
+        this.products = new ArrayList<Product>();
+        in.readTypedList(products, Product.CREATOR);
     }
 
     public static Parcelable.Creator<IntentData> CREATOR = new Parcelable.Creator<IntentData>() {
@@ -72,3 +86,4 @@ public class IntentData implements Parcelable {
         }
     };
 }
+

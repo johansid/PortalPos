@@ -9,6 +9,7 @@ import cn.burgeon.core.bean.Order;
 import cn.burgeon.core.ui.BaseActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 
@@ -40,7 +41,34 @@ public class DailySalesActivity extends BaseActivity {
     	btnUpdate = (Button) findViewById(R.id.sales_daily_btn_update);
     	btnSearch = (Button) findViewById(R.id.sales_daily_btn_search);
     	btnDelete = (Button) findViewById(R.id.sales_daily_btn_delete);
+    	btnAdd.setOnClickListener(onClickListener);
+    	btnUpdate.setOnClickListener(onClickListener);
+    	btnSearch.setOnClickListener(onClickListener);
+    	btnDelete.setOnClickListener(onClickListener);
     }
+	
+	View.OnClickListener onClickListener = new View.OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			switch (v.getId()) {
+			case R.id.sales_daily_btn_add:
+				forwardActivity(SalesNewOrderActivity.class);
+				break;
+			case R.id.sales_daily_btn_update:
+				
+				break;
+			case R.id.sales_daily_btn_search:
+				
+				break;
+			case R.id.sales_daily_btn_delete:
+				
+				break;
+			default:
+				break;
+			}
+		}
+	};
 
 	private List<Order> fetchData() {
 		List<Order> data = new ArrayList<Order>();

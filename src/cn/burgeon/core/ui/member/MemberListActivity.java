@@ -11,17 +11,21 @@ import org.json.JSONObject;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 import cn.burgeon.core.R;
 import cn.burgeon.core.adapter.MemberListAdapter;
 import cn.burgeon.core.bean.Member;
 import cn.burgeon.core.ui.BaseActivity;
+import cn.burgeon.core.ui.sales.SalesNewOrderActivity;
 
 import com.android.volley.Response;
 
 public class MemberListActivity extends BaseActivity {
 	
 	ListView mListView;
+	Button addBtn,queryBtn,updateBtn,delBtn;
 	MemberListAdapter mAdapter;
 	
 	@Override
@@ -35,6 +39,9 @@ public class MemberListActivity extends BaseActivity {
 	}
 
 	private void init() {
+		addBtn = (Button) findViewById(R.id.memberListAdd);
+		queryBtn = (Button) findViewById(R.id.memberListQuery);
+		updateBtn = (Button) findViewById(R.id.memberListUpdate);
 		mListView = (ListView) findViewById(R.id.memberLV);
 		mAdapter = new MemberListAdapter(postRequest(), this);
 		
@@ -94,4 +101,19 @@ public class MemberListActivity extends BaseActivity {
 			Log.d("MemberListActivity", e.toString());
 		}
 	}
+	
+	View.OnClickListener onClickListener = new View.OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			switch (v.getId()) {
+			case R.id.addBtn:
+				forwardActivity(SalesNewOrderActivity.class);
+				break;
+
+			default:
+				break;
+			}
+		}
+	}; 
 }

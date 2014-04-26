@@ -11,9 +11,8 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:background="@drawable/corners_bg"
-        android:padding="10dp"
         android:text="0条记录"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <TextView
         android:id="@+id/sales_common_count"
@@ -21,9 +20,8 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:background="@drawable/corners_bg"
-        android:padding="10dp"
         android:text="数量：5"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <TextView
         android:id="@+id/sales_common_money"
@@ -31,8 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:background="@drawable/corners_bg"
-        android:padding="10dp"
         android:text="金额：100"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
 </LinearLayout>

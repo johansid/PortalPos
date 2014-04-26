@@ -38,6 +38,8 @@
         <activity android:name="cn.burgeon.core.ui.sales.SalesMonthlyReportActivity" />
         <activity android:name="cn.burgeon.core.ui.sales.SalesWareSummerActivity" />
         <activity android:name="cn.burgeon.core.ui.sales.SalesArchiveSummerActivity" />
+        <activity android:name="cn.burgeon.core.ui.sales.SalesNewOrderActivity" android:windowSoftInputMode="adjustPan|stateHidden"/>
+        <activity android:name="cn.burgeon.core.ui.sales.SalesSettleActivity" android:windowSoftInputMode="adjustPan|stateHidden"/>
         <activity android:name="cn.burgeon.core.ui.allot.AllotInActivity" />
         <activity android:name="cn.burgeon.core.ui.allot.AllotInDetailActivity" />
         <activity android:name="cn.burgeon.core.ui.allot.AllotOutActivity" />
@@ -53,7 +55,7 @@
         <activity android:name="cn.burgeon.core.ui.inventory.InventoryRefreshActivity" />
         <activity android:name="cn.burgeon.core.ui.inventory.InventoryNearActivity" />
         <activity android:name="cn.burgeon.core.ui.member.MemberManagerActivity" />
-        <activity android:name="cn.burgeon.core.ui.member.MemberRegistActivity"/>
+        <activity android:name="cn.burgeon.core.ui.member.MemberRegistActivity" android:windowSoftInputMode="adjustPan|stateHidden"/>
         <activity android:name="cn.burgeon.core.ui.member.MemberListActivity"/>
         <activity android:name="cn.burgeon.core.ui.check.CheckManagerActivity" />
         <activity android:name="cn.burgeon.core.ui.check.CheckScanActivity" />
