@@ -22,7 +22,7 @@
             android:orientation="horizontal" >
 
             <TextView
-                android:id="@+id/inventoryStatusStoreName"
+                android:id="@+id/statusStoreName"
                 android:layout_height="wrap_content"
                 android:layout_weight="5"
                 android:layout_width="0dp"
@@ -32,7 +32,7 @@
                 android:padding="10dp"/>
 
             <TextView
-                android:id="@+id/inventoryStatusTime"
+                android:id="@+id/statusTime"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:layout_width="0dp"

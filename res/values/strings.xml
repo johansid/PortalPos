@@ -20,6 +20,7 @@
     <string name="btn_back">退出</string>
     <string name="btn_save">保存</string>
     <string name="btn_exit">退出</string>
+    <string name="btn_download">下载</string>
     <string name="sysFunction">系统功能</string>
     <string name="allotManager">调拨管理</string>
     <string name="checkManager">盘点管理</string>
@@ -118,6 +119,12 @@
     <string name="inventoryRefreshingTips">刷新中，请稍后</string>
     
     <string name="systemManager">系统管理</string>
+    <string name="systemConguration">系统配置</string>
+    <string name="systemNetTest">网络测试</string>
+    <string name="systemUpdate">系统升级</string>
+    <string name="systemDataDownload">资料下载</string>
+    <string name="systemDataClean">系统清理</string>                    
+       
     <string name="systemConfigurationNetConfig">网络配置</string>
     <string name="systemConfigurationStoreInfo">门店信息</string>
     <string name="systemConfigurationParamConfig">参数配置</string>

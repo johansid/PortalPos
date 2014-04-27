@@ -171,7 +171,7 @@
             android:id="@+id/downloadButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/btn_download"
+            android:text="@string/btn_help"
             android:textAppearance="?android:attr/textAppearanceMedium"/>
 
 	</LinearLayout>

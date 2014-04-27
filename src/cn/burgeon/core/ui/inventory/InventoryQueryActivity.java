@@ -32,8 +32,8 @@ public class InventoryQueryActivity extends BaseActivity {
 	private final String TAG = "InventoryQueryActivity";
 	private ListView mListView;
 	private InventoryQueryAdapter mQueryAdapter;
-	private TextView inventoryStatusStoreName;
-	private TextView inventoryStatusTime;
+	private TextView statusStoreName;
+	private TextView statusTime;
 	private Button buttonHelp;
 	private Button buttonSearch;
 	private Button buttonDetail;
@@ -53,8 +53,8 @@ public class InventoryQueryActivity extends BaseActivity {
     
 	private void init(){
 		mListView = (ListView) findViewById(R.id.inventoryListView);
-		inventoryStatusStoreName = (TextView) findViewById(R.id.inventoryStatusStoreName);
-		inventoryStatusTime = (TextView) findViewById(R.id.inventoryStatusTime);
+		statusStoreName = (TextView) findViewById(R.id.statusStoreName);
+		statusTime = (TextView) findViewById(R.id.statusTime);
 		initStoreNameAndTime();
 		
 		buttonHelp = (Button) findViewById(R.id.inventoryButtonHelp);
@@ -74,8 +74,8 @@ public class InventoryQueryActivity extends BaseActivity {
 
     // 初始化门店信息
 	private void initStoreNameAndTime(){
-        inventoryStatusStoreName.setText(App.getPreferenceUtils().getPreferenceStr(PreferenceUtils.store_key));
-        inventoryStatusTime.setText(getCurrDate());				
+		statusStoreName.setText(App.getPreferenceUtils().getPreferenceStr(PreferenceUtils.store_key));
+		statusTime.setText(getCurrDate());				
 	}
 	
 	//监听回车键输入

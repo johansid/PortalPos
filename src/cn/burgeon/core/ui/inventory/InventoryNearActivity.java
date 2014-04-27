@@ -34,8 +34,8 @@ public class InventoryNearActivity extends BaseActivity {
 	private final String TAG = "InventoryNearActivity";
 	private ListView mListView;
 	private InventoryNearAdapter mNearAdapter;
-	private TextView inventoryStatusStoreName;
-	private TextView inventoryStatusTime;
+	private TextView statusStoreName;
+	private TextView statusTime;
 	private Button buttonHelp;
 	private Button buttonSearch;
 	private Button buttonBack;
@@ -63,8 +63,8 @@ public class InventoryNearActivity extends BaseActivity {
 	private void init(){
 		mListView = (ListView) findViewById(R.id.inventoryListView);
 
-		inventoryStatusStoreName = (TextView) findViewById(R.id.inventoryStatusStoreName);
-		inventoryStatusTime = (TextView) findViewById(R.id.inventoryStatusTime);
+		statusStoreName = (TextView) findViewById(R.id.statusStoreName);
+		statusTime = (TextView) findViewById(R.id.statusTime);
 		initStoreNameAndTime();
 		
 		buttonHelp = (Button) findViewById(R.id.inventoryButtonHelp);
@@ -133,8 +133,8 @@ public class InventoryNearActivity extends BaseActivity {
 	
     // 初始化门店信息
 	private void initStoreNameAndTime(){
-        inventoryStatusStoreName.setText(App.getPreferenceUtils().getPreferenceStr(PreferenceUtils.store_key));
-        inventoryStatusTime.setText(getCurrDate());				
+        statusStoreName.setText(App.getPreferenceUtils().getPreferenceStr(PreferenceUtils.store_key));
+        statusTime.setText(getCurrDate());				
 	}
 	
 	//初始化款号跟条码框的输入状态,要求同时只能录入一个
