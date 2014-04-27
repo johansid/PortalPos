@@ -19,6 +19,6 @@ public class SystemConfigurationNetConfig extends Fragment{
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-		return inflater.inflate(R.layout.system_configuration_net_config, null);
+		return inflater.inflate(R.layout.system_configuration_net_config_fragment, null);
 	}
 }

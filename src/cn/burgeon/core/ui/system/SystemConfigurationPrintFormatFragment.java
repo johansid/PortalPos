@@ -25,7 +25,7 @@ public class SystemConfigurationPrintFormatFragment extends Fragment{
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-		return inflater.inflate(R.layout.tab_print_format_config, null);
+		return inflater.inflate(R.layout.system_configuration_print_format_fragment, null);
 	}
 
 

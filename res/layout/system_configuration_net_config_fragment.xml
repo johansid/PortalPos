@@ -6,7 +6,7 @@
     android:background="#EFEFEFEF" >
     
     <TextView
-        android:id="@+id/URL_address"
+        android:id="@+id/URLAddress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/netConfigURLAddress"
@@ -14,7 +14,7 @@
         android:textSize="14sp" />
 
     <EditText
-        android:id="@+id/editor"
+        android:id="@+id/URLAddressEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint=""
@@ -22,50 +22,50 @@
         android:padding="2dip"
         android:layout_marginLeft="6dp"
         android:scrollHorizontally="true"
-        android:layout_below="@+id/URL_address"
+        android:layout_below="@+id/URLAddress"
         android:singleLine="true"
         android:textSize="14sp" />
     
     <Button
-        android:id="@+id/server_connect_test"
+        android:id="@+id/serverTestButton"
         android:layout_width="130dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/editor"
+        android:layout_below="@+id/URLAddressEditText"
         android:layout_marginLeft="20dp"
         android:text="@string/netConfigURLServerTest"
         android:textSize="14sp" />
 
     <Button
-        android:id="@+id/system_update"
+        android:id="@+id/systemUpdateConfigButton"
         android:layout_width="130dp"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_marginRight="20dp"
-        android:layout_below="@+id/editor"
+        android:layout_below="@+id/URLAddressEditText"
         android:text="@string/netConfigSystemUpdateConfig"
         android:textSize="14sp" />
 
     <Button
-        android:id="@+id/download"
+        android:id="@+id/dataDownloadButton"
         android:layout_width="130dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/server_connect_test"
+        android:layout_below="@+id/serverTestButton"
         android:layout_marginLeft="20dp"
         android:text="@string/netConfigDataDownload"
         android:textSize="14sp" />
 
     <Button
-        android:id="@+id/modify_password"
+        android:id="@+id/changePasswordButton"
         android:layout_width="130dp"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_marginRight="20dp"
-        android:layout_below="@+id/server_connect_test"
+        android:layout_below="@+id/serverTestButton"
         android:text="@string/netConfigChangePassword"
         android:textSize="14sp" />
 
     <Button
-        android:id="@+id/save"
+        android:id="@+id/saveButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

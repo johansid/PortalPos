@@ -22,7 +22,7 @@ public class SystemConfigurationNetConfigDataDownloadActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.system_management_download);
+		setContentView(R.layout.activity_system_configuration_net_config_data_download);
 		
 		initViews();
 	}

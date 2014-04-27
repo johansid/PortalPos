@@ -11,19 +11,21 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.DisplayMetrics;
 import android.view.View;
-import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 public class SystemConfigurationActivity extends FragmentActivity {
-    private static final String TAG = "SystemManagementSettingsActivity";
+    private static final String TAG = "SystemConfigurationActivity";
     
     private ViewPager mViewPager;
     private ArrayList<Fragment> mFragmentsList;
     private ImageView mBottomLine;
-    private TextView mTabMetsettings, mTabStoreInfo, mTabParamSettings, mTabPrintFormat;
+    private TextView mTabNetConfig;
+    private TextView mTabStoreInfo;
+    private TextView mTabParamConfig;
+    private TextView mTabPrintFormat;
 
     private int mCurrIndex = 0;
     private int mBottomLineWidth;
@@ -36,7 +38,7 @@ public class SystemConfigurationActivity extends FragmentActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.system_management_settings_activity);
+        setContentView(R.layout.activity_system_configuration);
         
         initWidth();
         initTextView();
@@ -44,19 +46,19 @@ public class SystemConfigurationActivity extends FragmentActivity {
     }
 
     private void initTextView() {
-        mTabMetsettings = (TextView) findViewById(R.id.tv_tab_net_settings);
-        mTabStoreInfo = (TextView) findViewById(R.id.tv_tab_store_info);
-        mTabParamSettings = (TextView) findViewById(R.id.tv_tab_param_settings);
-        mTabPrintFormat = (TextView) findViewById(R.id.tv_tab_print_format);
+    	mTabNetConfig = (TextView) findViewById(R.id.titleNetConfig);
+        mTabStoreInfo = (TextView) findViewById(R.id.titleStoreInfo);
+        mTabParamConfig = (TextView) findViewById(R.id.titleParamConfig);
+        mTabPrintFormat = (TextView) findViewById(R.id.titlePrintFormat);
 
-		mTabMetsettings.setOnClickListener(new TabOnClickListener(0));
+        mTabNetConfig.setOnClickListener(new TabOnClickListener(0));
 		mTabStoreInfo.setOnClickListener(new TabOnClickListener(1));
-		mTabParamSettings.setOnClickListener(new TabOnClickListener(2));
+		mTabParamConfig.setOnClickListener(new TabOnClickListener(2));
 		mTabPrintFormat.setOnClickListener(new TabOnClickListener(3));
     }
 
     private void initViewPager() {
-        mViewPager = (ViewPager) findViewById(R.id.vPager);
+        mViewPager = (ViewPager) findViewById(R.id.viewPager);
         mFragmentsList = new ArrayList<Fragment>();
 
 		Fragment netSettingsFragment = SystemConfigurationNetConfigFragment.newInstance();
@@ -75,7 +77,7 @@ public class SystemConfigurationActivity extends FragmentActivity {
     }
 
     private void initWidth() {
-        mBottomLine = (ImageView) findViewById(R.id.iv_bottom_line);
+        mBottomLine = (ImageView) findViewById(R.id.titleBottomLine);
         mBottomLineWidth = mBottomLine.getLayoutParams().width;
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);

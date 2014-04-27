@@ -31,13 +31,14 @@ public class SystemConfigurationStoreInfoFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.store_info_fragment, container, false);
-        mStoreNoEditor = (EditText) view.findViewById(R.id.store_No_editor);
-        mCustomerNameEditor = (EditText) view.findViewById(R.id.customer_name_editor);
-        mTerminalNoEditor = (EditText) view.findViewById(R.id.terminal_No_editor);
-        mInventoryRowCountEditor = (EditText) view.findViewById(R.id.inventory_row_count_editor);
+        View view = inflater.inflate(R.layout.system_configuration_store_info_fragment, container, false);
         
-        mSave = (Button) view.findViewById(R.id.save);
+        mStoreNoEditor = (EditText) view.findViewById(R.id.storeNoEditText);
+        mCustomerNameEditor = (EditText) view.findViewById(R.id.customerNameEditText);
+        mTerminalNoEditor = (EditText) view.findViewById(R.id.terminalNoEditText);
+        mInventoryRowCountEditor = (EditText) view.findViewById(R.id.inventoryRowCountEditText);
+        
+        mSave = (Button) view.findViewById(R.id.saveButton);
         
         mSave.setOnClickListener(new View.OnClickListener() {
 			@Override

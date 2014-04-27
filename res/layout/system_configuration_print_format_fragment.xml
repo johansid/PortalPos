@@ -1,0 +1,102 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingTop="10dp"
+    android:background="#EFEFEFEF">
+    
+    <RelativeLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        
+		<CheckBox
+		    android:id="@+id/smallTicketPrintCheckBox"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:paddingTop="20dp"
+		    android:paddingLeft="15dp"
+		    android:checked="true"/>
+		
+		<TextView 
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_toRightOf="@id/smallTicketPrintCheckBox"
+		    android:text="@string/printFormatEnableSmallTicketPrint"
+		    android:paddingTop="15dp"/>
+		
+		<TextView
+		    android:id="@+id/smallTicketPrintCountTextView"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/printFormatSmallTicketPrintCounts"
+	        android:layout_marginTop="30dp"
+	        android:layout_marginLeft="15dp"
+	        android:layout_below="@id/smallTicketPrintCheckBox"/>
+		
+		<Spinner
+		    android:id="@+id/smallTicketPrintCountSpinner"
+		    android:layout_height="wrap_content"
+		    android:layout_width="100dp"
+		    android:layout_alignParentRight="true"
+		    android:layout_toRightOf="@id/smallTicketPrintCountTextView"
+		    android:layout_marginLeft="50dp"
+		    android:layout_marginRight="20dp"
+		    android:layout_marginTop="70dp"/>
+	
+		<TextView
+		    android:id="@+id/printFormatTextView" 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/printFormatPrintFormat"
+	        android:layout_marginTop="40dp"
+	        android:layout_marginLeft="15dp"
+	        android:layout_below="@id/smallTicketPrintCountTextView"/>
+	
+		<Spinner
+		    android:id="@+id/printFormatSpinner"
+		    android:layout_height="wrap_content"
+		    android:layout_width="50dp"
+		    android:layout_alignParentRight="true"
+		    android:layout_toRightOf="@id/smallTicketPrintCountTextView"
+		    android:layout_marginRight="20dp"
+		    android:layout_marginLeft="80dp"
+		    android:layout_marginTop="130dp"/>
+		
+    </RelativeLayout>
+ 	
+    <TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="@string/printFormatSmallTicketTitle"
+		android:paddingTop="20dp"
+		android:paddingLeft="15dp"/>
+    
+    <EditText
+        android:id="@+id/smallTicketTitleEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"/>
+    
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/printFormatSmallTicketTail"
+        android:paddingTop="20dp"
+        android:paddingLeft="15dp"/>
+    
+    <EditText
+        android:id="@+id/smallTicketTailEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="2dp"/>
+ 	              
+    <Button 
+       	android:id="@+id/saveButton"
+       	android:layout_width="match_parent"
+       	android:layout_height="wrap_content"
+       	android:layout_marginTop="40dp"
+       	android:layout_marginLeft="20dp"
+       	android:layout_marginRight="20dp"
+       	android:text="@string/btn_save"/>
+    
+    </LinearLayout>

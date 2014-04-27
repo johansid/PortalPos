@@ -25,7 +25,7 @@ public class SystemConfigurationParamConfigFragment extends Fragment{
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-		return inflater.inflate(R.layout.tab_param_config, null);
+		return inflater.inflate(R.layout.system_configuration_param_config_fragment, null);
 	}
 
 

@@ -12,10 +12,10 @@ import android.widget.Button;
 public class SystemConfigurationNetConfigFragment extends Fragment {
     private static final String TAG = "NetSettingsFragment";
     
-    private Button mServerConnectTest;
+    private Button mServerTest;
     private Button mSystemUpdate;
-    private Button mDownload;
-    private Button mModifyPassword;
+    private Button mDataDownload;
+    private Button mChangePassword;
     private Button mSave;
 
     static SystemConfigurationNetConfigFragment newInstance() {
@@ -30,14 +30,15 @@ public class SystemConfigurationNetConfigFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.net_settings_fragment, container, false);
-        mServerConnectTest = (Button) view.findViewById(R.id.server_connect_test);
-        mSystemUpdate = (Button) view.findViewById(R.id.system_update);
-        mDownload = (Button) view.findViewById(R.id.download);
-        mModifyPassword = (Button) view.findViewById(R.id.modify_password);
-        mSave = (Button) view.findViewById(R.id.save);
+        View view = inflater.inflate(R.layout.system_configuration_net_config_fragment, container, false);
         
-        mServerConnectTest.setOnClickListener(new View.OnClickListener() {
+        mServerTest = (Button) view.findViewById(R.id.serverTestButton);
+        mSystemUpdate = (Button) view.findViewById(R.id.systemUpdateConfigButton);
+        mDataDownload = (Button) view.findViewById(R.id.dataDownloadButton);
+        mChangePassword = (Button) view.findViewById(R.id.changePasswordButton);
+        mSave = (Button) view.findViewById(R.id.saveButton);
+        
+        mServerTest.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 	
@@ -51,16 +52,17 @@ public class SystemConfigurationNetConfigFragment extends Fragment {
 			}
 		});
         
-        mDownload.setOnClickListener(new View.OnClickListener() {
+        mDataDownload.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent();
-				intent.setClass(SystemConfigurationNetConfigFragment.this.getActivity(), SystemConfigurationNetConfigDataDownloadActivity.class);
+				intent.setClass(SystemConfigurationNetConfigFragment.this.getActivity(), 
+						SystemConfigurationNetConfigDataDownloadActivity.class);
 				startActivity(intent);
 			}
 		});
         
-        mModifyPassword.setOnClickListener(new View.OnClickListener() {
+        mDataDownload.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 	
