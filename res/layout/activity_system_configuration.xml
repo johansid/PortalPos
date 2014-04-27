@@ -1,8 +1,123 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
-    
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"
+     android:orientation="vertical">
+ 
+     <RelativeLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="horizontal">
+	    
+	    <TextView 
+	        android:id="@+id/config_win_store_name"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:layout_marginLeft="5dp"
+	        android:text="@string/store"/>
+	    <TextView 
+	        android:id="@+id/config_win_system_date"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentRight="true"
+	        android:layout_marginRight="5dp"
+	        android:text="@string/store"/>
+	    
+	     <Button
+           android:id="@+id/button_tab1"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="@string/systemConfigurationNetConfig" 
+           android:layout_below="@id/config_win_store_name"
+           android:textSize="6pt"
+           android:paddingLeft="15dp"/>
 
+       <Button
+           android:id="@+id/button_tab2"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_toRightOf="@id/button_tab1"
+           android:layout_alignBaseline="@id/button_tab1"
+           android:text="@string/systemConfigurationStoreInfo" 
+           android:textSize="6pt"
+           />
+
+        <Button
+            android:id="@+id/button_tab3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/button_tab2"
+             android:layout_alignBaseline="@id/button_tab1"
+            android:text="@string/systemConfigurationParamConfig" 
+            android:textSize="6pt"
+            />
+
+        <Button
+            android:id="@+id/button_tab4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/button_tab3"
+             android:layout_alignBaseline="@id/button_tab1"
+            android:text="@string/systemConfigurationPrintFormat" 
+            android:textSize="6pt"
+            />
+	</RelativeLayout>
+
+ 
+     
+  <FrameLayout   
+		android:id="@+id/realtabcontent" 
+		android:layout_width="match_parent"  
+		android:layout_height="match_parent"  
+		/>  
+  	<android.support.v4.app.FragmentTabHost
+       android:id="@android:id/tabhost"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content">
+       <TabWidget   
+        android:id="@android:id/tabs"  
+        android:layout_width="match_parent"  
+        android:layout_height="wrap_content"  
+        android:orientation="horizontal"/>         
+	  </android.support.v4.app.FragmentTabHost>
+       
+  
+  
+     <RelativeLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+           <Button 
+               android:id="@+id/button_config_help"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="@string/btn_help"
+               android:layout_alignParentLeft="true"
+               android:paddingLeft="2dp"
+               android:paddingBottom="5dp"
+               android:layout_alignParentBottom="true"
+               />
+           <Button 
+               android:id="@+id/button_config_save"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="@string/btn_save"
+			   android:gravity="center_vertical"
+			   android:layout_alignParentBottom="true"
+			   android:layout_centerHorizontal="true"
+			   android:paddingBottom="5dp"
+               />
+           <Button 
+               android:id="@+id/button_config_exit"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="@string/btn_exit"
+               android:layout_alignParentRight="true"
+               android:paddingRight="2dp"
+               android:layout_alignParentBottom="true"
+               android:paddingBottom="5dp"
+               />
+      </RelativeLayout>
+
+         
 </LinearLayout>

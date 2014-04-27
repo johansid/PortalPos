@@ -62,7 +62,8 @@
         <activity android:name="cn.burgeon.core.ui.check.CheckDocManagerActivity" android:windowSoftInputMode="adjustPan|stateHidden"/>
         <activity android:name="cn.burgeon.core.ui.check.CheckQueryActivity" android:windowSoftInputMode="adjustPan|stateHidden"/>
         <activity android:name="cn.burgeon.core.ui.system.SystemManagerActivity"/>
-        <activity android:name="cn.burgeon.core.ui.system.SystemConfigurationActivity"/>
+        <activity android:name="cn.burgeon.core.ui.system.SystemConfigurationActivity" android:windowSoftInputMode="adjustPan|stateHidden"/>
+        <activity android:name="cn.burgeon.core.ui.system.SystemConfigurationNetConfigDataDownloadActivity"/>
         <activity android:name="cn.burgeon.core.ui.system.SystemNetTestActivity"/>
         <activity android:name="cn.burgeon.core.ui.system.SystemUpdateActivity"/>
         <activity android:name="cn.burgeon.core.ui.system.SystemDataDownloadActivity"/>

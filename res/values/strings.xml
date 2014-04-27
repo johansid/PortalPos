@@ -18,6 +18,8 @@
     <string name="btn_help">帮助</string>
     <string name="btn_detail">明细</string>
     <string name="btn_back">退出</string>
+    <string name="btn_save">保存</string>
+    <string name="btn_exit">退出</string>
     <string name="sysFunction">系统功能</string>
     <string name="allotManager">调拨管理</string>
     <string name="checkManager">盘点管理</string>
@@ -114,7 +116,47 @@
     <string name="confirm">确定</string>
     <string name="inventoryCanotRefreshTips">当前存在未上传的调拨或者销售数据，请先上传</string>
     <string name="inventoryRefreshingTips">刷新中，请稍后</string>
+    
     <string name="systemManager">系统管理</string>
+    <string name="systemConfigurationNetConfig">网络配置</string>
+    <string name="systemConfigurationStoreInfo">门店信息</string>
+    <string name="systemConfigurationParamConfig">参数配置</string>
+    <string name="systemConfigurationPrintFormat">打印格式</string>
+    
+    <string name="netConfigURLAddress">URL地址</string>
+    <string name="netConfigURLServerTest">服务器连接测试</string>
+    <string name="netConfigSystemUpdateConfig">系统升级配置</string>
+    <string name="netConfigDataDownload">资料下载</string>   
+    <string name="netConfigChangePassword">密码修改</string>
+    
+    <string name="paramConfigScanBarcodeInterceptNumber">扫描条码截取位数</string>
+    <string name="paramConfigMoneyDataAccuracy">金额数据精度</string>
+    <string name="paramConfigMoenyRoundingStyle">金额取整方式</string>
+    <string name="paramConfigEnableMallsSettlement">启用商场结算</string>
+    <string name="paramConfigUseOutsideBarcode">使用外部条码</string>
+    <string name="paramConfigControlSalesmanLowestRebate">控制营业员最低折扣</string>
+    
+    <string name="printFormatEnableSmallTicketPrint">启动小票打印</string>
+    <string name="printFormatSmallTicketPrintCounts">小票打印次数</string>
+    <string name="printFormatPrintFormat">打印格式</string>
+    <string name="printFormatSmallTicketTitle">小票表头</string>   
+    <string name="printFormatSmallTicketTail">小票表尾</string>
+    
+    <string name="dataDownloadStoreName">门店名称</string>
+    <string name="dataDownloadTime">日期：</string>
+    <string name="dataDownloadUserData">用户资料</string>
+    <string name="dataDownloadProductData">商品资料</string>
+    <string name="dataDownloadVipType">会员类型</string>
+    <string name="dataDownloadItemStrategy">单品策略</string>
+    <string name="dataDownloadSystemParam">系统参数</string>
+    <string name="dataDownloadDownload">下载</string>
+    
+    <string name="storeInfoStoreIndex">门店编号</string>
+    <string name="storeInfoCustomerName">顾客名称</string>
+    <string name="storeInfoTerminalIndex">终端编号</string>
+    <string name="storeInfoInventoryShowLines">盘点显示行数</string>
+    <string name="storeInfoInventoryDetailInfo">盘点详细信息</string> 
+    
     <string name="add">新增</string>
     <string name="query">查询</string>
     <string name="del">删除</string>

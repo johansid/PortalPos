@@ -1,0 +1,135 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingTop="10dp"
+    android:background="#EFEFEFEF"
+    >
+    
+    <RelativeLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+  	<TextView 
+      android:id="@+id/textview_scan_barcode_Intercept_number"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+ 	  android:paddingTop="20dp"
+      android:text="@string/paramConfigScanBarcodeInterceptNumber"
+      />
+  	<Spinner
+	    android:id="@+id/spinner_scan_barcode_Intercept_number"
+	    android:layout_height="wrap_content"
+	    android:layout_width="100dp"
+	    android:layout_alignParentRight="true"
+	    android:layout_toRightOf="@id/textview_scan_barcode_Intercept_number"
+	    android:layout_marginLeft="50dp"
+	    android:layout_marginRight="20dp"
+	    />
+  	
+    <TextView 
+      android:id="@+id/textview_money_data_accuracy"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/spinner_scan_barcode_Intercept_number"
+      android:layout_marginTop="15dp"
+      android:text="@string/paramConfigMoneyDataAccuracy"
+      />
+     <Spinner
+	    android:id="@+id/spinner_money_data_accuracy"
+	    android:layout_height="wrap_content"
+	    android:layout_width="100dp"
+	    android:layout_alignParentRight="true"
+	    android:layout_toRightOf="@id/textview_money_data_accuracy"
+	    android:layout_marginLeft="76dp"
+	    android:layout_marginRight="20dp"
+	    android:layout_marginTop="50dp"
+	    />
+     
+     
+    <TextView 
+      android:id="@+id/textview_moeny_rounding_style"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/spinner_money_data_accuracy"
+      android:layout_marginTop="15dp"
+      android:text="@string/paramConfigMoenyRoundingStyle"
+      />
+    <Spinner
+	    android:id="@+id/spinner_moeny_rounding_style"
+	    android:layout_height="wrap_content"
+	    android:layout_width="100dp"
+	    android:layout_alignParentRight="true"
+	    android:layout_toRightOf="@id/textview_moeny_rounding_style"
+	    android:layout_marginLeft="76dp"
+	    android:layout_marginRight="20dp"
+	    android:layout_marginTop="100dp"
+	    />
+         
+    </RelativeLayout>
+    
+        
+    <RelativeLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="30dp">
+        
+    <CheckBox 
+        android:id="@+id/malls_settlement"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        android:checked="true"
+     />
+    <TextView 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="18dp"
+        android:layout_toRightOf="@id/malls_settlement"
+        android:text="@string/paramConfigEnableMallsSettlement"
+        />
+    
+    <CheckBox 
+        android:id="@+id/control_salesman_rebate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:checked="true"
+        android:layout_below="@id/malls_settlement"
+        />
+    <TextView 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="65dp"
+        android:layout_toRightOf="@id/control_salesman_rebate"
+         android:text="@string/paramConfigControlSalesmanLowestRebate"
+        />
+    
+     <CheckBox 
+        android:id="@+id/use_out_barcode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/control_salesman_rebate"
+        android:checked="true"
+        />   
+      <TextView 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="115dp"
+        android:layout_toRightOf="@id/use_out_barcode"
+        android:text="@string/paramConfigUseOutsideBarcode"
+        />
+   </RelativeLayout>
+   
+        <Button 
+            android:id="@+id/config_param_save"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="45dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:text="@string/btn_save"
+            />
+        
+</LinearLayout>

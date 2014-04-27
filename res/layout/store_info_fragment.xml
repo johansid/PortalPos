@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#EFEFEFEF" >
+    
+    <TextView
+        android:id="@+id/store_No"
+        android:layout_width="90dp"
+        android:layout_height="wrap_content"
+        android:text="@string/storeInfoStoreIndex"
+        android:layout_marginLeft="6dp"
+        android:layout_alignBaseline="@+id/store_No_editor"
+        android:gravity="right"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/store_No_editor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint=""
+        android:minEms="12"
+        android:padding="2dip"
+        android:layout_marginTop="20dp"
+        android:scrollHorizontally="true"
+        android:layout_toRightOf="@+id/store_No"
+        android:singleLine="true"
+        android:textSize="14sp" />
+    
+    <TextView
+        android:id="@+id/customer_name"
+        android:layout_width="90dp"
+        android:layout_height="wrap_content"
+        android:text="@string/storeInfoCustomerName"
+        android:layout_marginLeft="6dp"
+        android:layout_below="@+id/store_No_editor"
+        android:layout_alignBaseline="@+id/customer_name_editor"
+        android:gravity="right"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/customer_name_editor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint=""
+        android:minEms="12"
+        android:padding="2dip"
+        android:scrollHorizontally="true"
+        android:layout_below="@+id/store_No_editor"
+        android:layout_toRightOf="@+id/customer_name"
+        android:singleLine="true"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/terminal_No"
+        android:layout_width="90dp"
+        android:layout_height="wrap_content"
+        android:text="@string/storeInfoTerminalIndex"
+        android:layout_marginLeft="6dp"
+        android:layout_below="@+id/customer_name_editor"
+        android:layout_alignBaseline="@+id/terminal_No_editor"
+        android:gravity="right"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/terminal_No_editor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint=""
+        android:minEms="12"
+        android:padding="2dip"
+        android:scrollHorizontally="true"
+        android:layout_below="@+id/customer_name_editor"
+        android:layout_toRightOf="@+id/terminal_No"
+        android:singleLine="true"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/inventory_row_count"
+        android:layout_width="90dp"
+        android:layout_height="wrap_content"
+        android:text="@string/storeInfoInventoryShowLines"
+        android:layout_below="@+id/terminal_No_editor"
+        android:layout_alignBaseline="@+id/inventory_row_count_editor"
+        android:layout_marginLeft="6dp"
+        android:gravity="right"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/inventory_row_count_editor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint=""
+        android:minEms="12"
+        android:padding="2dip"
+        android:scrollHorizontally="true"
+        android:layout_below="@+id/terminal_No_editor"
+        android:layout_toRightOf="@+id/inventory_row_count"
+        android:singleLine="true"
+        android:textSize="14sp" />
+    
+    
+    <Button
+        android:id="@+id/save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:text="@string/btn_save"
+     />
+
+
+
+</RelativeLayout>
