@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 public class SystemConfigurationNetConfigFragment extends Fragment {
-    private static final String TAG = "NetSettingsFragment";
+    private static final String TAG = "SystemConfigurationNetConfigFragment";
     
     private Button mServerTest;
     private Button mSystemUpdate;

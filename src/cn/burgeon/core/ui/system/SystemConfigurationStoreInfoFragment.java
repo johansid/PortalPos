@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 public class SystemConfigurationStoreInfoFragment extends Fragment {
-    private static final String TAG = "StoreInfoFragment";
+    private static final String TAG = "SystemConfigurationStoreInfoFragment";
     
     private EditText mStoreNoEditor;
     private EditText mCustomerNameEditor;

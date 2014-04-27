@@ -6,14 +6,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
+public class SystemConfigurationFragmentPagerAdapter extends FragmentPagerAdapter {
     private ArrayList<Fragment> fragmentsList;
 
-    public MyFragmentPagerAdapter(FragmentManager fm) {
+    public SystemConfigurationFragmentPagerAdapter(FragmentManager fm) {
         super(fm);
     }
 
-    public MyFragmentPagerAdapter(FragmentManager fm, ArrayList<Fragment> fragments) {
+    public SystemConfigurationFragmentPagerAdapter(FragmentManager fm, ArrayList<Fragment> fragments) {
         super(fm);
         this.fragmentsList = fragments;
     }
