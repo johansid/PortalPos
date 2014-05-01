@@ -55,7 +55,10 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.4"
                 android:hint="@string/startData"
-                android:text="20091217" />
+                android:text="20091217"
+                android:gravity="center"
+                android:focusable="false"
+                android:focusableInTouchMode="false"/>
 
             <TextView
                 android:layout_width="0dp"
@@ -68,7 +71,10 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.4"
                 android:hint="@string/endData"
-                android:text="20091219" />
+                android:text="20091219"
+                android:gravity="center"
+                android:focusable="false"
+                android:focusableInTouchMode="false"/>
         </LinearLayout>
 
         <HorizontalScrollView

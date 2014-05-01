@@ -1,6 +1,7 @@
 package cn.burgeon.core.ui.allot;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,11 +9,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.ListView;
@@ -20,6 +23,7 @@ import android.widget.TextView;
 import cn.burgeon.core.App;
 import cn.burgeon.core.R;
 import cn.burgeon.core.adapter.AllotOutQueryLVAdapter;
+import cn.burgeon.core.bean.AllotOut;
 import cn.burgeon.core.bean.AllotOutQuery;
 import cn.burgeon.core.ui.BaseActivity;
 import cn.burgeon.core.utils.PreferenceUtils;
@@ -52,8 +56,10 @@ public class AllotOutQueryActivity extends BaseActivity implements OnClickListen
 		TextView currTimeTV = (TextView) findViewById(R.id.currTimeTV);
 		currTimeTV.setText(getCurrDate());
 
-		startDateET = (EditText) findViewById(R.id.startDateET);
-		endDateET = (EditText) findViewById(R.id.endDateET);
+        startDateET = (EditText) findViewById(R.id.startDateET);
+        startDateET.setOnClickListener(this);
+        endDateET = (EditText) findViewById(R.id.endDateET);
+        endDateET.setOnClickListener(this);
 
 		HorizontalScrollView hsv = (HorizontalScrollView) findViewById(R.id.hsv);
 		ViewGroup.LayoutParams params = hsv.getLayoutParams();
@@ -70,9 +76,25 @@ public class AllotOutQueryActivity extends BaseActivity implements OnClickListen
 
 	}
 
+    Calendar c = Calendar.getInstance();
+
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
+        case R.id.startDateET:
+            int startmYear = c.get(Calendar.YEAR);
+            int startmMonth = c.get(Calendar.MONTH);
+            int startmDay = c.get(Calendar.DAY_OF_MONTH);
+            DatePickerDialog startdialog = new DatePickerDialog(AllotOutQueryActivity.this, new startmDateSetListener(), startmYear, startmMonth, startmDay);
+            startdialog.show();
+            break;
+        case R.id.endDateET:
+            int endmYear = c.get(Calendar.YEAR);
+            int endmMonth = c.get(Calendar.MONTH);
+            int endmDay = c.get(Calendar.DAY_OF_MONTH);
+            DatePickerDialog enddialog = new DatePickerDialog(AllotOutQueryActivity.this, new endmDateSetListener(), endmYear, endmMonth, endmDay);
+            enddialog.show();
+            break;
 		case R.id.queryBtn:
 			/*
 			 * { "table":"M_TRANSFER", "columns":["DOCNO","DATEOUT"], "params":{"column":"DATEOUT","condition":"20091217~20091219"} }
@@ -141,4 +163,33 @@ public class AllotOutQueryActivity extends BaseActivity implements OnClickListen
 		}
 	}
 
+    class startmDateSetListener implements DatePickerDialog.OnDateSetListener {
+
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            int mYear = year;
+            int mMonth = monthOfYear;
+            int mDay = dayOfMonth;
+            // Month is 0 based so add 1
+
+            String month = String.valueOf(mMonth + 1).length() == 2 ? String.valueOf(mMonth + 1) : "0" + String.valueOf(mMonth + 1);
+            String day = String.valueOf(mDay).length() == 2 ? String.valueOf(mDay) : "0" + String.valueOf(mDay);
+            startDateET.setText(new StringBuilder().append(mYear).append(month).append(day));
+        }
+    }
+
+    class endmDateSetListener implements DatePickerDialog.OnDateSetListener {
+
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            int mYear = year;
+            int mMonth = monthOfYear;
+            int mDay = dayOfMonth;
+            // Month is 0 based so add 1
+
+            String month = String.valueOf(mMonth + 1).length() == 2 ? String.valueOf(mMonth + 1) : "0" + String.valueOf(mMonth + 1);
+            String day = String.valueOf(mDay).length() == 2 ? String.valueOf(mDay) : "0" + String.valueOf(mDay);
+            endDateET.setText(new StringBuilder().append(mYear).append(month).append(day));
+        }
+    }
 }
