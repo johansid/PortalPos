@@ -119,7 +119,7 @@
     <string name="inventoryRefreshingTips">刷新中，请稍后</string>
     
     <string name="systemManager">系统管理</string>
-    <string name="systemConguration">系统配置</string>
+    <string name="systemConfiguration">系统配置</string>
     <string name="systemNetTest">网络测试</string>
     <string name="systemUpdate">系统升级</string>
     <string name="systemDataDownload">资料下载</string>

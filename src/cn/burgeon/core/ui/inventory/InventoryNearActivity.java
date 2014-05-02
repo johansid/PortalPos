@@ -81,7 +81,7 @@ public class InventoryNearActivity extends BaseActivity {
     	
     	buttonHelp.setOnClickListener(new ClickEvent());
     	buttonSearch.setOnClickListener(new ClickEvent());
-    	buttonSearch.setOnClickListener(new ClickEvent());
+    	buttonBack.setOnClickListener(new ClickEvent());
     }
 
 	//监听回车键输入
@@ -201,7 +201,7 @@ public class InventoryNearActivity extends BaseActivity {
 				startSearch(getInput());
 				break;
 			case R.id.inventoryButtonBack:
-				startSearch("searchAll");
+				InventoryNearActivity.this.finish();
 				break;
 			}
 		}

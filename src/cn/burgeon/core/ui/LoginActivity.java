@@ -7,6 +7,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -21,6 +22,8 @@ import android.widget.Toast;
 import cn.burgeon.core.App;
 import cn.burgeon.core.R;
 import cn.burgeon.core.bean.IntentData;
+import cn.burgeon.core.ui.system.SystemConfigurationActivity;
+import cn.burgeon.core.ui.system.SystemNetTestActivity;
 import cn.burgeon.core.utils.PreferenceUtils;
 
 import com.android.volley.Response;
@@ -119,6 +122,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.configBtn:
+            	forwardActivity(SystemConfigurationActivity.class);
                 break;
             case R.id.loginBtn:
             	// 跳转并传递数据

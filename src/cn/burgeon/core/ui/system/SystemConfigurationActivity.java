@@ -11,6 +11,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
@@ -37,7 +38,7 @@ public class SystemConfigurationActivity extends FragmentActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setupFullscreen();
         setContentView(R.layout.activity_system_configuration);
         
         initWidth();
@@ -45,6 +46,12 @@ public class SystemConfigurationActivity extends FragmentActivity {
         initViewPager();
     }
 
+    // 设置程序全屏显示
+    public void setupFullscreen() {
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+    }
+    
     private void initTextView() {
     	mTabNetConfig = (TextView) findViewById(R.id.titleNetConfig);
         mTabStoreInfo = (TextView) findViewById(R.id.titleStoreInfo);
@@ -155,7 +162,7 @@ public class SystemConfigurationActivity extends FragmentActivity {
 
 	public class TabOnClickListener implements View.OnClickListener {
         private int index = 0;
-
+ 
         public TabOnClickListener(int i) {
             index = i;
         }

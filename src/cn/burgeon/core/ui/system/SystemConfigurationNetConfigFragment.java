@@ -17,7 +17,7 @@ public class SystemConfigurationNetConfigFragment extends Fragment {
     private Button mSystemUpdate;
     private Button mDataDownload;
     private Button mChangePassword;
-    private Button mSave;
+    private Button mSaveButton;
 
     static SystemConfigurationNetConfigFragment newInstance() {
         SystemConfigurationNetConfigFragment newFragment = new SystemConfigurationNetConfigFragment();
@@ -37,7 +37,7 @@ public class SystemConfigurationNetConfigFragment extends Fragment {
         mSystemUpdate = (Button) view.findViewById(R.id.systemUpdateConfigButton);
         mDataDownload = (Button) view.findViewById(R.id.dataDownloadButton);
         mChangePassword = (Button) view.findViewById(R.id.changePasswordButton);
-        mSave = (Button) view.findViewById(R.id.saveButton);
+        mSaveButton = (Button) view.findViewById(R.id.saveButton);
         
         mServerTest.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -60,18 +60,17 @@ public class SystemConfigurationNetConfigFragment extends Fragment {
 				intent.setClass(SystemConfigurationNetConfigFragment.this.getActivity(), 
 						SystemDataDownloadActivity.class);
 				startActivity(intent);
-				Log.d(TAG,"_____WOCAO____");
 			}
 		});
         
-        mDataDownload.setOnClickListener(new View.OnClickListener() {
+        mChangePassword.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 	
 			}
 		});
         
-        mSave.setOnClickListener(new View.OnClickListener() {
+        mSaveButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 	
