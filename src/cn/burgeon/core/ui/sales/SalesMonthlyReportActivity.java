@@ -10,6 +10,7 @@ import cn.burgeon.core.adapter.SalesMonthlyReportAdapter;
 import cn.burgeon.core.adapter.SalesOrderSearchAdapter;
 import cn.burgeon.core.bean.Order;
 import cn.burgeon.core.ui.BaseActivity;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -43,14 +44,18 @@ public class SalesMonthlyReportActivity extends BaseActivity {
     }
 
 	private List<Order> fetchData() {
+		Order order = null;
 		List<Order> data = new ArrayList<Order>();
-		data.add(new Order("2014/4/12","vip","1","2","3","4","5"));
-		data.add(new Order("2014/4/12","vip","1","2","3","4","5"));
-		data.add(new Order("2014/4/12","vip","1","2","3","4","5"));
-		data.add(new Order("2014/4/12","vip","1","2","3","4","5"));
-		data.add(new Order("2014/4/12","vip","1","2","3","4","5"));
-		data.add(new Order("2014/4/12","vip","1","2","3","4","5"));
-		data.add(new Order("2014/4/12","vip","1","2","3","4","5"));
+		Cursor c = db.rawQuery("select settleMonth, sum(count) as totalCount,sum(money) as totalMoney from c_settle group by settleMonth",null);
+		Log.d("zhang.h", "cursor size===========" + c.getCount());
+		while(c.moveToNext()){
+			order = new Order();
+			order.setOrderDate(c.getString(c.getColumnIndex("settleMonth")));
+			order.setOrderCount(c.getString(c.getColumnIndex("totalCount")));
+			order.setOrderMoney(c.getString(c.getColumnIndex("totalMoney")));
+			data.add(order);
+		}
+		c.close();
 		return data;
 	}
 }

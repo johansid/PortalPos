@@ -6,8 +6,10 @@
 
     <TextView
         android:id="@+id/neworderitem_barcode"
-        android:layout_width="80dp"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
         android:textSize="15sp" />
 
     <View
@@ -19,6 +21,8 @@
         android:id="@+id/neworderitem_price"
         android:layout_width="80dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
         android:textSize="15sp" />
 
     <View
@@ -30,6 +34,8 @@
         android:id="@+id/neworderitem_discount"
         android:layout_width="80dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
         android:textSize="15sp" />
 
     <View
@@ -41,6 +47,8 @@
         android:id="@+id/ordersearch_count"
         android:layout_width="80dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
         android:textSize="15sp" />
 
     <View
@@ -52,6 +60,8 @@
         android:id="@+id/ordersearch_money"
         android:layout_width="80dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
         android:textSize="15sp" />
 
 </LinearLayout>

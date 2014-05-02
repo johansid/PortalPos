@@ -57,6 +57,7 @@
         <activity android:name="cn.burgeon.core.ui.member.MemberManagerActivity" />
         <activity android:name="cn.burgeon.core.ui.member.MemberRegistActivity" android:windowSoftInputMode="adjustPan|stateHidden"/>
         <activity android:name="cn.burgeon.core.ui.member.MemberListActivity"/>
+        <activity android:name="cn.burgeon.core.ui.member.MemberSearchActivity" android:windowSoftInputMode="adjustPan|stateHidden"/>
         <activity android:name="cn.burgeon.core.ui.check.CheckManagerActivity" android:windowSoftInputMode="adjustPan|stateHidden"/>
         <activity android:name="cn.burgeon.core.ui.check.CheckScanActivity" android:windowSoftInputMode="adjustPan|stateHidden"/>
         <activity android:name="cn.burgeon.core.ui.check.CheckDocManagerActivity" android:windowSoftInputMode="adjustPan|stateHidden"/>
@@ -68,6 +69,13 @@
         <activity android:name="cn.burgeon.core.ui.system.SystemUpdateActivity"/>
         <activity android:name="cn.burgeon.core.ui.system.SystemDataDownloadActivity"/>
         <activity android:name="cn.burgeon.core.ui.system.SystemDataCleanActivity"/>
+        <uses-library android:name="android.test.runner" />
     </application>
+    
+    <uses-permission android:name="android.permission.RUN_INSTRUMENTATION" />
+
+<instrumentation android:name="android.test.InstrumentationTestRunner" android:targetPackage="cn.burgeon.core"
+
+android:label="Test for my app"/>
 
 </manifest>

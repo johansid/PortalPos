@@ -16,8 +16,13 @@ public class DbHelper extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		db.execSQL("CREATE TABLE IF NOT EXISTS c_vip" +  
                 "(_id INTEGER PRIMARY KEY AUTOINCREMENT, cardno VARCHAR,"+
-				"name VARCHAR, sex INTEGER,idno VARCHAR,mobile VARCHAR,birthday VARCHAR,"+
+				"name VARCHAR, sex VARCHAR,idno VARCHAR,mobile VARCHAR,birthday VARCHAR,"+
                 "employee VARCHAR,email VARCHAR,createTime VARCHAR,type VARCHAR)");
+		
+		db.execSQL("CREATE TABLE IF NOT EXISTS c_settle" +  
+                "(_id INTEGER PRIMARY KEY AUTOINCREMENT, orderno VARCHAR,"+
+				"settleTime VARCHAR, type VARCHAR,count VARCHAR,money VARCHAR,"
+				+ "orderEmployee VARCHAR,status VARCHAR,settleDate VARCHAR,settleMonth VARCHAR)");
 	}
 
 	@Override

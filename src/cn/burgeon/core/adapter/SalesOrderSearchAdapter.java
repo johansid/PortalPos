@@ -51,7 +51,7 @@ public class SalesOrderSearchAdapter extends BaseAdapter {
 			holder.textView1 = (TextView) convertView.findViewById(R.id.ordersearch_date);
 			holder.textView2 = (TextView) convertView.findViewById(R.id.ordersearch_count);
 			holder.textView3 = (TextView) convertView.findViewById(R.id.ordersearch_danhao);
-			holder.textView4 = (TextView) convertView.findViewById(R.id.ordersearch_count);
+			holder.textView4 = (TextView) convertView.findViewById(R.id.ordersearch_upstate);
 			holder.textView5 = (TextView) convertView.findViewById(R.id.ordersearch_money);
 			holder.textView6 = (TextView) convertView.findViewById(R.id.ordersearch_yingyeyuan);
 			convertView.setTag(holder);
@@ -61,15 +61,12 @@ public class SalesOrderSearchAdapter extends BaseAdapter {
 		
 		Order order = list.get(position);
 		holder.textView1.setText(order.getOrderDate());
-		holder.textView2.setText(order.getCardNum());
-		holder.textView3.setText(order.getKuanHao());
-		holder.textView4.setText(order.getKuanHao());
-		holder.textView5.setText(order.getKuanHao());
+		holder.textView2.setText(order.getOrderCount());
+		holder.textView3.setText(order.getOrderNo());
+		holder.textView4.setText(order.getOrderState());
+		holder.textView5.setText(order.getOrderMoney());
 		holder.textView6.setText(order.getSaleAsistant());
 		
-		int[] colors = { Color.WHITE, Color.rgb(219, 238, 244) };//RGB颜色  
-		  
-		convertView.setBackgroundColor(colors[position % 2]);// 每隔item之间颜色不同 
 		return convertView;
 	}
 

@@ -62,16 +62,12 @@ public class SalesDailyAdapter extends BaseAdapter {
 		
 		Order order = list.get(position);
 		holder.textView1.setText(order.getOrderDate());
-		holder.textView2.setText(order.getCardNum());
-		holder.textView3.setText(order.getKuanHao());
-		holder.textView4.setText(order.getKuanHao());
-		holder.textView5.setText(order.getKuanHao());
+		holder.textView2.setText(order.getOrderType());
+		holder.textView3.setText(order.getOrderNo());
+		holder.textView4.setText(order.getOrderCount());
+		holder.textView5.setText(order.getOrderMoney());
 		holder.textView6.setText(order.getSaleAsistant());
 		holder.textView7.setText(order.getOrderState());
-		
-		int[] colors = { Color.WHITE, Color.rgb(219, 238, 244) };//RGB颜色  
-		  
-		convertView.setBackgroundColor(colors[position % 2]);// 每隔item之间颜色不同 
 		return convertView;
 	}
 

@@ -18,22 +18,27 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/store_height"
             android:background="@drawable/corners_bg"
-            android:padding="10dp">
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
 
             <TextView
+                android:id="@+id/storeTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="门店：门店1" />
+                android:text="门店：门店1"
+                android:layout_centerVertical="true" />
 
             <TextView
+                android:id="@+id/currTimeTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="时间"
-                android:layout_alignParentRight="true"/>
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true" />
         </RelativeLayout>
         
         <LinearLayout
@@ -83,7 +88,7 @@
         <ListView
             android:id="@+id/salesDailyReportLV"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="269dp" />
     </LinearLayout>
 
     <LinearLayout
@@ -102,7 +107,7 @@
 
             <Button
                 android:id="@+id/salesDailyReportQueryBtn"
-                android:layout_width="@dimen/allot_in_btn"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/query" />
         </LinearLayout>

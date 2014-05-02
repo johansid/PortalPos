@@ -9,6 +9,10 @@ public class Order {
 	private String saleAsistant;
 	private String orderDate;
 	private String orderState;
+	private String orderNo;
+	private String orderType;
+	private String orderCount;
+	private String orderMoney;
 	public Order() {
 		super();
 	}
@@ -70,5 +74,29 @@ public class Order {
 	}
 	public void setOrderState(String orderState) {
 		this.orderState = orderState;
+	}
+	public String getOrderNo() {
+		return orderNo;
+	}
+	public void setOrderNo(String orderNo) {
+		this.orderNo = orderNo;
+	}
+	public String getOrderType() {
+		return orderType;
+	}
+	public void setOrderType(String orderType) {
+		this.orderType = orderType;
+	}
+	public String getOrderCount() {
+		return orderCount;
+	}
+	public void setOrderCount(String orderCount) {
+		this.orderCount = orderCount;
+	}
+	public String getOrderMoney() {
+		return orderMoney;
+	}
+	public void setOrderMoney(String orderMoney) {
+		this.orderMoney = orderMoney;
 	}
 }

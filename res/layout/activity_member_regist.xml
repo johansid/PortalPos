@@ -28,6 +28,7 @@
                 android:layout_weight="1"
                 android:paddingLeft="5dp"
                 android:text="@string/memberRegistCardNum"
+                android:textColor="@android:color/holo_red_dark"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <EditText
@@ -57,6 +58,7 @@
                 android:layout_weight="1"
                 android:paddingLeft="5dp"
                 android:text="@string/memberRegistName"
+                android:textColor="@android:color/holo_red_dark"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <EditText
@@ -102,6 +104,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:paddingLeft="5dp"
+                android:textColor="@android:color/holo_red_dark"
                 android:text="@string/memberRegistPhoneNum"
                 android:textAppearance="?android:attr/textAppearanceMedium" 
                 />
@@ -125,6 +128,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:paddingLeft="5dp"
+                android:textColor="@android:color/holo_red_dark"
                 android:text="@string/memberRegistIdentityCardNum"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -150,11 +154,12 @@
                 android:text="@string/memberRegistVipType"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
-            <EditText
-                android:id="@+id/memberRegistVipTypeET"
+            <Spinner 
+                android:id="@+id/memberRegistVipTypeSP"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="2" />
+                android:layout_weight="2"
+                android:entries="@array/vipType"/>
         </LinearLayout>
 
         <LinearLayout
@@ -193,8 +198,8 @@
                 android:text="@string/memberRegistSalesAssistant"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
-            <EditText
-                android:id="@+id/memberRegistSalesAssistantET"
+            <Spinner
+                android:id="@+id/memberRegistSalesAssistantSP"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2" />
@@ -225,7 +230,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/corners_bg"
-            android:padding="1dp" >
+            android:padding="1dp" 
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="0dp"
@@ -251,7 +257,7 @@
 
             <Button
                 android:id="@+id/memberRegistSaveBtn"
-                android:layout_width="@dimen/allot_in_btn"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="@string/memberRegistSave"

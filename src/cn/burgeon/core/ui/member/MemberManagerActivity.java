@@ -42,10 +42,8 @@ public class MemberManagerActivity extends BaseActivity {
 					forwardActivity(MemberListActivity.class);
 				} else if (itemValue != null
 						&& Constant.memberManagerTextValues[2].equals(itemValue)) {
-					forwardActivity(AllotReplenishmentOrderActivity.class);
 				}else if (itemValue != null
 						&& Constant.memberManagerTextValues[2].equals(itemValue)) {
-					forwardActivity(AllotReplenishmentOrderActivity.class);
 				}
 			}
 		});

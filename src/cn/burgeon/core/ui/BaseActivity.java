@@ -75,6 +75,16 @@ public class BaseActivity extends Activity {
 
         startActivity(intent);
     }
+    
+    public void forwardActivity(Class<?> cls,String key,String value) {
+        Intent intent = new Intent();
+        intent.setClass(this, cls);
+        
+        Bundle mBundle = new Bundle();
+        mBundle.putString(key, value);
+        intent.putExtras(mBundle);
+        startActivity(intent);
+    }
 
     public void sendRequest(final Map<String, String> params, Response.Listener<String> successListener) {
 

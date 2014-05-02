@@ -11,12 +11,18 @@ import org.json.JSONObject;
 
 import com.android.volley.Response;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.HorizontalScrollView;
 import android.widget.ListView;
+import android.widget.MultiAutoCompleteTextView.CommaTokenizer;
+import android.widget.TextView;
+import cn.burgeon.core.App;
 import cn.burgeon.core.R;
 import cn.burgeon.core.adapter.SalesNewOrderAdapter;
 import cn.burgeon.core.bean.IntentData;
@@ -25,11 +31,15 @@ import cn.burgeon.core.bean.Product;
 import cn.burgeon.core.ui.BaseActivity;
 import cn.burgeon.core.ui.SystemActivity;
 import cn.burgeon.core.ui.member.MemberRegistActivity;
+import cn.burgeon.core.ui.member.MemberSearchActivity;
+import cn.burgeon.core.utils.PreferenceUtils;
+import cn.burgeon.core.utils.ScreenUtils;
 
 public class SalesNewOrderActivity extends BaseActivity {
 	
 	Button vipBtn, accountBtn, verifyBarCodeBtn;
 	EditText cardNoET, styleBarcodeET;
+	TextView commonRecordnum,commonCount,commonMoney;
 	ListView mListView;
 	SalesNewOrderAdapter mAdapter;
 	ArrayList<Product> data = new ArrayList<Product>();
@@ -41,9 +51,47 @@ public class SalesNewOrderActivity extends BaseActivity {
         setContentView(R.layout.activity_sales_new_order);
 
         init();
+        
+        Bundle bundle = getIntent().getExtras();
+        if(bundle != null){
+        	String searchedMember = getIntent().getExtras().getString("searchedMember");
+        	if(searchedMember != null)
+        		cardNoET.setText(searchedMember);
+        }
+    }
+    
+    @Override
+    protected void onNewIntent(Intent intent) {
+    	// TODO Auto-generated method stub
+    	super.onNewIntent(intent);
+    	String searchedMember = getIntent().getExtras().getString("searchedMember");
+    	Log.d("SalesNewOrderActivity", searchedMember);
+    	cardNoET.setText(searchedMember);
+    }
+    
+    
+    @Override
+    protected void onStop() {
+    	// TODO Auto-generated method stub
+    	super.onStop();
+    	finish();
     }
 
 	private void init() {
+        // 初始化门店信息
+        TextView storeTV = (TextView) findViewById(R.id.storeTV);
+        storeTV.setText(App.getPreferenceUtils().getPreferenceStr(PreferenceUtils.store_key));
+
+        TextView currTimeTV = (TextView) findViewById(R.id.currTimeTV);
+        currTimeTV.setText(getCurrDate());
+
+        HorizontalScrollView hsv = (HorizontalScrollView) findViewById(R.id.hsv);
+        ViewGroup.LayoutParams params = hsv.getLayoutParams();
+        params.height = (int) ScreenUtils.getAllotInDetailLVHeight(this)-100;
+        
+        commonRecordnum = (TextView) findViewById(R.id.sales_common_recordnum);
+        commonCount = (TextView) findViewById(R.id.sales_common_count);
+        commonMoney = (TextView) findViewById(R.id.sales_common_money);
 		vipBtn = (Button) findViewById(R.id.salesNewVIPbtn);
 		accountBtn = (Button) findViewById(R.id.salesNewJiezhangBtn);
 		verifyBarCodeBtn = (Button) findViewById(R.id.verifyBarCodeBtn);
@@ -52,6 +100,7 @@ public class SalesNewOrderActivity extends BaseActivity {
 		verifyBarCodeBtn.setOnClickListener(onClickListener);
 		cardNoET = (EditText) findViewById(R.id.cardnoDiscountET);
 		styleBarcodeET = (EditText) findViewById(R.id.styleBarcodeET);
+		styleBarcodeET.setText("109454d334620");
 		mListView = (ListView) findViewById(R.id.newOrderLV);
 		mAdapter = new SalesNewOrderAdapter(data, this);
 		mListView.setAdapter(mAdapter);
@@ -64,7 +113,7 @@ public class SalesNewOrderActivity extends BaseActivity {
 			switch (v.getId()) {
 			case R.id.salesNewVIPbtn:
 				//跳转到会员注册页面
-				//forwardActivity(MemberRegistActivity.class);
+				forwardActivity(MemberSearchActivity.class);
 				break;
 			case R.id.salesNewJiezhangBtn:
 				// 跳转并传递数据
@@ -79,9 +128,35 @@ public class SalesNewOrderActivity extends BaseActivity {
 				break;
 			}
 		}
+
 	}; 
 	
+	private void upateBottomBarInfo() {
+		float pay = 0.0f;
+		int count = 0;
+		for(Product pro : data){
+			pay += Float.parseFloat(pro.getMoney());
+			count += Integer.parseInt(pro.getCount());
+		}
+		Log.d("zhang.h", "pay=" + pay+",count=" + count);
+		
+		commonMoney.setText(String.format(getResources().getString(R.string.sales_new_common_money),String.valueOf(pay)));
+		commonCount.setText(String.format(getResources().getString(R.string.sales_new_common_count), count));
+		commonRecordnum.setText(String.format(getResources().getString(R.string.sales_new_common_record), data.size()));
+	}
+	
 	private void verifyBarCode() {
+		//从本地获取
+		varLocal();
+		//从网络获取
+		varNet();
+	}
+
+	private void varLocal() {
+		
+	}
+
+	private void varNet() {
 		Map<String,String> params = new HashMap<String, String>();
 		JSONArray array;
 		JSONObject transactions;
@@ -117,6 +192,7 @@ public class SalesNewOrderActivity extends BaseActivity {
 					data.addAll(list);
 					//mListView.setAdapter(mAdapter);
 					mAdapter.notifyDataSetChanged();
+					upateBottomBarInfo();
 				}
 			});
 		} catch (JSONException e) {}

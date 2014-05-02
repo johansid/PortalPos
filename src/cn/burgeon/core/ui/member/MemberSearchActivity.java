@@ -9,22 +9,21 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.ListView;
 import android.widget.TextView;
 import cn.burgeon.core.App;
 import cn.burgeon.core.R;
-import cn.burgeon.core.adapter.MemberListAdapter;
+import cn.burgeon.core.adapter.MemberSearchAdapter;
 import cn.burgeon.core.bean.Member;
 import cn.burgeon.core.ui.BaseActivity;
 import cn.burgeon.core.ui.sales.SalesNewOrderActivity;
@@ -33,19 +32,19 @@ import cn.burgeon.core.utils.ScreenUtils;
 
 import com.android.volley.Response;
 
-public class MemberListActivity extends BaseActivity {
+public class MemberSearchActivity extends BaseActivity {
 	
 	ListView mListView;
-	Button addBtn,queryBtn,updateBtn,delBtn;
-	MemberListAdapter mAdapter;
-	TextView commonRecordnum;
+	Button queryBtn,confirmBtn;
+	EditText cardNoET,mobileET;
+	MemberSearchAdapter mAdapter;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setupFullscreen();
-		setContentView(R.layout.activity_member_list);
+		setContentView(R.layout.activity_member_search);
 		
 		init();
 	}
@@ -69,28 +68,30 @@ public class MemberListActivity extends BaseActivity {
         ViewGroup.LayoutParams params = hsv.getLayoutParams();
         params.height = (int) ScreenUtils.getAllotInLVHeight(this);
         
-        commonRecordnum = (TextView) findViewById(R.id.sales_common_recordnum);
-		addBtn = (Button) findViewById(R.id.memberListAdd);
-		queryBtn = (Button) findViewById(R.id.memberListQuery);
-		updateBtn = (Button) findViewById(R.id.memberListUpdate);
-		addBtn.setOnClickListener(onClickListener);
+        cardNoET = (EditText) findViewById(R.id.memberSearchCardNoET);
+        mobileET = (EditText) findViewById(R.id.memberSearchPhoneET);
+		queryBtn = (Button) findViewById(R.id.memberSearchBtn);
 		queryBtn.setOnClickListener(onClickListener);
-		updateBtn.setOnClickListener(onClickListener);
-		mListView = (ListView) findViewById(R.id.memberLV);
-		mListView.setOnItemClickListener(OnItemSelectedListener);
-		mAdapter = new MemberListAdapter(query(), this);
-		mListView.setAdapter(mAdapter);
-		commonRecordnum.setText(String.format(getResources().getString(R.string.sales_new_common_record), mAdapter.getCount()));
+		confirmBtn = (Button) findViewById(R.id.memberSearchConfirmBtn);
+		confirmBtn.setOnClickListener(onClickListener);
+		mListView = (ListView) findViewById(R.id.memberSearchLV);
+		//mAdapter = new MemberSearchAdapter(postRequest(), this);
+		//mListView.setAdapter(mAdapter);
+		//mListView.setOnItemSelectedListener(OnItemSelectedListener);
+	}
 
+	private void postRequest() {
+		viaLocal();
+		//viaNet();
 	}
 	
 	public List<Member> query(){
 		List<Member> data = new ArrayList<Member>();
 		Member member = null;
-		Cursor c = db.rawQuery("select * from c_vip", null);
+		Cursor c = db.rawQuery("select * from c_vip where cardno = ?", new String[]{cardNoET.getText().toString()});
 		while(c.moveToNext()){
 			member = new Member();
-			member.setId(c.getInt(c.getColumnIndex("_id")));
+			//member.setId(c.getInt(c.getColumnIndex("_ID")));
 			member.setCardNum(c.getString(c.getColumnIndex("cardno")));
 			member.setName(c.getString(c.getColumnIndex("name")));
 			member.setiDentityCardNum(c.getString(c.getColumnIndex("idno")));
@@ -100,46 +101,61 @@ public class MemberListActivity extends BaseActivity {
 			member.setEmail(c.getString(c.getColumnIndex("email")));
 			member.setCreateCardDate(c.getString(c.getColumnIndex("createTime")));
 			member.setType(c.getString(c.getColumnIndex("type")));
-			member.setSex(c.getString(c.getColumnIndex("sex")));
+			member.setSex(Integer.toString(c.getInt(c.getColumnIndex("sex"))));
 			data.add(member);
 		}
-		c.close();
+		if(member != null)
+			intentValue = member.getCardNum()+ "\\100";
 		return data;
 	}
 
-	private List<Member> postRequest() {
-		final List<Member> data = new ArrayList<Member>();
-		Map<String,String> params = new HashMap<String, String>();
-		JSONArray array;
-		JSONObject transactions;
+	private void viaLocal() {
+		mAdapter = new MemberSearchAdapter(query(), MemberSearchActivity.this);
+		mListView.setAdapter(mAdapter);
+	}
+
+	private void viaNet() {
 		try {
-			array = new JSONArray();
-			transactions = new JSONObject();
-			transactions.put("id", 112);
-			transactions.put("command", "Query");
-			
-			//第一个params
-			JSONObject paramsInTransactions = new JSONObject();
-			paramsInTransactions.put("table", 12899);
-			paramsInTransactions.put("columns", new JSONArray().put("cardno").put("vipname").put("sex").put("birthday").put("C_VIPTYPE_ID;name"));
-			//在params中的params
-			paramsInTransactions.put("params", new JSONObject().put("column", "C_STORE_ID").put("condition", 3865));
-			transactions.put("params", paramsInTransactions);
-			array.put(transactions);
-			params.put("transactions", array.toString());
+			Map<String, String> params = new HashMap<String, String>();
+            JSONArray array = new JSONArray();
+
+            JSONObject transactions = new JSONObject();
+            transactions.put("id", 112);
+            transactions.put("command", "Query");
+
+            JSONObject paramsTable = new JSONObject();
+            paramsTable.put("table", "12899");
+            paramsTable.put("columns", new JSONArray().put("cardno").put("vipname").put("birthday"));
+            JSONObject paramsCombine = new JSONObject();
+            paramsCombine.put("combine", "or");
+            JSONObject expr1JO = new JSONObject();
+            expr1JO.put("column", "cardno");
+            expr1JO.put("condition", cardNoET.getText());
+
+
+            paramsCombine.put("expr1", expr1JO);
+            JSONObject expr2JO = new JSONObject();
+            expr2JO.put("column", "mobil");
+            expr2JO.put("condition", mobileET.getText());
+            paramsCombine.put("expr2", expr2JO);
+            paramsTable.put("params", paramsCombine);
+
+            transactions.put("params", paramsTable);
+            array.put(transactions);
+            params.put("transactions", array.toString());
 			sendRequest(params,new Response.Listener<String>() {
 				@Override
 				public void onResponse(String response) {
 					Log.d("zhang.h", response);
-					parseResult(response,data);
+					mAdapter = new MemberSearchAdapter(parseResult(response), MemberSearchActivity.this);
 					mListView.setAdapter(mAdapter);
 				}
 			});
 		} catch (JSONException e) {}
-		return data;
 	}
 	
-	private void parseResult(String result,List<Member> data){
+	private List<Member> parseResult(String result){
+		List<Member> data = new ArrayList<Member>();
 		try {
 			JSONArray array = new JSONArray(result);
 			JSONObject obj = array.getJSONObject(0);
@@ -150,16 +166,17 @@ public class MemberListActivity extends BaseActivity {
 				String[] rowArr = row.split(",");
 				
 				member = new Member();
-				member.setCardNum(rowArr[0]);
-				member.setName(rowArr[1]);
-				member.setSex(rowArr[2]);
-				member.setBirthday(rowArr[3]);
-				member.setType(rowArr[4]);
+				member.setCardNum(rowArr[0].substring(2,rowArr[0].length()-1));
+				member.setName(rowArr[1].replace("\"", ""));
+				member.setBirthday(rowArr[2].substring(1,rowArr[2].length()-2));
+				
+				intentValue = member.getCardNum()+ "\\100";
 				data.add(member);
 			}
 		} catch (JSONException e) {
 			Log.d("MemberListActivity", e.toString());
 		}
+		return data;
 	}
 	
 	View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -167,35 +184,32 @@ public class MemberListActivity extends BaseActivity {
 		@Override
 		public void onClick(View v) {
 			switch (v.getId()) {
-			case R.id.memberListAdd:
-				forwardActivity(MemberRegistActivity.class);
+			case R.id.memberSearchBtn:
+				postRequest();
 				break;
-			case R.id.memberListUpdate:
-				/*Intent intent = new Intent(MemberListActivity.this,MemberRegistActivity.class);
-				Bundle bundle = new Bundle();
-				bundle.putParcelable("member", selectedMember);
-				intent.putExtras(bundle);
-				startActivity(intent);*/
-				Intent intent = new Intent(MemberListActivity.this,MemberRegistActivity.class);
-				intent.putExtra("_id", _id);
-				startActivity(intent);
+			case R.id.memberSearchConfirmBtn:
+                forwardActivity(SalesNewOrderActivity.class, "searchedMember",intentValue);
 				break;
 			default:
 				break;
 			}
 		}
 	}; 
+	 
+	String intentValue;
+	Member selectedMember = null;
 	
-	int _id;
-	OnItemClickListener OnItemSelectedListener = new OnItemClickListener() {
+	OnItemSelectedListener OnItemSelectedListener = new OnItemSelectedListener() {
 
 		@Override
-		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-			// TODO Auto-generated method stub
-			Member selectedMember = (Member) parent.getAdapter().getItem(position);
-			_id = selectedMember.getId();
-			Log.d("MemberListActivity", "_id=" +_id);
+		public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+			selectedMember = (Member) parent.getAdapter().getItem(position);
 		}
 
+		@Override
+		public void onNothingSelected(AdapterView<?> arg0) {
+			// TODO Auto-generated method stub
+			
+		}
 	};
 }

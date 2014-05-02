@@ -1,6 +1,9 @@
 package cn.burgeon.core.bean;
 
-public class Member {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Member implements Parcelable{
 	private int id;
 	private String name;
 	private String sex;
@@ -10,6 +13,30 @@ public class Member {
 	private String type;
 	private String birthday;
 	private String email;
+	private String employee;
+	private String discount;
+	private String yue;
+	public String getYue() {
+		return yue;
+	}
+	public void setYue(String yue) {
+		this.yue = yue;
+	}
+	public String getDiscount() {
+		return discount;
+	}
+	public void setDiscount(String discount) {
+		this.discount = discount;
+	}
+	public String getEmployee() {
+		return employee;
+	}
+	public void setEmployee(String employee) {
+		this.employee = employee;
+	}
+
+
+
 	private String createCardDate;
 	public Member() {
 		super();
@@ -88,4 +115,53 @@ public class Member {
 	public void setCreateCardDate(String createCardDate) {
 		this.createCardDate = createCardDate;
 	}
+	@Override
+	public int describeContents() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeInt(this.id);
+		dest.writeString(this.name);
+		dest.writeString(this.sex);
+		dest.writeString(this.cardNum);
+		dest.writeString(this.iDentityCardNum);
+		dest.writeString(this.phoneNum);
+		dest.writeString(this.type);
+		dest.writeString(this.birthday);
+		dest.writeString(this.email);
+		dest.writeString(this.createCardDate);
+		dest.writeString(this.employee);
+		dest.writeString(this.discount);
+	}
+	
+	
+	
+    public Member(Parcel in) {
+    	this.id=in.readInt();
+    	this.name=in.readString();
+    	this.sex=in.readString();
+    	this.cardNum=in.readString();
+    	this.iDentityCardNum=in.readString();
+    	this.phoneNum=in.readString();
+    	this.type=in.readString();
+    	this.birthday=in.readString();
+    	this.email=in.readString();
+    	this.createCardDate=in.readString();
+    	this.employee=in.readString();
+    	this.discount=in.readString();
+	}
+
+
+
+	public static Parcelable.Creator<Member> CREATOR = new Parcelable.Creator<Member>() {
+        public Member createFromParcel(Parcel source) {
+            return new Member(source);
+        }
+
+        public Member[] newArray(int size) {
+            return new Member[size];
+        }
+    };
 }

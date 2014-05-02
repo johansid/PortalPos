@@ -17,7 +17,7 @@ public class IntentData implements Parcelable {
     private ArrayList<AllotInDetail> allotInDetails;
     private ArrayList<Product> products;
 
-    public ArrayList<Product> getProducts() {
+	public ArrayList<Product> getProducts() {
 		return products;
 	}
 
