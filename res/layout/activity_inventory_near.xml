@@ -90,6 +90,7 @@
                 android:layout_width="0dp"
                 android:singleLine="true"
                 android:hint="Near:请输入你的款号"
+                android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                 android:background="@drawable/corners_bg"
                 android:gravity="left"
                 android:padding="10dp"/>

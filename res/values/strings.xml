@@ -163,7 +163,41 @@
     <string name="dataDownloadItemStrategy">单品策略</string>
     <string name="dataDownloadSystemParam">系统参数</string>
     <string name="dataDownloadDownload">下载</string>
+ 
+    <string name="tipsDataDownload">温馨提示</string>
+    <string name="tipsIAmAlreadyDownloadingFuckYou">我已经在下载了！！！</string>
+    <string name="tipsCanYouChooseOne$_$">亲，请至少选择一项开始下载！</string>
+    <string name="tipsNetworkUnReachable$_$">亲，检查下网络！</string>
+    <string name="tipsBatteryNotEnough$_$">亲，这点电量不敢下载！</string>
+    <string name="tipsServerUnReachable$_$">亲，服务器歇菜了！</string>
+    <string name="tipsMemoryNotEnough$_$">亲，设备存储空间不够了！</string>
+    <string name="tipsPleaseDownloadAgain$_$">亲，下载文件有问题，请重新下载！</string>
+    <string name="tipsFileAlreadyExist$_$">亲，已经下载过了！如需重新下载请先清理系统数据！</string>
     
+    <string name="tipsStartDownloadUserData">开始下载用户资料</string>
+    <string name="tipsStartDownloadProductData">开始下载产品资料</string>
+    <string name="tipsStartDownloadVipType">开始下载会员类型</string>
+    <string name="tipsStartDownloadItemStrategy">开始下载单品策略</string>
+    <string name="tipsStartDownloadSystemParam">开始下载系统参数</string>
+ 
+    <string name="tipsUserDataDownloading">用户资料正在下载</string>
+    <string name="tipsProductDataDownloading">商品资料正在下载</string>
+    <string name="tipsVipTypeDownloading">会员类型正在下载</string>
+    <string name="tipsItemStrategyDownloading">单品策略正在下载</string>
+    <string name="tipsSystemParamDownloading">系统参数正在下载</string>
+ 
+    <string name="tipsUserDataDownloadFinish">用户资料下载完毕</string>
+    <string name="tipsProductDataDownloadFinish">商品资料下载完毕</string>
+    <string name="tipsVipTypeDownloadFinish">会员类型下载完毕</string>
+    <string name="tipsItemStrategyDownloadFinish">单品策略下载完毕</string>
+    <string name="tipsSystemParamDownloadFinish">系统参数下载完毕</string>
+    
+    <string name="tipsUserDataDownloadFileExist">用户资料已经下载</string>
+    <string name="tipsProductDataDownloadFileExist">商品资料已经下载</string>
+    <string name="tipsVipTypeDownloadFileExist">会员类型已经下载</string>
+    <string name="tipsItemStrategyDownloadFileExist">单品策略已经下载</string>
+    <string name="tipsSystemParamDownloadFileExist">系统参数已经下载</string>
+      
     <string name="storeInfoStoreIndex">门店编号</string>
     <string name="storeInfoCustomerName">顾客名称</string>
     <string name="storeInfoTerminalIndex">终端编号</string>
