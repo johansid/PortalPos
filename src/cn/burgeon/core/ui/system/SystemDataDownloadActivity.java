@@ -10,6 +10,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import com.android.volley.toolbox.UnZip;
+
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.os.Environment;
@@ -35,58 +37,83 @@ public class SystemDataDownloadActivity extends BaseActivity{
 	private final String TAG = "SystemDataDownloadActivity";
 	
 	//data URLs
-	private final String userDataURL =       //"http://g.burgeon.cn:2080/portalpospda/DownloadFiles/sys_user.zip";
-										     "http://music.baidu.com/data/music/file?link=http://zhangmenshiting.baidu.com/data2/music/64022204/73383361399042861128.mp3?xcode=879a034135f4e9e6c643f4dc0c2a2588ec0497093d29d6f3&song_id=7338336";																						  
-	private final String productDataURL =    "http://music.baidu.com/data/music/file?link=http://zhangmenshiting.baidu.com/data2/music/64022204/73383361399042861128.mp3?xcode=879a034135f4e9e6c643f4dc0c2a2588ec0497093d29d6f3&song_id=7338336"; 	
-	private final String vipTypeURL =        //"http://g.burgeon.cn:2080/portalpospda/DownloadFiles/tc_vip.zip";
-										     "http://music.baidu.com/data/music/file?link=http://zhangmenshiting.baidu.com/data2/music/64022204/73383361399042861128.mp3?xcode=879a034135f4e9e6c643f4dc0c2a2588ec0497093d29d6f3&song_id=7338336";
-	private final String itemStrategyURL =   //"http://g.burgeon.cn:2080/portalpospda/DownloadFiles/tc_stuff.zip";			
-										     "http://music.baidu.com/data/music/file?link=http://zhangmenshiting.baidu.com/data2/music/64022204/73383361399042861128.mp3?xcode=879a034135f4e9e6c643f4dc0c2a2588ec0497093d29d6f3&song_id=7338336"; 	
-	private final String systemParamURL =    //"http://g.burgeon.cn:2080/portalpospda/DownloadFiles/sys_parm.zip";
-										     "http://music.baidu.com/data/music/file?link=http://zhangmenshiting.baidu.com/data2/music/64022204/73383361399042861128.mp3?xcode=879a034135f4e9e6c643f4dc0c2a2588ec0497093d29d6f3&song_id=7338336"; 	
+	private final String userDataURL     =    "http://g.burgeon.cn:2080/portalpospda/DownloadFiles/sys_user.zip";
+	private final String productDataURL  =    "http://g.burgeon.cn:2080/portalpospda/DownloadFiles/tc_styleprice.zip";
+	private final String vipTypeURL      =    "http://g.burgeon.cn:2080/portalpospda/DownloadFiles/tc_vip.zip";
+	private final String itemStrategyURL =    "http://g.burgeon.cn:2080/portalpospda/DownloadFiles/tc_stuff.zip";			
+	private final String systemParamURL  =    "http://g.burgeon.cn:2080/portalpospda/DownloadFiles/sys_parm.zip";
+	
 	//文件下载路径
-	//目前仅使用外置sdcard下载
+	//目前仅使用外置sdcard下载,如出现问题请更改     initDataDownload() 函数设置的路径
 	private String downloadPath;
 
-	//保存的文件名字
-	private final String userDataDownloadFileName = "guang1.mp3";
-													//"userData.zip";
-	private final String productDataDownloadFileName = "guang2.mp3";
-													//"productData.zip";
-	private final String vipTypeDownloadFileName = "guang3.mp3";
-													//"vipType.zip";
-	private final String itemStrategyDownloadFileName = "guang4.mp3";
-													//"itemStrategy.zip";
-	private final String systemParamDownloadFileName = "guang5.mp3"; 
-													//"systemParam.zip";
+	//下载完之后保存的文件名字
+	private final String userDataDownloadFileName     = "userData.zip";
+	private final String productDataDownloadFileName  = "productData.zip";
+	private final String vipTypeDownloadFileName      = "vipType.zip";
+	private final String itemStrategyDownloadFileName = "itemStrategy.zip";
+	private final String systemParamDownloadFileName  = "systemParam.zip";
 
+	/*
+	//解压完之后保存的名字
+	private final String userDataUnZipFileName     = "userData.txt";
+	private final String productUnZipFileName  	   = "productData.txt";
+	private final String vipTypeUnZipFileName      = "vipType.txt";
+	private final String itemStrategyUnZipFileName = "itemStrategy.txt";
+	private final String systemParamUnZipFileName  = "systemParam.txt";	
+	*/
+	
+	/*
+	//解压之后保存的路径
+	private final String userDataUnZipPath             = 	downloadPath + "userData";
+	private final String productDataUnZipPath          = 	downloadPath + "productData";
+	private final String vipTypeDownloadUnZipPath      =    downloadPath + "vipType";
+	private final String itemStrategyDownloadUnZipPath =    downloadPath + "itemStrategy";
+	private final String systemParamDownloadUnZipPath  =    downloadPath + "systemParam";
+	*/
+	
 	//开始下载消息
-	private final int userDataDownloadStartMsg = 0x1;
-	private final int productDataDownloadStartMsg = 0x2;
-	private final int vipTypeDownloadStartMsg = 0x3;
-	private final int itemStrategyDownloadStartMsg = 0x4;
-	private final int systemParamDownloadStartMsg = 0x5;	
+	private final int userDataDownloadStartMsg        = 0x1;
+	private final int productDataDownloadStartMsg     = 0x2;
+	private final int vipTypeDownloadStartMsg      	  = 0x3;
+	private final int itemStrategyDownloadStartMsg    = 0x4;
+	private final int systemParamDownloadStartMsg     = 0x5;	
 
 	//下载进度消息
-	private final int userDataDownloadProgressMsg = 0x10;
-	private final int productDataDownloadProgressMsg = 0x11;
-	private final int vipTypeDownloadProgressMsg = 0x12;
+	private final int userDataDownloadProgressMsg     = 0x10;
+	private final int productDataDownloadProgressMsg  = 0x11;
+	private final int vipTypeDownloadProgressMsg      = 0x12;
 	private final int itemStrategyDownloadProgressMsg = 0x13;
-	private final int systemParamDownloadProgressMsg = 0x14;
+	private final int systemParamDownloadProgressMsg  = 0x14;
 	
 	//下载结束消息
-	private final int userDataDownloadFinishMsg = 0x20;
-	private final int productDataDownloadFinishMsg = 0x21;
-	private final int vipTypeDownloadFinishMsg = 0x22;
-	private final int itemStrategyDownloadFinishMsg = 0x23;
-	private final int systemParamDownloadFinishMsg = 0x24;
+	private final int userDataDownloadFinishMsg       = 0x20;
+	private final int productDataDownloadFinishMsg    = 0x21;
+	private final int vipTypeDownloadFinishMsg        = 0x22;
+	private final int itemStrategyDownloadFinishMsg   = 0x23;
+	private final int systemParamDownloadFinishMsg    = 0x24;
+
+	//开始解压消息
+	private final int userDataStartUnZipMsg           = 0x30;
+	private final int productDataStartUnZipMsg        = 0x31;
+	private final int vipTypeStartUnZipMsg            = 0x32;
+	private final int itemStrategyStartUnZipMsg       = 0x33;
+	private final int  systemParamStartUnZipMsg       = 0x34;
+
+
+	//解压结束消息
+	private final int userDataUnZipFinishMsg          = 0x40;
+	private final int productDataUnZipFinishMsg       = 0x41;
+	private final int vipTypeUnZipFinishMsg           = 0x42;
+	private final int itemStrategyUnZipFinishMsg      = 0x43;
+	private final int systemParamUnZipFinishMsg       = 0x44;
 	
 	//下载线程名字
-	private final String USER_DATA_THREAD = "userDataThread";
-	private final String PRODUCT_DATA_THREAD = "productDataThread";
-	private final String VIP_TYPE_THREAD = "vipTypeThread";
+	private final String USER_DATA_THREAD     = "userDataThread";
+	private final String PRODUCT_DATA_THREAD  = "productDataThread";
+	private final String VIP_TYPE_THREAD      = "vipTypeThread";
 	private final String ITEM_STRATEGY_THREAD = "itemStrategyThread";
-	private final String SYSTEM_PARAM_THREAD = "systemParamThread";
+	private final String SYSTEM_PARAM_THREAD  = "systemParamThread";
 
 	//线程正在下载标志
 	private boolean userDataDownloading;
@@ -127,7 +154,9 @@ public class SystemDataDownloadActivity extends BaseActivity{
 	
 	//下载按钮
 	private Button mDownloadButton;
-		
+	//解压
+	private UnZip unZip;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -136,6 +165,7 @@ public class SystemDataDownloadActivity extends BaseActivity{
 		
 		initViews();
 		initDataDownload();
+		initZipTool();
 	}
 	
 	private void initViews(){
@@ -175,6 +205,11 @@ public class SystemDataDownloadActivity extends BaseActivity{
 	//初始化下载
 	private void initDataDownload(){
 		downloadPath = "/storage/sdcard1/";
+	}
+
+	//初始化解压工具
+	private void initZipTool(){
+		unZip = new UnZip();
 	}
 	
     // 初始化门店信息
@@ -224,14 +259,15 @@ public class SystemDataDownloadActivity extends BaseActivity{
 			return;
 		}
 		
+		//放到下载线程里干
 		//解压下载文件
-		unZipDownloadFiles();
+		//unZipDownloadFiles();
 		
 		//解析下载内容
-		parseDownloadFiles();
+		//parseDownloadFiles();
 		
 		//将下载文件存入数据库
-		saveDownloadFilesToSqlite();
+		//saveDownloadFilesToSqlite();
 			
 
 	}
@@ -389,8 +425,17 @@ public class SystemDataDownloadActivity extends BaseActivity{
 		
 		@Override
 		public void run() {
-			//真正干活的
+			//下载
 			downLoadFile(url,savePath,saveName);
+			
+			//解压下载文件
+			try {
+				unZipDownloadFiles();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+			//保存到SQlite
 		}
 	}
 	
@@ -398,8 +443,43 @@ public class SystemDataDownloadActivity extends BaseActivity{
 		return true;		
 	}
 	
-	private void unZipDownloadFiles(){
-		//即将添加，敬请期待！
+	//解压下载文件
+	private void unZipDownloadFiles() throws IOException{
+		if(Thread.currentThread().getName().equals(USER_DATA_THREAD)){ 
+			Log.d(TAG,"USER_DATA_UNZIP_THREAD" + "Start");
+			sendUnZipMsg(userDataStartUnZipMsg);
+			unZip.unZip(downloadPath + userDataDownloadFileName,downloadPath);
+			sendUnZipMsg(userDataUnZipFinishMsg);
+
+		}
+		if(Thread.currentThread().getName().equals(PRODUCT_DATA_THREAD)){ 
+			Log.d(TAG,"PRODUCT_DATA_UNZIP_THREAD" + "Start");
+			sendUnZipMsg(productDataStartUnZipMsg);
+			unZip.unZip(downloadPath + productDataDownloadFileName,downloadPath);
+			sendUnZipMsg(productDataUnZipFinishMsg);
+
+		}
+		if(Thread.currentThread().getName().equals(VIP_TYPE_THREAD)){
+			Log.d(TAG,"VIP_TYPE_UNZIP_THREAD" + "Start");
+			sendUnZipMsg(vipTypeStartUnZipMsg);
+			unZip.unZip(downloadPath + vipTypeDownloadFileName,downloadPath);
+			sendUnZipMsg(vipTypeUnZipFinishMsg);
+
+		}
+		if(Thread.currentThread().getName().equals(ITEM_STRATEGY_THREAD)) {
+			Log.d(TAG,"ITEM_STRATEGY_UNZIP_THREAD" + "Start");
+			sendUnZipMsg(itemStrategyStartUnZipMsg);
+			unZip.unZip(downloadPath + itemStrategyDownloadFileName,downloadPath);
+			sendUnZipMsg(itemStrategyUnZipFinishMsg);
+
+		}
+		if(Thread.currentThread().getName().equals(SYSTEM_PARAM_THREAD)) {
+			Log.d(TAG,"SYSTEM_PARAM_UNZIP_THREAD" + "Start");
+			sendUnZipMsg(systemParamStartUnZipMsg);
+			unZip.unZip(downloadPath + systemParamDownloadFileName,downloadPath);
+			sendUnZipMsg(systemParamUnZipFinishMsg);
+			
+		}		
 	}
 
 	private void parseDownloadFiles(){
@@ -438,7 +518,7 @@ public class SystemDataDownloadActivity extends BaseActivity{
 	         }
 	     }
 	}
-
+	
 	//发送下载开始消息
 	private void sendDownloadStartMsg(){
 		//创建消息
@@ -547,6 +627,30 @@ public class SystemDataDownloadActivity extends BaseActivity{
 		//OK，BABY，We send Message Now
 		updateTipsHandler.sendMessage(msg);
 	}
+
+	//发送解压消息
+	private void sendUnZipMsg(final int tipsMsg){
+		//创建消息
+        Message msg = new Message();
+        
+		if(Thread.currentThread().getName().equals(USER_DATA_THREAD)){ 
+			msg.what = tipsMsg;
+		}
+		if(Thread.currentThread().getName().equals(PRODUCT_DATA_THREAD)){ 
+			msg.what = productDataDownloadStartMsg;
+		}
+		if(Thread.currentThread().getName().equals(VIP_TYPE_THREAD)){
+			msg.what = vipTypeDownloadStartMsg;
+		}
+		if(Thread.currentThread().getName().equals(ITEM_STRATEGY_THREAD)) {
+			msg.what = itemStrategyDownloadStartMsg;
+		}
+		if(Thread.currentThread().getName().equals(SYSTEM_PARAM_THREAD)) {
+			msg.what = systemParamDownloadStartMsg;
+		}
+		//发送！
+		updateTipsHandler.sendMessage(msg);
+	}
 	
 	//根据网址得到输入流
 	public InputStream getInputStreamFormUrl(String urlstr){
@@ -577,6 +681,7 @@ public class SystemDataDownloadActivity extends BaseActivity{
     	return downloadPath;
     }    
     
+    //可以检测SDCARD是否插入
     public String getSDPath2(){    	
     	File sdDir = null; 
     	//判断sd卡是否存在
@@ -787,7 +892,50 @@ public class SystemDataDownloadActivity extends BaseActivity{
 					systemParamPercentTextView.setText(progress + "%");
 					break;	
 				}
+				
+				//显示开始解压信息
+				case userDataStartUnZipMsg:{
+					Toast.makeText(SystemDataDownloadActivity.this, R.string.tipsStartUnZipUserData, Toast.LENGTH_SHORT).show();
+					break;	
+				}
+				case productDataStartUnZipMsg:{
+					Toast.makeText(SystemDataDownloadActivity.this, R.string.tipsStartUnZipProductData, Toast.LENGTH_SHORT).show();
+					break;	
+				}
+				case vipTypeStartUnZipMsg:{
+					Toast.makeText(SystemDataDownloadActivity.this, R.string.tipsStartUnZipVipType, Toast.LENGTH_SHORT).show();
+					break;	
+				}
+				case itemStrategyStartUnZipMsg:{
+					Toast.makeText(SystemDataDownloadActivity.this, R.string.tipsStartUnZipItemStrategy, Toast.LENGTH_SHORT).show();
+					break;	
+				}
+				case systemParamStartUnZipMsg:{
+					Toast.makeText(SystemDataDownloadActivity.this, R.string.tipsStartUnZipSystemParam, Toast.LENGTH_SHORT).show();
+					break;	
+				}
 
+				//显示解压结束信息
+				case userDataUnZipFinishMsg:{
+					Toast.makeText(SystemDataDownloadActivity.this, R.string.tipsUnZipUserDataFinish, Toast.LENGTH_SHORT).show();
+					break;	
+				}
+				case productDataUnZipFinishMsg:{
+					Toast.makeText(SystemDataDownloadActivity.this, R.string.tipsUnZipProductDataFinish, Toast.LENGTH_SHORT).show();
+					break;	
+				}
+				case vipTypeUnZipFinishMsg:{
+					Toast.makeText(SystemDataDownloadActivity.this, R.string.tipsUnZipVipTypeFinish, Toast.LENGTH_SHORT).show();
+					break;	
+				}
+				case itemStrategyUnZipFinishMsg:{
+					Toast.makeText(SystemDataDownloadActivity.this, R.string.tipsUnZipItemStrategyFinish, Toast.LENGTH_SHORT).show();
+					break;	
+				}
+				case systemParamUnZipFinishMsg:{
+					Toast.makeText(SystemDataDownloadActivity.this, R.string.tipsUnZipSystemParamFinish, Toast.LENGTH_SHORT).show();
+					break;	
+				}
 			}
 			
 		}

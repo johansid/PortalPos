@@ -197,7 +197,19 @@
     <string name="tipsVipTypeDownloadFileExist">会员类型已经下载</string>
     <string name="tipsItemStrategyDownloadFileExist">单品策略已经下载</string>
     <string name="tipsSystemParamDownloadFileExist">系统参数已经下载</string>
-      
+
+    <string name="tipsStartUnZipUserData">开始解压用户资料</string>
+    <string name="tipsStartUnZipProductData">开始解压商品资料</string>
+    <string name="tipsStartUnZipVipType">开始解压会员类型资料</string>
+    <string name="tipsStartUnZipItemStrategy">开始解压单品策略资料</string>
+    <string name="tipsStartUnZipSystemParam">开始解压系统参数资料</string>               
+    
+    <string name="tipsUnZipUserDataFinish">用户资料解压完毕</string>
+    <string name="tipsUnZipProductDataFinish">商品资料解压完毕</string>
+    <string name="tipsUnZipVipTypeFinish">会员类型解压完毕</string>
+    <string name="tipsUnZipItemStrategyFinish">单品策略解压完毕</string>
+    <string name="tipsUnZipSystemParamFinish">系统参数解压完毕</string> 
+    
     <string name="storeInfoStoreIndex">门店编号</string>
     <string name="storeInfoCustomerName">顾客名称</string>
     <string name="storeInfoTerminalIndex">终端编号</string>
