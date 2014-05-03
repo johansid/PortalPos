@@ -100,63 +100,212 @@
 		       	android:background="@android:color/black"
 		       	android:layout_marginTop="5dp"
 		       	android:layout_below="@+id/systemParamCheckBox">
-		    </View>  	  
+		    </View>  
+		    	  
+			<LinearLayout
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:orientation="vertical"
+			    android:layout_below="@+id/blackLine">
+			    
+			    <LinearLayout
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"
+			        android:orientation="horizontal">
+			        
+				    <TextView
+				        android:id="@+id/userDataTextView"
+				        android:layout_width="0dp"
+				        android:layout_weight="1"
+				        android:layout_height="wrap_content"
+				        android:layout_marginTop="10dp"
+				        android:layout_marginLeft="6dp"
+				        android:gravity="center"
+				        android:text="@string/dataDownloadUserData"
+				        android:textSize="18sp"/>	
+				        	    
+				    <ProgressBar
+				        android:id="@+id/userDataProgressBar"
+				        android:layout_width="0dp"
+				        android:layout_weight="2"
+					    android:gravity="center"			        
+				        android:layout_height="wrap_content"
+				        android:layout_marginTop="10dp"
+				        android:layout_marginLeft="6dp"
+				        android:progress="100"
+				        android:visibility="invisible"
+				        style="?android:attr/progressBarStyleHorizontal"/>	
+				        	    		    
+				    <TextView
+				        android:id="@+id/userDataPercentTextView"
+				        android:layout_width="0dp"
+				        android:layout_weight="1"
+				        android:layout_height="wrap_content"
+				        android:layout_marginTop="10dp"
+				        android:layout_marginLeft="6dp"
+				        android:gravity="center"
+				        android:textSize="18sp"/> 
+				        
+			    </LinearLayout> 
+			          
+			    <LinearLayout
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"
+			        android:orientation="horizontal">
+				    			    
+				    <TextView
+				        android:id="@+id/productDataTextView"
+				        android:layout_width="0dp"
+				        android:layout_weight="1"
+				        android:gravity="center"
+				        android:layout_height="wrap_content"
+				        android:layout_marginTop="6dp"
+				        android:layout_marginLeft="6dp"
+				        android:text="@string/dataDownloadProductData"
+				        android:textSize="18sp"/>
+				    
+				    <ProgressBar
+				        android:id="@+id/productDataProgressBar"
+				        android:layout_width="0dp"
+				        android:layout_weight="2"
+				        android:gravity="center"
+				        android:layout_height="wrap_content"
+				        android:layout_marginTop="10dp"
+				        android:layout_marginLeft="6dp"
+				        android:progress="100"
+				        android:visibility="invisible"
+				        style="?android:attr/progressBarStyleHorizontal"/>
+				    		    
+				    <TextView
+				        android:id="@+id/productDataPercentTextView"
+				        android:layout_width="0dp"
+				        android:layout_weight="1"
+				        android:gravity="center"
+				        android:layout_height="wrap_content"
+				        android:layout_marginTop="10dp"
+				        android:layout_marginLeft="6dp"
+				        android:textSize="18sp"/>   
+				</LinearLayout>
+
+			    <LinearLayout
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"
+			        android:orientation="horizontal">
+				    			    		    		    
+				    <TextView
+				        android:id="@+id/vipTypeTextView"
+				        android:layout_width="0dp"
+				        android:layout_weight="1"
+				        android:gravity="center"
+				        android:layout_height="wrap_content"
+				        android:layout_marginTop="6dp"
+				        android:layout_marginLeft="6dp"
+				        android:text="@string/dataDownloadVipType"
+				        android:textSize="18sp"/>
+				    
+				    <ProgressBar
+				        android:id="@+id/vipTypeProgressBar"
+				        android:layout_width="0dp"
+				        android:layout_weight="2"
+				        android:gravity="center"
+				        android:layout_height="wrap_content"
+				        android:layout_marginTop="10dp"
+				        android:layout_marginLeft="6dp"
+				        android:progress="100"
+				        android:visibility="invisible"
+				        style="?android:attr/progressBarStyleHorizontal"/>
+				    		    
+				    <TextView
+				        android:id="@+id/vipTypePercentTextView"
+				        android:layout_width="0dp"
+				        android:layout_weight="1"
+				        android:gravity="center"
+				        android:layout_height="wrap_content"
+				        android:layout_marginTop="10dp"
+				        android:layout_marginLeft="6dp"
+				        android:textSize="18sp"/>   
+			    </LinearLayout>
+
+			    <LinearLayout
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"
+			        android:orientation="horizontal">			    
+			    			    		    
+				    <TextView
+				        android:id="@+id/itemStrategyTextView"
+				        android:layout_width="0dp"
+				        android:layout_weight="1"
+				        android:gravity="center"
+				        android:layout_height="wrap_content"
+				        android:layout_marginTop="6dp"
+				        android:layout_marginLeft="6dp"
+				        android:text="@string/dataDownloadItemStrategy"
+				        android:textSize="18sp"/>
 		
-		    <TextView
-		        android:id="@+id/userDataTextView"
-		        android:layout_width="match_parent"
-		        android:layout_height="wrap_content"
-		        android:layout_marginTop="10dp"
-		        android:layout_marginLeft="6dp"
-		        android:gravity="left"
-		        android:text="@string/dataDownloadUserData"
-		        android:textSize="18sp"
-		        android:layout_below="@+id/blackLine"/>
-		    
-		    <TextView
-		        android:id="@+id/productDataTextView"
-		        android:layout_width="match_parent"
-		        android:layout_height="wrap_content"
-		        android:layout_marginTop="6dp"
-		        android:layout_marginLeft="6dp"
-		        android:gravity="left"
-		        android:text="@string/dataDownloadProductData"
-		        android:textSize="18sp"
-		        android:layout_below="@+id/userDataTextView"/>
-		    
-		    <TextView
-		        android:id="@+id/vipTypeTextView"
-		        android:layout_width="match_parent"
-		        android:layout_height="wrap_content"
-		        android:layout_marginTop="6dp"
-		        android:layout_marginLeft="6dp"
-		        android:gravity="left"
-		        android:text="@string/dataDownloadVipType"
-		        android:textSize="18sp"
-		        android:layout_below="@+id/productDataTextView"/>
-		    
-		    <TextView
-		        android:id="@+id/itemStrategyTextView"
-		        android:layout_width="match_parent"
-		        android:layout_height="wrap_content"
-		        android:layout_marginTop="6dp"
-		        android:layout_marginLeft="6dp"
-		        android:gravity="left"
-		        android:text="@string/dataDownloadItemStrategy"
-		        android:textSize="18sp"
-		        android:layout_below="@+id/vipTypeTextView"/>
-		    
-		    <TextView
-		        android:id="@+id/systemParamTextView"
-		        android:layout_width="match_parent"
-		        android:layout_height="wrap_content"
-		        android:layout_marginTop="6dp"
-		        android:layout_marginLeft="6dp"
-		        android:gravity="left"
-		        android:text="@string/dataDownloadSystemParam"
-		        android:textSize="18sp"
-		        android:layout_below="@+id/itemStrategyTextView"/>
-        
+				    <ProgressBar
+				        android:id="@+id/itemStrategyProgressBar"
+				        android:layout_width="0dp"
+				        android:layout_weight="2"
+				        android:gravity="center"
+				        android:layout_height="wrap_content"
+				        android:layout_marginTop="10dp"
+				        android:layout_marginLeft="6dp"
+				        android:progress="100"
+				        android:visibility="invisible"
+				        style="?android:attr/progressBarStyleHorizontal"/>
+				    		    
+				    <TextView
+				        android:id="@+id/itemStrategyPercentTextView"
+				        android:layout_width="0dp"
+				        android:layout_weight="1"
+				        android:gravity="center"
+				        android:layout_height="wrap_content"
+				        android:layout_marginTop="10dp"
+				        android:layout_marginLeft="6dp"
+				        android:textSize="18sp"/>  		   
+			    </LinearLayout>
+
+			    <LinearLayout
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"
+			        android:orientation="horizontal">			    
+			    			    		    
+				    <TextView
+				        android:id="@+id/systemParamTextView"
+				        android:layout_width="0dp"
+				        android:layout_weight="1"
+				        android:gravity="center"
+				        android:layout_height="wrap_content"
+				        android:layout_marginTop="6dp"
+				        android:layout_marginLeft="6dp"
+				        android:text="@string/dataDownloadSystemParam"
+				        android:textSize="18sp"/>
+				    
+				    <ProgressBar
+				        android:id="@+id/systemParamProgressBar"
+				        android:layout_width="0dp"
+				        android:layout_weight="2"
+				        android:gravity="center"
+				        android:layout_height="wrap_content"
+				        android:layout_marginTop="10dp"
+				        android:layout_marginLeft="6dp"
+				        android:progress="100"
+				        android:visibility="invisible"
+				        style="?android:attr/progressBarStyleHorizontal"/>
+				    		    
+				    <TextView
+				        android:id="@+id/systemParamPercentTextView"
+				        android:layout_width="0dp"
+				        android:layout_weight="1"
+				        android:gravity="center"
+				        android:layout_height="wrap_content"
+				        android:layout_marginTop="10dp"
+				        android:layout_marginLeft="6dp"
+				        android:textSize="18sp"/>				    
+				</LinearLayout>	    
+			      			    
+			</LinearLayout>
+					    
         </RelativeLayout>
                    
     </LinearLayout>
