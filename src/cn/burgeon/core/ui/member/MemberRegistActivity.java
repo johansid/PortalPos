@@ -11,13 +11,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.text.Editable;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -26,6 +29,7 @@ import android.widget.Spinner;
 import cn.burgeon.core.R;
 import cn.burgeon.core.bean.Member;
 import cn.burgeon.core.ui.BaseActivity;
+import cn.burgeon.core.ui.sales.SalesNewOrderActivity;
 import cn.burgeon.core.widget.UndoBarController;
 import cn.burgeon.core.widget.UndoBarStyle;
 
@@ -39,6 +43,7 @@ public class MemberRegistActivity extends BaseActivity {
 	Spinner typeSp,employeeSP;
 	RadioGroup radioGroup;
 	int _id = -1;
+	String from = "";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +59,10 @@ public class MemberRegistActivity extends BaseActivity {
 			Log.d("MemberRegistActivity", "_id=" +_id);
 			if(-1 != _id)
 				getMemberInfo();
+			from = intent.getStringExtra("from");
+			if("search".equals(from)){
+				saveBtn.setText("使用新增会员");
+			}
 		}
 	}
 	
@@ -64,6 +73,13 @@ public class MemberRegistActivity extends BaseActivity {
 		_id = intent.getIntExtra("_id", -1);
 		Log.d("MemberRegistActivity", "_id=" +_id);
 		getMemberInfo();
+	}
+	
+	@Override
+	protected void onStop() {
+		// TODO Auto-generated method stub
+		super.onStop();
+		finish();
 	}
 	
 	private void getMemberInfo() {
@@ -94,6 +110,7 @@ public class MemberRegistActivity extends BaseActivity {
 		public void onClick(View v) {
 			switch (v.getId()) {
 			case R.id.memberRegistSaveBtn:
+				
 				if(-1 != _id){
 					update();
 					UndoBarStyle MESSAGESTYLE = new UndoBarStyle(-1, -1, 3000);
@@ -102,7 +119,11 @@ public class MemberRegistActivity extends BaseActivity {
 					save();
 					UndoBarStyle MESSAGESTYLE = new UndoBarStyle(-1, -1, 3000);
 		        	UndoBarController.show(MemberRegistActivity.this, "注册会员成功", null, MESSAGESTYLE);
+		        	if("search".equals(from)){
+		        		forwardActivity(SalesNewOrderActivity.class, "searchedMember",cardNOET.getText()+"\\"+100);
+		        	}
 				}
+				
 	        	break;
 			case R.id.memberRegistVerifyBtn:
 				verify();
@@ -271,4 +292,18 @@ public class MemberRegistActivity extends BaseActivity {
 			});
 		} catch (JSONException e) {}
 	}
+	
+/*	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		InputMethodManager imm= (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		if (event.getAction() == MotionEvent.ACTION_DOWN) {
+			if (MemberRegistActivity.this.getCurrentFocus() != null) {
+				if (MemberRegistActivity.this.getCurrentFocus().getWindowToken() != null) {
+					imm.hideSoftInputFromWindow(MemberRegistActivity.this.getCurrentFocus().getWindowToken(),
+							InputMethodManager.HIDE_NOT_ALWAYS);
+				}
+			}
+		}
+		return true;
+	}*/
 }

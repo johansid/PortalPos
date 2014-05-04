@@ -6,16 +6,20 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
-
+import android.widget.TextView;
+import cn.burgeon.core.App;
 import cn.burgeon.core.Constant;
 import cn.burgeon.core.R;
 import cn.burgeon.core.adapter.SalesManagerAdapter;
+import cn.burgeon.core.bean.IntentData;
 import cn.burgeon.core.ui.BaseActivity;
+import cn.burgeon.core.utils.PreferenceUtils;
 
 public class SalesManagerActivity extends BaseActivity {
 	
     private GridView salesGV;
     private SalesManagerAdapter mAdapter;
+    TextView storeTV;
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -24,9 +28,13 @@ public class SalesManagerActivity extends BaseActivity {
 		setContentView(R.layout.activity_sales_manager);
 		
 		init();
+		
 	}
 	
     private void init() {
+    	storeTV = (TextView) findViewById(R.id.storeTV);
+        storeTV.setText(App.getPreferenceUtils().getPreferenceStr(PreferenceUtils.store_key));
+
     	salesGV = (GridView) findViewById(R.id.salesGV);
         mAdapter = new SalesManagerAdapter(this);
         salesGV.setAdapter(mAdapter);

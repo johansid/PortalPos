@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import mexxen.mx5010.barcode.BarcodeManager;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,7 +19,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.ListView;
@@ -27,7 +28,6 @@ import cn.burgeon.core.R;
 import cn.burgeon.core.adapter.MemberListAdapter;
 import cn.burgeon.core.bean.Member;
 import cn.burgeon.core.ui.BaseActivity;
-import cn.burgeon.core.ui.sales.SalesNewOrderActivity;
 import cn.burgeon.core.utils.PreferenceUtils;
 import cn.burgeon.core.utils.ScreenUtils;
 
@@ -187,12 +187,16 @@ public class MemberListActivity extends BaseActivity {
 	}; 
 	
 	int _id;
+	View previous;
+	
 	OnItemClickListener OnItemSelectedListener = new OnItemClickListener() {
 
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-			// TODO Auto-generated method stub
+			if(previous != null) previous.setBackgroundDrawable(view.getBackground());
+			view.setBackgroundResource(R.drawable.button_bg);
 			Member selectedMember = (Member) parent.getAdapter().getItem(position);
+			previous = view;
 			_id = selectedMember.getId();
 			Log.d("MemberListActivity", "_id=" +_id);
 		}

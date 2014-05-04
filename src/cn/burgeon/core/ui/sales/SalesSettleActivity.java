@@ -13,12 +13,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import cn.burgeon.core.App;
 import cn.burgeon.core.R;
 import cn.burgeon.core.adapter.SalesSettleAdapter;
 import cn.burgeon.core.bean.IntentData;
 import cn.burgeon.core.bean.Product;
 import cn.burgeon.core.bean.Settle;
 import cn.burgeon.core.ui.BaseActivity;
+import cn.burgeon.core.utils.PreferenceUtils;
 
 public class SalesSettleActivity extends BaseActivity {
 
@@ -68,6 +70,13 @@ public class SalesSettleActivity extends BaseActivity {
 	}
 
 	private void init() {
+        // 初始化门店信息
+        TextView storeTV = (TextView) findViewById(R.id.storeTV);
+        storeTV.setText(App.getPreferenceUtils().getPreferenceStr(PreferenceUtils.store_key));
+
+        TextView currTimeTV = (TextView) findViewById(R.id.currTimeTV);
+        currTimeTV.setText(getCurrDate());
+        
 		settleBtn = (Button) findViewById(R.id.settleJiezhangBtn);
 		settleBtn.setOnClickListener(onClickListener);
 		payTV = (TextView) findViewById(R.id.salesSettlePay);

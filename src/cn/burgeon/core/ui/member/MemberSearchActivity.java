@@ -35,7 +35,7 @@ import com.android.volley.Response;
 public class MemberSearchActivity extends BaseActivity {
 	
 	ListView mListView;
-	Button queryBtn,confirmBtn;
+	Button addBtn,queryBtn,confirmBtn;
 	EditText cardNoET,mobileET;
 	MemberSearchAdapter mAdapter;
 	
@@ -70,6 +70,8 @@ public class MemberSearchActivity extends BaseActivity {
         
         cardNoET = (EditText) findViewById(R.id.memberSearchCardNoET);
         mobileET = (EditText) findViewById(R.id.memberSearchPhoneET);
+		addBtn = (Button) findViewById(R.id.memberNewBtn);
+		addBtn.setOnClickListener(onClickListener);
 		queryBtn = (Button) findViewById(R.id.memberSearchBtn);
 		queryBtn.setOnClickListener(onClickListener);
 		confirmBtn = (Button) findViewById(R.id.memberSearchConfirmBtn);
@@ -184,6 +186,9 @@ public class MemberSearchActivity extends BaseActivity {
 		@Override
 		public void onClick(View v) {
 			switch (v.getId()) {
+			case R.id.memberNewBtn:
+				forwardActivity(MemberRegistActivity.class, "from","search");
+				break;
 			case R.id.memberSearchBtn:
 				postRequest();
 				break;

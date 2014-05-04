@@ -9,4 +9,8 @@
         <item>团购单</item>
         <item>金卡</item>
     </string-array>
+    
+        <string-array name="empployee">
+        <item>test</item>
+    </string-array>
 </resources>

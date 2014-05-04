@@ -11,10 +11,13 @@ import cn.burgeon.core.ui.BaseActivity;
 import cn.burgeon.core.utils.PreferenceUtils;
 import cn.burgeon.core.utils.ScreenUtils;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.ListView;
@@ -66,6 +69,7 @@ public class DailySalesActivity extends BaseActivity {
         
         recodeNumTV = (TextView) findViewById(R.id.recodeNumTV);
     	mList = (ListView) findViewById(R.id.dailySalesLV);
+    	mList.setOnItemClickListener(onItemClickListener);
     	btnAdd = (Button) findViewById(R.id.sales_daily_btn_add);
     	btnUpdate = (Button) findViewById(R.id.sales_daily_btn_update);
     	btnSearch = (Button) findViewById(R.id.sales_daily_btn_search);
@@ -85,19 +89,26 @@ public class DailySalesActivity extends BaseActivity {
 				forwardActivity(SalesNewOrderActivity.class);
 				break;
 			case R.id.sales_daily_btn_update:
-				
+				if(currentSelectedOrder != null)
+					forwardActivity(SalesNewOrderActivity.class,"updateID",String.valueOf(currentSelectedOrder.getId()));
 				break;
 			case R.id.sales_daily_btn_search:
 				
 				break;
 			case R.id.sales_daily_btn_delete:
-				
+				delete();
 				break;
 			default:
 				break;
 			}
 		}
 	};
+	
+	private void delete() {
+		if(currentSelectedOrder != null)
+			db.execSQL("delete from c_settle where _id=?", new Object[]{currentSelectedOrder.getId()});
+			bindList();
+	}
 	
 	private List<Order> fetchData() {
 		Order order = null;
@@ -117,4 +128,21 @@ public class DailySalesActivity extends BaseActivity {
 		}
 		return data;
 	}
+	
+	Order currentSelectedOrder;
+	View previous;
+	int selectedPosition;
+	
+	OnItemClickListener onItemClickListener = new OnItemClickListener() {
+
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position,
+				long arg3) {
+			
+			if(previous != null) previous.setBackgroundDrawable(view.getBackground());
+			view.setBackgroundResource(R.drawable.button_bg);
+			previous = view;
+			currentSelectedOrder = (Order) parent.getItemAtPosition(position);
+		}
+	};
 }

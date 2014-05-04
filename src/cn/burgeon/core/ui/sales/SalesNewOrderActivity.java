@@ -1,6 +1,7 @@
 package cn.burgeon.core.ui.sales;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,40 +10,44 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.android.volley.Response;
-
+import android.app.ActivityManager;
+import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.ListView;
-import android.widget.MultiAutoCompleteTextView.CommaTokenizer;
 import android.widget.TextView;
 import cn.burgeon.core.App;
 import cn.burgeon.core.R;
 import cn.burgeon.core.adapter.SalesNewOrderAdapter;
 import cn.burgeon.core.bean.IntentData;
-import cn.burgeon.core.bean.Member;
 import cn.burgeon.core.bean.Product;
 import cn.burgeon.core.ui.BaseActivity;
-import cn.burgeon.core.ui.SystemActivity;
-import cn.burgeon.core.ui.member.MemberRegistActivity;
 import cn.burgeon.core.ui.member.MemberSearchActivity;
 import cn.burgeon.core.utils.PreferenceUtils;
 import cn.burgeon.core.utils.ScreenUtils;
 
+import com.android.volley.Response;
+
 public class SalesNewOrderActivity extends BaseActivity {
 	
 	Button vipBtn, accountBtn, verifyBarCodeBtn;
-	EditText cardNoET, styleBarcodeET;
+	EditText cardNoET, styleBarcodeET,newSalesOrderDateET;
 	TextView commonRecordnum,commonCount,commonMoney;
 	ListView mListView;
 	SalesNewOrderAdapter mAdapter;
 	ArrayList<Product> data = new ArrayList<Product>();
+	String updateID = "unknow";
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,10 +62,21 @@ public class SalesNewOrderActivity extends BaseActivity {
         	String searchedMember = getIntent().getExtras().getString("searchedMember");
         	if(searchedMember != null)
         		cardNoET.setText(searchedMember);
+        	/*updateID = getIntent().getExtras().getString("updateID");
+        	if(updateID != -1){
+        		query();
+        	}*/
         }
     }
     
-    @Override
+    private void query() {
+		Cursor c = db.rawQuery("select * from c_settle where _id=?", new String[]{String.valueOf(updateID)});
+		if(c.moveToFirst()){
+			
+		}
+    }
+
+	@Override
     protected void onNewIntent(Intent intent) {
     	// TODO Auto-generated method stub
     	super.onNewIntent(intent);
@@ -99,12 +115,17 @@ public class SalesNewOrderActivity extends BaseActivity {
 		accountBtn.setOnClickListener(onClickListener);
 		verifyBarCodeBtn.setOnClickListener(onClickListener);
 		cardNoET = (EditText) findViewById(R.id.cardnoDiscountET);
+		newSalesOrderDateET = (EditText) findViewById(R.id.newSalesOrderDateET);
+		newSalesOrderDateET.setOnClickListener(onClickListener);
 		styleBarcodeET = (EditText) findViewById(R.id.styleBarcodeET);
 		styleBarcodeET.setText("109454d334620");
 		mListView = (ListView) findViewById(R.id.newOrderLV);
 		mAdapter = new SalesNewOrderAdapter(data, this);
 		mListView.setAdapter(mAdapter);
 	}
+	
+	
+	Calendar c = Calendar.getInstance();
 	
 	View.OnClickListener onClickListener = new View.OnClickListener() {
 		
@@ -124,12 +145,34 @@ public class SalesNewOrderActivity extends BaseActivity {
 			case R.id.verifyBarCodeBtn:
 				verifyBarCode();
 				break;
+			case R.id.newSalesOrderDateET:
+	            int startmYear = c.get(Calendar.YEAR);
+	            int startmMonth = c.get(Calendar.MONTH);
+	            int startmDay = c.get(Calendar.DAY_OF_MONTH);
+	            DatePickerDialog startdialog = new DatePickerDialog(SalesNewOrderActivity.this, new startmDateSetListener(), startmYear, startmMonth, startmDay);
+	            startdialog.show();
+				break;
 			default:
 				break;
 			}
 		}
 
 	}; 
+	
+    class startmDateSetListener implements DatePickerDialog.OnDateSetListener {
+
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            int mYear = year;
+            int mMonth = monthOfYear;
+            int mDay = dayOfMonth;
+            // Month is 0 based so add 1
+
+            String month = String.valueOf(mMonth + 1).length() == 2 ? String.valueOf(mMonth + 1) : "0" + String.valueOf(mMonth + 1);
+            String day = String.valueOf(mDay).length() == 2 ? String.valueOf(mDay) : "0" + String.valueOf(mDay);
+            newSalesOrderDateET.setText(new StringBuilder().append(mYear).append(month).append(day));
+        }
+    }
 	
 	private void upateBottomBarInfo() {
 		float pay = 0.0f;

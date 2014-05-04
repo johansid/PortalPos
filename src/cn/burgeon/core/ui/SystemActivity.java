@@ -31,7 +31,7 @@ public class SystemActivity extends BaseActivity {
         init();
 
         IntentData iData = (IntentData) getIntent().getParcelableExtra(PAR_KEY);
-        initData(iData, storeTV);
+        initStoreData(iData, storeTV);
     }
 
     private void init() {

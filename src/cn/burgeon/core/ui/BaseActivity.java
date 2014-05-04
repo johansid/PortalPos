@@ -1,10 +1,14 @@
 package cn.burgeon.core.ui;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
@@ -24,6 +28,7 @@ import cn.burgeon.core.bean.IntentData;
 import cn.burgeon.core.db.DbHelper;
 import cn.burgeon.core.net.RequestManager;
 import cn.burgeon.core.net.SimonHttpStack;
+import cn.burgeon.core.ui.member.MemberRegistActivity;
 import cn.burgeon.core.widget.CustomProgressDialog;
 
 /**
@@ -54,6 +59,7 @@ public class BaseActivity extends Activity {
     public void setupFullscreen() {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
     // 跳转
@@ -150,4 +156,23 @@ public class BaseActivity extends Activity {
     public void initData(IntentData iData, TextView tv) {
         tv.setText("门店：" + iData.getStore() + "+" + iData.getUser());
     }
+    
+    // 初始化门店和用户信息
+    public void initStoreData(IntentData iData, TextView tv) {
+        tv.setText("门店：" + iData.getStore());
+    }
+    
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		InputMethodManager imm= (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		if (event.getAction() == MotionEvent.ACTION_DOWN) {
+			if (BaseActivity.this.getCurrentFocus() != null) {
+				if (BaseActivity.this.getCurrentFocus().getWindowToken() != null) {
+					imm.hideSoftInputFromWindow(BaseActivity.this.getCurrentFocus().getWindowToken(),
+							InputMethodManager.HIDE_NOT_ALWAYS);
+				}
+			}
+		}
+		return true;
+	}
 }
