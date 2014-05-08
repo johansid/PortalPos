@@ -13,6 +13,7 @@ import android.os.Parcelable;
 public class IntentData implements Parcelable {
     private String store;
     private String user;
+    private String command;
 
     private ArrayList<AllotInDetail> allotInDetails;
     private ArrayList<Product> products;
@@ -41,7 +42,15 @@ public class IntentData implements Parcelable {
         this.user = user;
     }
 
-    public ArrayList<AllotInDetail> getAllotInDetails() {
+    public String getCommand() {
+		return command;
+	}
+
+	public void setCommand(String command) {
+		this.command = command;
+	}
+
+	public ArrayList<AllotInDetail> getAllotInDetails() {
         return allotInDetails;
     }
 
@@ -58,6 +67,7 @@ public class IntentData implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.store);
         dest.writeString(this.user);
+        dest.writeString(this.command);
         dest.writeTypedList(allotInDetails);
         dest.writeTypedList(products);
     }
@@ -68,6 +78,7 @@ public class IntentData implements Parcelable {
     private IntentData(Parcel in) {
         this.store = in.readString();
         this.user = in.readString();
+        this.command = in.readString();
 
         this.allotInDetails = new ArrayList<AllotInDetail>();
         in.readTypedList(allotInDetails, AllotInDetail.CREATOR);

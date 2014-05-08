@@ -22,7 +22,13 @@ public class DbHelper extends SQLiteOpenHelper {
 		db.execSQL("CREATE TABLE IF NOT EXISTS c_settle" +  
                 "(_id INTEGER PRIMARY KEY AUTOINCREMENT, orderno VARCHAR,"+
 				"settleTime VARCHAR, type VARCHAR,count VARCHAR,money VARCHAR,"
-				+ "orderEmployee VARCHAR,status VARCHAR,settleDate VARCHAR,settleMonth VARCHAR)");
+				+ "orderEmployee VARCHAR,status VARCHAR,settleDate VARCHAR,"
+				+ "settleMonth VARCHAR,settleUUID VARCHAR)");
+		
+		db.execSQL("CREATE TABLE IF NOT EXISTS c_settle_detail" +  
+                "(_id INTEGER PRIMARY KEY AUTOINCREMENT, settleUUID VARCHAR,"+
+				"price VARCHAR, discount VARCHAR,count VARCHAR,money VARCHAR,"
+				+ "pdtname VARCHAR,color VARCHAR,size VARCHAR,settleType VARCHAR)");
 	}
 
 	@Override

@@ -4,8 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -28,10 +28,11 @@ public class SalesSettleActivity extends BaseActivity {
 	Button settleBtn;
 	TextView payTV, counTV;
 	EditText orginET, disCounET, realityET;
+	ArrayList<Product> products;
+	String command;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setupFullscreen();
 		setContentView(R.layout.activity_sales_settle);
@@ -43,7 +44,6 @@ public class SalesSettleActivity extends BaseActivity {
 	
 	@Override
 	protected void onStop() {
-		// TODO Auto-generated method stub
 		super.onStop();
 		finish();
 	}
@@ -54,14 +54,16 @@ public class SalesSettleActivity extends BaseActivity {
 
 	private void settle() {
 		IntentData iData = (IntentData) getIntent().getParcelableExtra(PAR_KEY);
-		ArrayList<Product> products = iData.getProducts();
+		products = iData.getProducts();
+		command = iData.getCommand();
+		Log.d("zhang.h", "command=" + command);
 		for(Product pro : products){
 			pay += Float.parseFloat(pro.getMoney());
 			count += Integer.parseInt(pro.getCount());
 		}
 		payTV.setText(String.format(getResources().getString(R.string.sales_settle_pay),String.valueOf(pay)));
 		counTV.setText(String.format(getResources().getString(R.string.sales_settle_count),count));
-		Log.d("zhang.h", ""+pay);
+		
 		realityET.setText(String.valueOf(pay));
 		disCounET.setText(String.valueOf(discount));
 		List<Settle> list = new ArrayList<Settle>();
@@ -91,25 +93,23 @@ public class SalesSettleActivity extends BaseActivity {
 		
 		@Override
 		public void onClick(View v) {
-			save();
+			if("unknow".equals(command))
+				save();
+			else
+				update();
 			forwardActivity(DailySalesActivity.class);
 		}
 	};
-	
-/*	db.execSQL("CREATE TABLE IF NOT EXISTS c_settle" +  
-            "(_id INTEGER PRIMARY KEY AUTOINCREMENT, orderno VARCHAR,"+
-			"settleTime VARCHAR, type VARCHAR,count INTEGER,money VARCHAR,"
-			+ "orderEmployee VARCHAR,"+
-            "status VARCHAR)");*/
 	
 	public void save(){
 		startProgressDialog();
 		db.beginTransaction();
         try {
+        	String uuid = UUID.randomUUID().toString();
         	Date currentTime = new Date();
         	db.execSQL("insert into c_settle('settleTime','type','count','money','orderEmployee',"
-        			+ "'status','settleDate','settleMonth')"+
-        				" values(?,?,?,?,?,?,?,?)",
+        			+ "'status','settleDate','settleMonth','settleUUID')"+
+        				" values(?,?,?,?,?,?,?,?,?)",
 					new Object[]{new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(currentTime),
 								getResources().getString(R.string.sales_settle_novip),
 								count,
@@ -117,8 +117,51 @@ public class SalesSettleActivity extends BaseActivity {
 								"",
 								getResources().getString(R.string.sales_settle_noup),
 								new SimpleDateFormat("yyyy-MM-dd").format(currentTime),
-								new SimpleDateFormat("yyyy-MM-dd").format(currentTime).substring(0, 7)});
-//        	new SimpleDateFormat("yyyy-MM-dd").format(currentTime).substring(0, 7)
+								new SimpleDateFormat("yyyy-MM-dd").format(currentTime).substring(0, 7),
+								uuid});
+        	for(Product pro : products){
+        		db.execSQL("insert into c_settle_detail('price','discount','count','money','settleUUID') values(?,?,?,?,?)",
+    					new Object[]{pro.getPrice(), pro.getDiscount(), pro.getCount(), pro.getMoney(), uuid});
+        	}
+            db.setTransactionSuccessful();
+            Thread.sleep(500);
+        } catch(Exception e){}
+        finally {  
+            db.endTransaction();
+        } 
+        stopProgressDialog();
+	}
+	
+	public void update(){
+		startProgressDialog();
+		db.beginTransaction();
+        try {
+        	Date currentTime = new Date();
+        	db.execSQL("update c_settle set 'settleTime' = ?,'type' = ?,'count' = ?,"
+        			+ "'money' = ?,'orderEmployee' = ?,"
+        			+ "'status' = ?,'settleDate' = ?,'settleMonth' = ? "
+        			+ " where settleUUID = ?",
+					new Object[]{new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(currentTime),
+								getResources().getString(R.string.sales_settle_novip),
+								count,
+								realityET.getText(),
+								"",
+								getResources().getString(R.string.sales_settle_noup),
+								new SimpleDateFormat("yyyy-MM-dd").format(currentTime),
+								new SimpleDateFormat("yyyy-MM-dd").format(currentTime).substring(0, 7),
+								command});
+        	
+        	for(Product pro : products){
+        		if(pro.getUuid() != null){
+	        		db.execSQL("update c_settle_detail "
+	        				+ "set 'price' = ?,'discount' = ?,"
+	        				+ "'count' = ?,'money' = ? where settleUUID = ?",
+	    					new Object[]{pro.getPrice(), pro.getDiscount(), pro.getCount(), pro.getMoney(), command});
+        		}else{
+        			db.execSQL("insert into c_settle_detail('price','discount','count','money','settleUUID') values(?,?,?,?,?)",
+        					new Object[]{pro.getPrice(), pro.getDiscount(), pro.getCount(), pro.getMoney(), command});
+        		}
+        	}
             db.setTransactionSuccessful();
             Thread.sleep(500);
         } catch(Exception e){}

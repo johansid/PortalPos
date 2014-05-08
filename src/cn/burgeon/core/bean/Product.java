@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 public class Product implements Parcelable{
 	private int id;
+	private String uuid;
 	private String name;
 	private String barCode;
 	private String price;
@@ -16,6 +17,12 @@ public class Product implements Parcelable{
 	}
 	public void setId(int id) {
 		this.id = id;
+	}
+	public String getUuid() {
+		return uuid;
+	}
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
 	}
 	public String getName() {
 		return name;

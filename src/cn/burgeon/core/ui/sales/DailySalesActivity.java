@@ -7,6 +7,7 @@ import cn.burgeon.core.App;
 import cn.burgeon.core.R;
 import cn.burgeon.core.adapter.SalesDailyAdapter;
 import cn.burgeon.core.bean.Order;
+import cn.burgeon.core.bean.Product;
 import cn.burgeon.core.ui.BaseActivity;
 import cn.burgeon.core.utils.PreferenceUtils;
 import cn.burgeon.core.utils.ScreenUtils;
@@ -90,19 +91,32 @@ public class DailySalesActivity extends BaseActivity {
 				break;
 			case R.id.sales_daily_btn_update:
 				if(currentSelectedOrder != null)
-					forwardActivity(SalesNewOrderActivity.class,"updateID",String.valueOf(currentSelectedOrder.getId()));
+					forwardActivity(SalesNewOrderActivity.class,"updateID",currentSelectedOrder.getUuid());
 				break;
 			case R.id.sales_daily_btn_search:
 				
 				break;
 			case R.id.sales_daily_btn_delete:
-				delete();
+				//delete();
+				queryForUpdate();
 				break;
 			default:
 				break;
 			}
 		}
 	};
+	
+    private void queryForUpdate() {
+		Cursor c = db.rawQuery("select * from c_settle_detail", null);
+		Log.d("zhang.h", "result size:" + c.getCount());
+		while(c.moveToNext()){
+			Log.d("zhang.h", "settleUUID = " + c.getString(c.getColumnIndex("settleUUID")) + 
+					" | price = " + c.getString(c.getColumnIndex("price")) +
+					" | discount = " + c.getString(c.getColumnIndex("discount")) + 
+					" | count = " + c.getString(c.getColumnIndex("count")) +
+					" | money = " + c.getString(c.getColumnIndex("money")));
+		}
+    }
 	
 	private void delete() {
 		if(currentSelectedOrder != null)
@@ -118,6 +132,7 @@ public class DailySalesActivity extends BaseActivity {
 		while(c.moveToNext()){
 			order = new Order();
 			order.setId(c.getInt(c.getColumnIndex("_id")));
+			order.setUuid(c.getString(c.getColumnIndex("settleUUID")));
 			order.setOrderNo(c.getString(c.getColumnIndex("orderno")));
 			order.setOrderDate(c.getString(c.getColumnIndex("settleTime")));
 			order.setOrderType(c.getString(c.getColumnIndex("type")));

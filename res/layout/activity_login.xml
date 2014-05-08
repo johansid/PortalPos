@@ -92,7 +92,8 @@
         android:layout_alignParentRight="true"
         android:layout_marginBottom="30dp"
         android:layout_marginRight="10dp"
-        android:layout_marginLeft="70dp" />
+        android:layout_marginLeft="70dp" 
+        android:entries="@array/empployee"/>
     <!-- 登录输入框 -->
 
 </RelativeLayout>

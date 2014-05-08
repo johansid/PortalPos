@@ -62,18 +62,28 @@ public class SalesNewOrderActivity extends BaseActivity {
         	String searchedMember = getIntent().getExtras().getString("searchedMember");
         	if(searchedMember != null)
         		cardNoET.setText(searchedMember);
-        	/*updateID = getIntent().getExtras().getString("updateID");
-        	if(updateID != -1){
-        		query();
-        	}*/
+        	updateID = getIntent().getExtras().getString("updateID");
+        	if(!"unknow".equals(updateID)){
+        		queryForUpdate();
+        	}
         }
     }
     
-    private void query() {
-		Cursor c = db.rawQuery("select * from c_settle where _id=?", new String[]{String.valueOf(updateID)});
-		if(c.moveToFirst()){
-			
+    private void queryForUpdate() {
+		Cursor c = db.rawQuery("select * from c_settle_detail where settleUUID = ?", new String[]{updateID});
+		Log.d("zhang.h", "result size:" + c.getCount());
+		Product product = null;
+		while(c.moveToNext()){
+			product = new Product();
+			product.setUuid(updateID);
+			product.setName(c.getString(c.getColumnIndex("pdtname")));
+			product.setPrice(c.getString(c.getColumnIndex("price")));
+			product.setDiscount(c.getString(c.getColumnIndex("discount")));
+			product.setCount(c.getString(c.getColumnIndex("count")));
+			product.setMoney(c.getString(c.getColumnIndex("money")));
+			data.add(product);
 		}
+		mAdapter.notifyDataSetChanged();
     }
 
 	@Override
@@ -94,6 +104,7 @@ public class SalesNewOrderActivity extends BaseActivity {
     }
 
 	private void init() {
+		Log.d("zhang.h", "=======init=======");
         // 初始化门店信息
         TextView storeTV = (TextView) findViewById(R.id.storeTV);
         storeTV.setText(App.getPreferenceUtils().getPreferenceStr(PreferenceUtils.store_key));
@@ -140,6 +151,7 @@ public class SalesNewOrderActivity extends BaseActivity {
 				// 跳转并传递数据
                 IntentData intentData = new IntentData();
                 intentData.setProducts(data);
+            	intentData.setCommand(updateID);
                 forwardActivity(SalesSettleActivity.class, intentData);
 				break;
 			case R.id.verifyBarCodeBtn:
@@ -224,7 +236,7 @@ public class SalesNewOrderActivity extends BaseActivity {
 			
 			Log.d("zhang.h", array.toString());
 			params.put("transactions", array.toString());
-			sendRequest(params,new Response.Listener<String>() {
+/*			sendRequest(params,new Response.Listener<String>() {
 				@Override
 				public void onResponse(String response) {
 					// 取消进度条
@@ -237,7 +249,12 @@ public class SalesNewOrderActivity extends BaseActivity {
 					mAdapter.notifyDataSetChanged();
 					upateBottomBarInfo();
 				}
-			});
+			});*/
+			String response = "[{'message':'完成:0.127 seconds','id':'112','code':0,'rows':[['109454D334620',1099.85,'109454D334','109454D334']]}]";
+			List<Product> list = parseResult(response);
+			data.addAll(list);
+			mAdapter.notifyDataSetChanged();
+			upateBottomBarInfo();
 		} catch (JSONException e) {}
 	}
 	

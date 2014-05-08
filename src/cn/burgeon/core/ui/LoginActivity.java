@@ -41,7 +41,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         setContentView(R.layout.activity_login);
 
         // 初始化门店
-        initStoreData();
+        //initStoreData();
 
         // 初始化布局控件
         init();

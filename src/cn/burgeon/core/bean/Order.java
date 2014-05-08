@@ -2,6 +2,7 @@ package cn.burgeon.core.bean;
 
 public class Order {
 	private int id;
+	private String uuid;
 	private String cardNum;
 	private String zheKou;
 	private String kuanHao;
@@ -32,6 +33,12 @@ public class Order {
 	}
 	public void setId(int id) {
 		this.id = id;
+	}
+	public String getUuid() {
+		return uuid;
+	}
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
 	}
 	public String getCardNum() {
 		return cardNum;
