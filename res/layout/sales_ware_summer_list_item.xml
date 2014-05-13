@@ -7,28 +7,47 @@
     <TextView
         android:id="@+id/waresummer_kuanhao"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_weight="1.5"
+        android:gravity="center"
         android:layout_width="0dp"
         android:textSize="15sp" />
+    
+        <View
+        android:layout_width="0.5dp"
+        android:layout_height="match_parent"
+        android:background="@android:color/black" />
 
     <TextView
         android:id="@+id/waresummer_count"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_weight="0.5"
+        android:gravity="center"
         android:layout_width="0dp"
         android:textSize="15sp" />
+    
+        <View
+        android:layout_width="0.5dp"
+        android:layout_height="match_parent"
+        android:background="@android:color/black" />
 
     <TextView
         android:id="@+id/waresummer_money"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:gravity="center"
         android:layout_width="0dp"
         android:textSize="15sp" />
+    
+        <View
+        android:layout_width="0.5dp"
+        android:layout_height="match_parent"
+        android:background="@android:color/black" />
 
     <TextView
         android:id="@+id/waresummer_mincheng"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:gravity="center"
         android:layout_width="0dp"
         android:textSize="15sp" />
 

@@ -17,6 +17,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 
+import mexxen.mx5010.barcode.BarcodeEvent;
+import mexxen.mx5010.barcode.BarcodeListener;
+import mexxen.mx5010.barcode.BarcodeManager;
+
 import org.apache.http.client.methods.HttpUriRequest;
 
 import java.text.SimpleDateFormat;
@@ -53,6 +57,8 @@ public class BaseActivity extends Activity {
         //因为getWritableDatabase内部调用了mContext.openOrCreateDatabase(mName, 0, mFactory);  
         //所以要确保context已初始化,我们可以把实例化DBManager的步骤放在Activity的onCreate里  
         db = helper.getWritableDatabase();
+        
+       
     }
 
     // 设置程序全屏显示

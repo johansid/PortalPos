@@ -12,6 +12,8 @@ public class Product implements Parcelable{
 	private String discount;
 	private String count;
 	private String money;
+	private String color;
+	private String size;
 	public int getId() {
 		return id;
 	}
@@ -29,6 +31,18 @@ public class Product implements Parcelable{
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public String getColor() {
+		return color;
+	}
+	public void setColor(String color) {
+		this.color = color;
+	}
+	public String getSize() {
+		return size;
+	}
+	public void setSize(String size) {
+		this.size = size;
 	}
 	public String getBarCode() {
 		return barCode;

@@ -3,28 +3,32 @@ package cn.burgeon.core.ui.sales;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.database.Cursor;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
+import android.widget.HorizontalScrollView;
+import android.widget.ListView;
+import android.widget.TextView;
 import cn.burgeon.core.App;
 import cn.burgeon.core.R;
-import cn.burgeon.core.adapter.SalesDailyAdapter;
 import cn.burgeon.core.adapter.SalesOrderSearchAdapter;
 import cn.burgeon.core.bean.Order;
 import cn.burgeon.core.ui.BaseActivity;
 import cn.burgeon.core.utils.PreferenceUtils;
 import cn.burgeon.core.utils.ScreenUtils;
-import android.database.Cursor;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.HorizontalScrollView;
-import android.widget.ListView;
-import android.widget.TextView;
 
 public class SalesOrderSearchActivity extends BaseActivity {
 	
 	ListView mList;
 	SalesOrderSearchAdapter mAdapter;
 	Button btnViewDetail, btnSearch;
+	TextView recodeNumTV;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +44,7 @@ public class SalesOrderSearchActivity extends BaseActivity {
     	List<Order> data = fetchData();
     	mAdapter = new SalesOrderSearchAdapter(data, this);
     	mList.setAdapter(mAdapter);
+    	recodeNumTV.setText(String.format(getResources().getString(R.string.sales_new_common_record),data.size())); 
 	}
 
 	private void init(){
@@ -53,9 +58,14 @@ public class SalesOrderSearchActivity extends BaseActivity {
         HorizontalScrollView hsv = (HorizontalScrollView) findViewById(R.id.hsv);
         ViewGroup.LayoutParams params = hsv.getLayoutParams();
         params.height = (int) ScreenUtils.getAllotInLVHeight(this);
+        
+        recodeNumTV = (TextView) findViewById(R.id.recodeNumTV);
     	mList = (ListView) findViewById(R.id.salesOrderLV);
-    	btnViewDetail = (Button) findViewById(R.id.sales_daily_btn_add);
-    	btnSearch = (Button) findViewById(R.id.sales_daily_btn_search);
+    	mList.setOnItemClickListener(onItemClickListener);
+    	btnViewDetail = (Button) findViewById(R.id.searchDetailBtn);
+    	btnSearch = (Button) findViewById(R.id.searchQueryBtn);
+    	btnViewDetail.setOnClickListener(onClickListener);
+    	btnSearch.setOnClickListener(onClickListener);
     }
 
 	private List<Order> fetchData() {
@@ -65,6 +75,7 @@ public class SalesOrderSearchActivity extends BaseActivity {
 		Log.d("zhang.h", "cursor size===========" + c.getCount());
 		while(c.moveToNext()){
 			order = new Order();
+			order.setUuid(c.getString(c.getColumnIndex("settleUUID")));
 			order.setOrderNo(c.getString(c.getColumnIndex("orderno")));
 			order.setOrderDate(c.getString(c.getColumnIndex("settleTime")));
 			order.setOrderType(c.getString(c.getColumnIndex("type")));
@@ -75,4 +86,37 @@ public class SalesOrderSearchActivity extends BaseActivity {
 		}
 		return data;
 	}
+	
+	Order currentSelectedOrder;
+	View previous;
+	int selectedPosition;
+	
+	OnItemClickListener onItemClickListener = new OnItemClickListener() {
+
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position,long arg3) {
+			if(previous != null) previous.setBackgroundDrawable(view.getBackground());
+			view.setBackgroundResource(R.drawable.button_bg);
+			previous = view;
+			currentSelectedOrder = (Order) parent.getItemAtPosition(position);
+		}
+	};
+	
+	OnClickListener onClickListener = new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			switch (v.getId()) {
+			case R.id.searchDetailBtn:
+				if(currentSelectedOrder != null)
+					forwardActivity(SalesOrderDetailActivity.class,"updateID",currentSelectedOrder.getUuid());
+				break;
+			case R.id.searchQueryBtn:
+				break;
+			default:
+				break;
+			}
+		}
+	};
+	
 }

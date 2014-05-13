@@ -3,24 +3,23 @@ package cn.burgeon.core.ui.sales;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.burgeon.core.R;
-import cn.burgeon.core.adapter.SalesDailyAdapter;
-import cn.burgeon.core.adapter.SalesDailyReportAdapter;
-import cn.burgeon.core.adapter.SalesMonthlyReportAdapter;
-import cn.burgeon.core.adapter.SalesOrderSearchAdapter;
-import cn.burgeon.core.bean.Order;
-import cn.burgeon.core.ui.BaseActivity;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
+import cn.burgeon.core.R;
+import cn.burgeon.core.adapter.SalesMonthlyReportAdapter;
+import cn.burgeon.core.bean.Order;
+import cn.burgeon.core.ui.BaseActivity;
 
 public class SalesMonthlyReportActivity extends BaseActivity {
 	
 	ListView mList;
 	SalesMonthlyReportAdapter mAdapter;
 	Button btnSearch;
+	TextView commonRecordnum,commonCount,commonMoney;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,9 +35,27 @@ public class SalesMonthlyReportActivity extends BaseActivity {
     	List<Order> data = fetchData();
     	mAdapter = new SalesMonthlyReportAdapter(data, this);
     	mList.setAdapter(mAdapter);
+    	upateBottomBarInfo(data);
+	}
+    
+	private void upateBottomBarInfo(List<Order> data) {
+		float pay = 0.0f;
+		int count = 0;
+		for(Order pro : data){
+			pay += Float.parseFloat(pro.getOrderMoney());
+			count += Integer.parseInt(pro.getOrderCount());
+		}
+		Log.d("zhang.h", "pay=" + pay+",count=" + count);
+		
+		commonMoney.setText(String.format(getResources().getString(R.string.sales_new_common_money),String.valueOf(pay)));
+		commonCount.setText(String.format(getResources().getString(R.string.sales_new_common_count), count));
+		commonRecordnum.setText(String.format(getResources().getString(R.string.sales_new_common_record), data.size()));
 	}
 
 	private void init(){
+        commonRecordnum = (TextView) findViewById(R.id.sales_common_recordnum);
+        commonCount = (TextView) findViewById(R.id.sales_common_count);
+        commonMoney = (TextView) findViewById(R.id.sales_common_money);
     	mList = (ListView) findViewById(R.id.salesMonthlyReportLV);
     	btnSearch = (Button) findViewById(R.id.salesDailyReportQueryBtn);
     }

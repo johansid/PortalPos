@@ -8,6 +8,7 @@
         android:id="@+id/ordersearch_date"
         android:layout_width="160dp"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:textSize="15sp" />
 
     <View
@@ -19,6 +20,7 @@
         android:id="@+id/ordersearch_count"
         android:layout_width="80dp"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:textSize="15sp" />
 
     <View
@@ -30,6 +32,7 @@
         android:id="@+id/ordersearch_money"
         android:layout_width="80dp"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:textSize="15sp" />
 
     <View
@@ -41,6 +44,7 @@
         android:id="@+id/ordersearch_danhao"
         android:layout_width="80dp"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:textSize="15sp" />
 
     <View
@@ -52,6 +56,7 @@
         android:id="@+id/ordersearch_yingyeyuan"
         android:layout_width="80dp"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:textSize="15sp" />
 
     <View
@@ -63,6 +68,7 @@
         android:id="@+id/ordersearch_upstate"
         android:layout_width="80dp"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:textSize="15sp" />
 
 </LinearLayout>

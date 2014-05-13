@@ -3,29 +3,25 @@ package cn.burgeon.core.ui.sales;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.burgeon.core.App;
-import cn.burgeon.core.R;
-import cn.burgeon.core.adapter.SalesDailyAdapter;
-import cn.burgeon.core.adapter.SalesDailyReportAdapter;
-import cn.burgeon.core.adapter.SalesOrderSearchAdapter;
-import cn.burgeon.core.bean.Order;
-import cn.burgeon.core.ui.BaseActivity;
-import cn.burgeon.core.utils.PreferenceUtils;
-import cn.burgeon.core.utils.ScreenUtils;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.HorizontalScrollView;
 import android.widget.ListView;
 import android.widget.TextView;
+import cn.burgeon.core.App;
+import cn.burgeon.core.R;
+import cn.burgeon.core.adapter.SalesDailyReportAdapter;
+import cn.burgeon.core.bean.Order;
+import cn.burgeon.core.ui.BaseActivity;
+import cn.burgeon.core.utils.PreferenceUtils;
 
 public class SalesDailyReportActivity extends BaseActivity {
 	
 	ListView mList;
 	SalesDailyReportAdapter mAdapter;
 	Button btnSearch;
+	TextView commonRecordnum,commonCount,commonMoney;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,12 +31,28 @@ public class SalesDailyReportActivity extends BaseActivity {
 
         init();
         bindList();
+        //queryForUpdate();
     }
     
     private void bindList() {
     	List<Order> data = fetchData();
     	mAdapter = new SalesDailyReportAdapter(data, this);
     	mList.setAdapter(mAdapter);
+    	upateBottomBarInfo(data);
+	}
+    
+	private void upateBottomBarInfo(List<Order> data) {
+		float pay = 0.0f;
+		int count = 0;
+		for(Order pro : data){
+			pay += Float.parseFloat(pro.getOrderMoney());
+			count += Integer.parseInt(pro.getOrderCount());
+		}
+		Log.d("zhang.h", "pay=" + pay+",count=" + count);
+		
+		commonMoney.setText(String.format(getResources().getString(R.string.sales_new_common_money),String.valueOf(pay)));
+		commonCount.setText(String.format(getResources().getString(R.string.sales_new_common_count), count));
+		commonRecordnum.setText(String.format(getResources().getString(R.string.sales_new_common_record), data.size()));
 	}
 
 	private void init(){
@@ -53,9 +65,22 @@ public class SalesDailyReportActivity extends BaseActivity {
 /*        HorizontalScrollView hsv = (HorizontalScrollView) findViewById(R.id.hsv);
         ViewGroup.LayoutParams params = hsv.getLayoutParams();
         params.height = (int) ScreenUtils.getAllotInLVHeight(this);*/
-        
+        commonRecordnum = (TextView) findViewById(R.id.sales_common_recordnum);
+        commonCount = (TextView) findViewById(R.id.sales_common_count);
+        commonMoney = (TextView) findViewById(R.id.sales_common_money);
     	mList = (ListView) findViewById(R.id.salesDailyReportLV);
     	btnSearch = (Button) findViewById(R.id.salesDailyReportQueryBtn);
+    }
+	
+    private void queryForUpdate() {
+		Cursor c = db.rawQuery("select * from c_settle", null);
+		Log.d("zhang.h", "result size:" + c.getCount());
+		while(c.moveToNext()){
+			Log.d("zhang.h", "settleUUID = " + c.getString(c.getColumnIndex("settleUUID")) + 
+					" | settleDate = " + c.getString(c.getColumnIndex("settleDate")) +
+					" | count = " + c.getString(c.getColumnIndex("count")) +
+					" | money = " + c.getString(c.getColumnIndex("money")));
+		}
     }
 
 	private List<Order> fetchData() {

@@ -86,16 +86,9 @@
                 android:id="@+id/styleBarcodeET"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="2.0"
+                android:layout_weight="2.8"
                 android:singleLine="true"
-                 />
-
-            <Button
-                android:id="@+id/verifyBarCodeBtn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.8"
-                android:text="@string/sales_new_verify" />
+                android:imeOptions="actionSearch"/>
         </LinearLayout>
 
         <LinearLayout

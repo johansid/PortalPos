@@ -58,14 +58,11 @@ public class SalesArchiveSummerAdapter extends BaseAdapter {
 		}
 		
 		Order order = list.get(position);
-		holder.textView1.setText(order.getOrderDate());
-		holder.textView2.setText(order.getCardNum());
-		holder.textView3.setText(order.getKuanHao());
-		holder.textView4.setText(order.getKuanHao());
+		holder.textView1.setText(order.getSaleAsistantID());
+		holder.textView2.setText(order.getSaleAsistant());
+		holder.textView3.setText(order.getOrderCount());
+		holder.textView4.setText(order.getOrderMoney());
 		
-		int[] colors = { Color.WHITE, Color.rgb(219, 238, 244) };//RGB颜色  
-		  
-		convertView.setBackgroundColor(colors[position % 2]);// 每隔item之间颜色不同 
 		return convertView;
 	}
 

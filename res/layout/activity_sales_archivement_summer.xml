@@ -53,24 +53,30 @@
                 android:id="@+id/sales_archivesummer_starttime"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="2" />
+                android:layout_weight="2" 
+                android:focusable="false"
+                android:focusableInTouchMode="false"/>
 
             <EditText
                 android:id="@+id/sales_archivesummer_endtime"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="2" />
+                android:layout_weight="2" 
+                android:focusable="false"
+                android:focusableInTouchMode="false"/>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" >
+            android:orientation="horizontal" 
+            android:background="@drawable/corners_bg">
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:gravity="center"
                 android:text="@string/sales_archivement_summer_bianhao"
                 android:textSize="15sp" />
 
@@ -83,6 +89,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:gravity="center"
                 android:text="@string/sales_ware_summer_mincheng"
                 android:textSize="15sp" />
 
@@ -95,6 +102,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:gravity="center"
                 android:text="@string/sales_daily_list_title_count"
                 android:textSize="15sp" />
 
@@ -107,6 +115,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:gravity="center"
                 android:text="@string/sales_daily_list_title_money"
                 android:textSize="15sp" />
 
@@ -129,6 +138,12 @@
         android:orientation="vertical" >
 
         <include layout="@layout/sales_common_bottom_view" />
+        
+        <Button 
+            android:id="@+id/query"
+                    android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/query"/>
 
     </LinearLayout>
 

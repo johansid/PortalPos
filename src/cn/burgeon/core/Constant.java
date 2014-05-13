@@ -1,7 +1,7 @@
 package cn.burgeon.core;
 
 public class Constant {
-    public static final String[] sysTextValues = {"销售管理", "会员下载", "调拨说明", "盘点管理", "库存管理", "系统管理"};
+    public static final String[] sysTextValues = {"销售管理", "会员管理", "调拨说明", "盘点管理", "库存管理", "系统管理"};
     public static final int[] sysImgValues = {R.drawable.manager_sale, R.drawable.manager_member, R.drawable.manager_allot,
             R.drawable.manager_check, R.drawable.manager_inventory, R.drawable.manager_sys};
 

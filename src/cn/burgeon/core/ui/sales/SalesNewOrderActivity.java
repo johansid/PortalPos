@@ -10,23 +10,22 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.ActivityManager;
 import android.app.DatePickerDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MotionEvent;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
 import cn.burgeon.core.App;
 import cn.burgeon.core.R;
 import cn.burgeon.core.adapter.SalesNewOrderAdapter;
@@ -37,11 +36,10 @@ import cn.burgeon.core.ui.member.MemberSearchActivity;
 import cn.burgeon.core.utils.PreferenceUtils;
 import cn.burgeon.core.utils.ScreenUtils;
 
-import com.android.volley.Response;
-
 public class SalesNewOrderActivity extends BaseActivity {
 	
-	Button vipBtn, accountBtn, verifyBarCodeBtn;
+	private static final String TAG = "SalesNewOrderActivity";
+	Button vipBtn, accountBtn;
 	EditText cardNoET, styleBarcodeET,newSalesOrderDateET;
 	TextView commonRecordnum,commonCount,commonMoney;
 	ListView mListView;
@@ -63,19 +61,23 @@ public class SalesNewOrderActivity extends BaseActivity {
         	if(searchedMember != null)
         		cardNoET.setText(searchedMember);
         	updateID = getIntent().getExtras().getString("updateID");
-        	if(!"unknow".equals(updateID)){
+        	Log.d("xxxx", "updateID = " + updateID ==null?"null" : updateID + "");
+        	if(!"unknow".equals(updateID) && (updateID != null)){
         		queryForUpdate();
         	}
         }
     }
-    
-    private void queryForUpdate() {
+
+
+	private void queryForUpdate() {
+		Log.d(TAG, "========queryForUpdate=========");
 		Cursor c = db.rawQuery("select * from c_settle_detail where settleUUID = ?", new String[]{updateID});
 		Log.d("zhang.h", "result size:" + c.getCount());
 		Product product = null;
 		while(c.moveToNext()){
 			product = new Product();
 			product.setUuid(updateID);
+			product.setBarCode(c.getString(c.getColumnIndex("barcode")));
 			product.setName(c.getString(c.getColumnIndex("pdtname")));
 			product.setPrice(c.getString(c.getColumnIndex("price")));
 			product.setDiscount(c.getString(c.getColumnIndex("discount")));
@@ -88,7 +90,6 @@ public class SalesNewOrderActivity extends BaseActivity {
 
 	@Override
     protected void onNewIntent(Intent intent) {
-    	// TODO Auto-generated method stub
     	super.onNewIntent(intent);
     	String searchedMember = getIntent().getExtras().getString("searchedMember");
     	Log.d("SalesNewOrderActivity", searchedMember);
@@ -98,13 +99,11 @@ public class SalesNewOrderActivity extends BaseActivity {
     
     @Override
     protected void onStop() {
-    	// TODO Auto-generated method stub
     	super.onStop();
     	finish();
     }
 
 	private void init() {
-		Log.d("zhang.h", "=======init=======");
         // 初始化门店信息
         TextView storeTV = (TextView) findViewById(R.id.storeTV);
         storeTV.setText(App.getPreferenceUtils().getPreferenceStr(PreferenceUtils.store_key));
@@ -121,21 +120,20 @@ public class SalesNewOrderActivity extends BaseActivity {
         commonMoney = (TextView) findViewById(R.id.sales_common_money);
 		vipBtn = (Button) findViewById(R.id.salesNewVIPbtn);
 		accountBtn = (Button) findViewById(R.id.salesNewJiezhangBtn);
-		verifyBarCodeBtn = (Button) findViewById(R.id.verifyBarCodeBtn);
 		vipBtn.setOnClickListener(onClickListener);
 		accountBtn.setOnClickListener(onClickListener);
-		verifyBarCodeBtn.setOnClickListener(onClickListener);
 		cardNoET = (EditText) findViewById(R.id.cardnoDiscountET);
 		newSalesOrderDateET = (EditText) findViewById(R.id.newSalesOrderDateET);
 		newSalesOrderDateET.setOnClickListener(onClickListener);
+		newSalesOrderDateET.setText(getCurrDate().replaceAll("-", ""));
 		styleBarcodeET = (EditText) findViewById(R.id.styleBarcodeET);
-		styleBarcodeET.setText("109454d334620");
+		styleBarcodeET.setOnEditorActionListener(editorActionListener);
+		styleBarcodeET.setText("1351600237S");
 		mListView = (ListView) findViewById(R.id.newOrderLV);
 		mAdapter = new SalesNewOrderAdapter(data, this);
 		mListView.setAdapter(mAdapter);
 	}
-	
-	
+
 	Calendar c = Calendar.getInstance();
 	
 	View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -154,9 +152,9 @@ public class SalesNewOrderActivity extends BaseActivity {
             	intentData.setCommand(updateID);
                 forwardActivity(SalesSettleActivity.class, intentData);
 				break;
-			case R.id.verifyBarCodeBtn:
+/*			case R.id.verifyBarCodeBtn:
 				verifyBarCode();
-				break;
+				break;*/
 			case R.id.newSalesOrderDateET:
 	            int startmYear = c.get(Calendar.YEAR);
 	            int startmMonth = c.get(Calendar.MONTH);
@@ -204,12 +202,47 @@ public class SalesNewOrderActivity extends BaseActivity {
 		//从本地获取
 		varLocal();
 		//从网络获取
-		varNet();
+		//varNet();
 	}
 
 	private void varLocal() {
-		
+		Log.d(TAG, "=========varLocal========");
+		String sql = "select b.style_name,c.clrname,d.sizename,e.fprice"
+					+" from tc_sku as a"
+					+" left join tc_style as b"
+					+" on a.style = b.style"
+					+" left join tdefclr as c"
+					+" on a.clr = c.clr"
+					+" left join tdefsize as d"
+					+" on a.sizeid = d.sizeid"
+					+" left join tc_styleprice as e"
+					+" on a.style = e.style"
+					+" where a.sku = ?";
+		Cursor c = db.rawQuery(sql, new String[]{styleBarcodeET.getText().toString()});
+		Log.d(TAG, "result size = " + c.getCount());
+		if(c.moveToFirst()){
+			List<Product> list = parseSQLResult(c);
+			data.addAll(list);
+			mAdapter.notifyDataSetChanged();
+			upateBottomBarInfo();
+		}
 	}
+
+	private List<Product> parseSQLResult(Cursor c) {
+		List<Product> items = new ArrayList<Product>(1);
+		Product pro = new Product();
+		pro.setBarCode(styleBarcodeET.getText().toString());
+		pro.setName(c.getString(c.getColumnIndex("style_name")));
+		pro.setPrice(c.getString(c.getColumnIndex("fprice")));
+		pro.setColor(c.getString(c.getColumnIndex("clrname")));
+		pro.setSize(c.getString(c.getColumnIndex("sizename")));
+		pro.setDiscount("0");
+		pro.setCount("1");
+		pro.setMoney(String.valueOf((Integer.parseInt(pro.getCount()) * Float.parseFloat(pro.getPrice()))));
+		items.add(pro);
+		return items;
+	}
+
 
 	private void varNet() {
 		Map<String,String> params = new HashMap<String, String>();
@@ -282,5 +315,22 @@ public class SalesNewOrderActivity extends BaseActivity {
 		} catch (JSONException e) {}
 		return list;
 	}
+	
+	OnEditorActionListener editorActionListener = new OnEditorActionListener(){
+
+		@Override
+		public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+			switch (actionId) {
+			case EditorInfo.IME_ACTION_SEARCH:
+				verifyBarCode();
+				break;
+
+			default:
+				break;
+			}
+			return true;
+		}
+		
+	};
 
 }

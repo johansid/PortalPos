@@ -7,6 +7,8 @@ public class Order {
 	private String zheKou;
 	private String kuanHao;
 	private String tiaoMa;
+	private String name;
+	private String saleAsistantID;
 	private String saleAsistant;
 	private String orderDate;
 	private String orderState;
@@ -27,6 +29,18 @@ public class Order {
 		this.saleAsistant = saleAsistant;
 		this.orderDate = orderDate;
 		this.orderState = orderState;
+	}
+	public String getSaleAsistantID() {
+		return saleAsistantID;
+	}
+	public void setSaleAsistantID(String saleAsistantID) {
+		this.saleAsistantID = saleAsistantID;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
 	}
 	public int getId() {
 		return id;

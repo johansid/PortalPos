@@ -8,27 +8,42 @@
         android:id="@+id/archivesummer_bianhao"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:gravity="center"
         android:layout_width="0dp"
         android:textSize="15sp" />
+        
+            <View
+        android:layout_width="0.5dp"
+        android:layout_height="match_parent"
+        android:background="@android:color/black" />
 
     <TextView
         android:id="@+id/archivesummer_mincheng"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:gravity="center"
         android:layout_width="0dp"
         android:textSize="15sp" />
-
+    <View
+        android:layout_width="0.5dp"
+        android:layout_height="match_parent"
+        android:background="@android:color/black" />
     <TextView
         android:id="@+id/archivesummer_count"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:gravity="center"
         android:layout_width="0dp"
         android:textSize="15sp" />
-
+    <View
+        android:layout_width="0.5dp"
+        android:layout_height="match_parent"
+        android:background="@android:color/black" />
     <TextView
         android:id="@+id/archivesummer_money"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:gravity="center"
         android:layout_width="0dp"
         android:textSize="15sp" />
 

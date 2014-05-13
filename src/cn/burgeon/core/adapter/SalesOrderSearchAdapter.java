@@ -17,6 +17,10 @@ public class SalesOrderSearchAdapter extends BaseAdapter {
 	private List<Order> list;
 	private Context context;
 
+	public List<Order> getList() {
+		return list;
+	}
+
 	public SalesOrderSearchAdapter(List<Order> list, Context context) {
 		super();
 		this.list = list;

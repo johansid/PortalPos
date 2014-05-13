@@ -51,23 +51,29 @@
                 android:id="@+id/sales_waresummer_starttime"
                 android:layout_width="0dp"
                 android:layout_weight="2"
-            	android:layout_height="wrap_content"/>
+            	android:layout_height="wrap_content"
+            	android:focusable="false"
+            	android:focusableInTouchMode="false"/>
             <EditText 
                 android:id="@+id/sales_waresummer_endtime"
                 android:layout_width="0dp"
                 android:layout_weight="2"
-            	android:layout_height="wrap_content"/>
+            	android:layout_height="wrap_content"
+            	android:focusable="false"
+            	android:focusableInTouchMode="false"/>
         </LinearLayout>
         
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" >
+            android:orientation="horizontal" 
+            android:background="@drawable/corners_bg">
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="1.5"
+                android:gravity="center"
                 android:text="@string/sales_ware_summer_kuanhao"
                 android:textSize="15sp" />
 
@@ -79,7 +85,8 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="0.5"
+                android:gravity="center"
                 android:text="@string/sales_daily_list_title_count"
                 android:textSize="15sp" />
 
@@ -92,6 +99,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:gravity="center"
                 android:text="@string/sales_daily_list_title_money"
                 android:textSize="15sp" />
 
@@ -104,6 +112,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:gravity="center"
                 android:text="@string/sales_ware_summer_mincheng"
                 android:textSize="15sp" />
 
@@ -136,10 +145,16 @@
 
             <Button
                 android:id="@+id/sales_ware_summer_minxibtn"
-                android:layout_width="@dimen/allot_in_btn"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:text="@string/sales_ware_summer_minxi" />
-
+            <Button
+                android:id="@+id/sales_ware_summer_query"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="@string/query" />
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

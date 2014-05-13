@@ -102,7 +102,6 @@ public class SalesSettleActivity extends BaseActivity {
 	};
 	
 	public void save(){
-		startProgressDialog();
 		db.beginTransaction();
         try {
         	String uuid = UUID.randomUUID().toString();
@@ -114,22 +113,24 @@ public class SalesSettleActivity extends BaseActivity {
 								getResources().getString(R.string.sales_settle_novip),
 								count,
 								realityET.getText(),
-								"",
+								"test",
 								getResources().getString(R.string.sales_settle_noup),
 								new SimpleDateFormat("yyyy-MM-dd").format(currentTime),
 								new SimpleDateFormat("yyyy-MM-dd").format(currentTime).substring(0, 7),
 								uuid});
         	for(Product pro : products){
-        		db.execSQL("insert into c_settle_detail('price','discount','count','money','settleUUID') values(?,?,?,?,?)",
-    					new Object[]{pro.getPrice(), pro.getDiscount(), pro.getCount(), pro.getMoney(), uuid});
+        		db.execSQL("insert into c_settle_detail('pdtcode','price','discount'"
+        				+ ",'count','money','settleUUID','pdtname','color','size','settleDate')"
+        				+ " values(?,?,?,?,?,?,?,?,?,?)",
+    					new Object[]{pro.getBarCode(),pro.getPrice(), pro.getDiscount(),
+        						pro.getCount(), pro.getMoney(), uuid, pro.getName(),
+        						pro.getColor(),pro.getSize(),new SimpleDateFormat("yyyy-MM-dd").format(currentTime)});
         	}
             db.setTransactionSuccessful();
-            Thread.sleep(500);
         } catch(Exception e){}
         finally {  
             db.endTransaction();
         } 
-        stopProgressDialog();
 	}
 	
 	public void update(){
@@ -154,12 +155,18 @@ public class SalesSettleActivity extends BaseActivity {
         	for(Product pro : products){
         		if(pro.getUuid() != null){
 	        		db.execSQL("update c_settle_detail "
-	        				+ "set 'price' = ?,'discount' = ?,"
+	        				+ "set 'price' = ?,'discount' = ?,'settleDate' = ?,"
 	        				+ "'count' = ?,'money' = ? where settleUUID = ?",
-	    					new Object[]{pro.getPrice(), pro.getDiscount(), pro.getCount(), pro.getMoney(), command});
+	    					new Object[]{pro.getPrice(), pro.getDiscount(), 
+	        						new SimpleDateFormat("yyyy-MM-dd").format(currentTime),
+	        						pro.getCount(), pro.getMoney(), command});
         		}else{
-        			db.execSQL("insert into c_settle_detail('price','discount','count','money','settleUUID') values(?,?,?,?,?)",
-        					new Object[]{pro.getPrice(), pro.getDiscount(), pro.getCount(), pro.getMoney(), command});
+            		db.execSQL("insert into c_settle_detail('barcode','price','discount'"
+            				+ ",'count','money','settleUUID','pdtname','color','size','settleDate')"
+            				+ " values(?,?,?,?,?,?,?,?,?,?)",
+        					new Object[]{pro.getBarCode(),pro.getPrice(), pro.getDiscount(),
+            						pro.getCount(), pro.getMoney(), command, pro.getName(),
+            						pro.getColor(),pro.getSize(),new SimpleDateFormat("yyyy-MM-dd").format(currentTime)});
         		}
         	}
             db.setTransactionSuccessful();

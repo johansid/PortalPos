@@ -108,6 +108,7 @@
     <string name="sales_settle_novip">非会员</string>
     <string name="sales_settle_noup">未上传</string>
     <string name="sales_settle_hasup">已上传</string>
+    <string name="sales_report_query">销售查询</string>
     <string name="replenishmentOrderApply">补货订单申请</string> 
     <string name="replenishmentOrderQuery">补货订单查询</string>
     <string name="inventoryManager">库存管理</string>
