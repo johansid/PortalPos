@@ -125,7 +125,7 @@ public class SalesNewOrderActivity extends BaseActivity {
 		cardNoET = (EditText) findViewById(R.id.cardnoDiscountET);
 		newSalesOrderDateET = (EditText) findViewById(R.id.newSalesOrderDateET);
 		newSalesOrderDateET.setOnClickListener(onClickListener);
-		newSalesOrderDateET.setText(getCurrDate().replaceAll("-", ""));
+		newSalesOrderDateET.setText(getCurrDate());
 		styleBarcodeET = (EditText) findViewById(R.id.styleBarcodeET);
 		styleBarcodeET.setOnEditorActionListener(editorActionListener);
 		styleBarcodeET.setText("1351600237S");
@@ -180,7 +180,7 @@ public class SalesNewOrderActivity extends BaseActivity {
 
             String month = String.valueOf(mMonth + 1).length() == 2 ? String.valueOf(mMonth + 1) : "0" + String.valueOf(mMonth + 1);
             String day = String.valueOf(mDay).length() == 2 ? String.valueOf(mDay) : "0" + String.valueOf(mDay);
-            newSalesOrderDateET.setText(new StringBuilder().append(mYear).append(month).append(day));
+            newSalesOrderDateET.setText(new StringBuilder().append(mYear).append('-').append(month).append('-').append(day));
         }
     }
 	

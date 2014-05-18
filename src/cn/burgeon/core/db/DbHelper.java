@@ -28,7 +28,18 @@ public class DbHelper extends SQLiteOpenHelper {
 		db.execSQL("CREATE TABLE IF NOT EXISTS c_settle_detail" +  
                 "(_id INTEGER PRIMARY KEY AUTOINCREMENT, settleUUID VARCHAR,"+
 				"price VARCHAR, discount VARCHAR,count VARCHAR,money VARCHAR,settleDate VARCHAR,"
-				+ "pdtname VARCHAR,pdtcode VARCHAR,color VARCHAR,size VARCHAR,settleType VARCHAR)");
+				+ "pdtname VARCHAR,barcode VARCHAR,color VARCHAR,size VARCHAR,settleType VARCHAR)");
+		
+		db.execSQL("CREATE TABLE IF NOT EXISTS c_check" +  
+                "(_id INTEGER PRIMARY KEY AUTOINCREMENT, checkno VARCHAR,shelfid varchar,shelf varchar"+
+				"checkTime VARCHAR, type VARCHAR,count VARCHAR,money VARCHAR,"
+				+ "orderEmployee VARCHAR,employeeID VARCHAR,status VARCHAR,checkUUID VARCHAR)");
+		
+		db.execSQL("CREATE TABLE IF NOT EXISTS c_check_detail" +  
+                "(_id INTEGER PRIMARY KEY AUTOINCREMENT, checkUUID VARCHAR,"+
+				"price VARCHAR, discount VARCHAR,count VARCHAR,money VARCHAR,checkDate VARCHAR,"
+				+ "pdtname VARCHAR,barcode VARCHAR,color VARCHAR,size VARCHAR)");
+		
 		
 		db.execSQL("CREATE TABLE IF NOT EXISTS tc_sku (_id INTEGER PRIMARY KEY AUTOINCREMENT,"
 				+ "sku varchar, style varchar, clr varchar, sizeid varchar, pname varchar, skuout varchar default null,timestamp varchar default null)");
@@ -44,6 +55,10 @@ public class DbHelper extends SQLiteOpenHelper {
 		db.execSQL("CREATE TABLE IF NOT EXISTS tdefclr(clr varchar PRIMARY KEY,clrname varchar, timestamp varchar)");
 		
 		db.execSQL("CREATE TABLE IF NOT EXISTS tdefsize(sizeid varchar PRIMARY KEY,sizename varchar, timestamp varchar)");
+		
+		db.execSQL("CREATE TABLE IF NOT EXISTS sys_user(user_id varchar,user_name varchar, password varchar,usercode varchar,lowestdiscount varchar,storeid varchar,isemployee varchar,timestamp varchar)");
+		
+		db.execSQL("CREATE TABLE IF NOT EXISTS tc_store(store varchar PRIMARY KEY,st_name varchar, abolishied varchar,buyerid varchar,buyerid1 varchar,storeno varchar,clientid varchar,organiseid varchar,timestamp varchar)");
 	}
 
 	@Override

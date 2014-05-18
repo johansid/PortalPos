@@ -58,7 +58,8 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.90" />
+                android:layout_weight="0.90" 
+                android:text="01"/>
 
             <Button
                 android:layout_width="wrap_content"
@@ -79,7 +80,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:text="条码"
+                android:text="@string/barcode"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <EditText
@@ -87,13 +88,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.90"
-                android:text="109454D334620" />
-
-            <Button
-                android:id="@+id/okBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="OK" />
+                android:text="1351600237S" />
         </LinearLayout>
 
         <HorizontalScrollView
@@ -216,14 +211,17 @@
             android:orientation="horizontal" >
 
             <Button
-                android:layout_width="@dimen/allot_in_btn"
+                android:id="@+id/gatherBtn"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:text="@string/gather" />
 
             <Button
-                android:layout_width="@dimen/allot_in_btn"
+                android:id="@+id/reviewBtn"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
                 android:text="@string/review" />
         </LinearLayout>
     </LinearLayout>

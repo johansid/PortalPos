@@ -44,7 +44,8 @@
         <HorizontalScrollView
             android:id="@+id/hsv"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent" 
+            android:scrollbars="none">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -147,7 +148,7 @@
                 <ListView
                     android:id="@+id/dailySalesLV"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="270dp" />
             </LinearLayout>
         </HorizontalScrollView>
     </LinearLayout>
@@ -161,13 +162,11 @@
         <TextView
             android:id="@+id/recodeNumTV"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/store_height"
+            android:layout_height="wrap_content"
             android:background="@drawable/corners_bg"
             android:gravity="center_vertical"
             android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:text="0条记录"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:paddingRight="10dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"

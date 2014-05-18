@@ -21,10 +21,12 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
+import cn.burgeon.core.App;
 import cn.burgeon.core.R;
 import cn.burgeon.core.adapter.SalesArchiveSummerAdapter;
 import cn.burgeon.core.bean.Order;
 import cn.burgeon.core.ui.BaseActivity;
+import cn.burgeon.core.utils.PreferenceUtils;
 
 public class SalesArchiveSummerActivity extends BaseActivity {
 	
@@ -47,6 +49,7 @@ public class SalesArchiveSummerActivity extends BaseActivity {
     private void bindList() {
     	List<Order> data = fetchData();
     	mAdapter = new SalesArchiveSummerAdapter(data, this);
+    	mList.setAdapter(mAdapter);
     	upateBottomBarInfo(data);
 	}
     
@@ -65,13 +68,19 @@ public class SalesArchiveSummerActivity extends BaseActivity {
 	} 
 
 	private void init(){
+        TextView storeTV = (TextView) findViewById(R.id.storeTV);
+        storeTV.setText(App.getPreferenceUtils().getPreferenceStr(PreferenceUtils.store_key));
+
+        TextView currTimeTV = (TextView) findViewById(R.id.currTimeTV);
+        currTimeTV.setText(getCurrDate());
+        
 		queryBtn = (Button) findViewById(R.id.query);
 		queryBtn.setOnClickListener(onClickListener);
 		starDateET = (EditText) findViewById(R.id.sales_archivesummer_starttime);
 		endDateET = (EditText) findViewById(R.id.sales_archivesummer_endtime);
 		starDateET.setOnClickListener(onClickListener);
 		endDateET.setOnClickListener(onClickListener);
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Calendar c = Calendar.getInstance();
 		c.add(Calendar.DAY_OF_MONTH, -1);
 		starDateET.setText(sdf.format(c.getTime()));

@@ -6,7 +6,7 @@ public class Order {
 	private String cardNum;
 	private String zheKou;
 	private String kuanHao;
-	private String tiaoMa;
+	private String barCode;
 	private String name;
 	private String saleAsistantID;
 	private String saleAsistant;
@@ -25,7 +25,7 @@ public class Order {
 		this.cardNum = cardNum;
 		this.zheKou = zheKou;
 		this.kuanHao = kuanHao;
-		this.tiaoMa = tiaoMa;
+		this.barCode = tiaoMa;
 		this.saleAsistant = saleAsistant;
 		this.orderDate = orderDate;
 		this.orderState = orderState;
@@ -72,11 +72,11 @@ public class Order {
 	public void setKuanHao(String kuanHao) {
 		this.kuanHao = kuanHao;
 	}
-	public String getTiaoMa() {
-		return tiaoMa;
+	public String getBarCode() {
+		return barCode;
 	}
-	public void setTiaoMa(String tiaoMa) {
-		this.tiaoMa = tiaoMa;
+	public void setBarCode(String tiaoMa) {
+		this.barCode = tiaoMa;
 	}
 	public String getSaleAsistant() {
 		return saleAsistant;

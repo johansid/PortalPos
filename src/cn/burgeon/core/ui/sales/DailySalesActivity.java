@@ -136,6 +136,20 @@ public class DailySalesActivity extends BaseActivity {
 						createstyleprice();
 					}
 				}).start();
+				
+				new Thread(new Runnable() {
+					@Override
+					public void run() {
+						createSysUser();
+					}
+				}).start();
+				
+				new Thread(new Runnable() {
+					@Override
+					public void run() {
+						createStore();
+					}
+				}).start();
 				break;
 			case R.id.sales_daily_btn_delete:
 				//delete();
@@ -263,6 +277,57 @@ public class DailySalesActivity extends BaseActivity {
 				String[] temp = line.split(",");
 				db.execSQL("insert into tdefsize(sizeid,sizename) values (?,?)", 
 						new Object[]{temp[0],temp[1].substring(2)});
+			}
+		}catch(Exception e){}
+		finally{
+			try {
+				br.close();
+				is.close();
+			} catch (IOException e) {
+			}
+		}
+		Log.d(TAG, "CREATE TABLE tdefsize DONE...");
+    }
+    
+    private void createSysUser(){
+    	InputStream is = null;
+		BufferedReader br = null;
+		try{
+			String line = null;
+			is = getResources().openRawResource(R.raw.sys_user);
+			br = new BufferedReader(new InputStreamReader(is));
+			while((line = br.readLine()) != null){
+				String[] temp = line.split(",");
+				db.execSQL("insert into sys_user(user_id ,user_name , password ,usercode ,lowestdiscount ,storeid ) "
+						+ "values (?,?,?,?,?,?)", 
+						new Object[]{temp[0],temp[1].substring(2),temp[2].substring(2),
+								temp[3].substring(2),temp[4].substring(2),temp[5].substring(2)});
+			}
+		}catch(Exception e){}
+		finally{
+			try {
+				br.close();
+				is.close();
+			} catch (IOException e) {
+			}
+		}
+		Log.d(TAG, "CREATE TABLE tdefsize DONE...");
+    }
+    
+    private void createStore(){
+    	InputStream is = null;
+		BufferedReader br = null;
+		try{
+			String line = null;
+			is = getResources().openRawResource(R.raw.tc_store);
+			br = new BufferedReader(new InputStreamReader(is));
+			while((line = br.readLine()) != null){
+				String[] temp = line.split(",");
+				db.execSQL("insert into tc_store(store ,st_name , abolishied ,buyerid ,buyerid1 ,storeno ,clientid ,organiseid ) "
+						+ "values (?,?,?,?,?,?,?,?)", 
+						new Object[]{temp[0],temp[1].substring(2),temp[2].substring(2),
+								temp[3].substring(2),temp[4].substring(2),temp[5].substring(2),
+								temp[6].substring(2),temp[7].substring(2),temp[8].substring(2)});
 			}
 		}catch(Exception e){}
 		finally{

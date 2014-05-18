@@ -12,21 +12,25 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import cn.burgeon.core.App;
 import cn.burgeon.core.R;
 import cn.burgeon.core.adapter.SalesWareSummerAdapter;
 import cn.burgeon.core.bean.Order;
 import cn.burgeon.core.ui.BaseActivity;
+import cn.burgeon.core.utils.PreferenceUtils;
 
 public class SalesWareSummerActivity extends BaseActivity {
 	
 	ListView mList;
 	SalesWareSummerAdapter mAdapter;
-	Button btnSearch, btnQuery;
+	Button btnDetail, btnQuery;
 	TextView commonRecordnum,commonCount,commonMoney;
 	EditText starDateET,endDateET;
 	
@@ -62,6 +66,12 @@ public class SalesWareSummerActivity extends BaseActivity {
 	}
 
 	private void init(){
+        TextView storeTV = (TextView) findViewById(R.id.storeTV);
+        storeTV.setText(App.getPreferenceUtils().getPreferenceStr(PreferenceUtils.store_key));
+
+        TextView currTimeTV = (TextView) findViewById(R.id.currTimeTV);
+        currTimeTV.setText(getCurrDate());
+        
 		starDateET = (EditText) findViewById(R.id.sales_waresummer_starttime);
 		endDateET = (EditText) findViewById(R.id.sales_waresummer_endtime);
 		starDateET.setOnClickListener(onClickListener);
@@ -75,22 +85,23 @@ public class SalesWareSummerActivity extends BaseActivity {
         commonCount = (TextView) findViewById(R.id.sales_common_count);
         commonMoney = (TextView) findViewById(R.id.sales_common_money);
     	mList = (ListView) findViewById(R.id.salesWareSummerLV);
-    	btnSearch = (Button) findViewById(R.id.sales_ware_summer_minxibtn);
+    	mList.setOnItemClickListener(itemClickListener);
+    	btnDetail = (Button) findViewById(R.id.sales_ware_summer_minxibtn);
     	btnQuery = (Button) findViewById(R.id.sales_ware_summer_query);
     	btnQuery.setOnClickListener(onClickListener);
-    	btnSearch.setOnClickListener(onClickListener);
+    	btnDetail.setOnClickListener(onClickListener);
     }
 
 	private List<Order> fetchData() {
 		Order order = null;
 		List<Order> data = new ArrayList<Order>();
-		Cursor c = db.rawQuery("select pdtcode, pdtname,sum(count) as totalCount,sum(money) as totalMoney "
-				+ "from c_settle_detail  where settleDate between '"+starDateET.getText().toString()+"' and '"+endDateET.getText().toString()+"' group by pdtcode",
+		Cursor c = db.rawQuery("select barcode, pdtname,sum(count) as totalCount,sum(money) as totalMoney "
+				+ "from c_settle_detail  where settleDate between '"+starDateET.getText().toString()+"' and '"+endDateET.getText().toString()+"' group by barcode",
 				null);
 		Log.d("zhang.h", "cursor size===========" + c.getCount());
 		while(c.moveToNext()){
 			order = new Order();
-			order.setTiaoMa(c.getString(c.getColumnIndex("pdtcode")));
+			order.setBarCode(c.getString(c.getColumnIndex("barcode")));
 			order.setName(c.getString(c.getColumnIndex("pdtname")));
 			order.setOrderCount(c.getString(c.getColumnIndex("totalCount")));
 			order.setOrderMoney(c.getString(c.getColumnIndex("totalMoney")));
@@ -122,12 +133,28 @@ public class SalesWareSummerActivity extends BaseActivity {
 	            enddialog.show();
 	            break;
             case R.id.sales_ware_summer_minxibtn:
-
+            	forwardActivity(SalesWareSummerDetailActivity.class, "barCode", currentSelectedOrder.getBarCode());
 	            break;
             case R.id.sales_ware_summer_query:
             	bindList();
 	            break;
 			}
+		}
+	};
+	
+	Order currentSelectedOrder;
+	View previous;
+	int selectedPosition;
+	
+	OnItemClickListener itemClickListener = new OnItemClickListener() {
+
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position,
+				long arg3) {
+			if(previous != null) previous.setBackgroundDrawable(view.getBackground());
+			view.setBackgroundResource(R.drawable.button_bg);
+			previous = view;
+			currentSelectedOrder = (Order) parent.getItemAtPosition(position);
 		}
 	};
 	

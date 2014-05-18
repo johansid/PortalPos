@@ -106,20 +106,21 @@ public class SalesSettleActivity extends BaseActivity {
         try {
         	String uuid = UUID.randomUUID().toString();
         	Date currentTime = new Date();
-        	db.execSQL("insert into c_settle('settleTime','type','count','money','orderEmployee',"
+        	db.execSQL("insert into c_settle('settleTime','type','count','money','employeeID','orderEmployee',"
         			+ "'status','settleDate','settleMonth','settleUUID')"+
-        				" values(?,?,?,?,?,?,?,?,?)",
+        				" values(?,?,?,?,?,?,?,?,?,?)",
 					new Object[]{new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(currentTime),
 								getResources().getString(R.string.sales_settle_novip),
 								count,
 								realityET.getText(),
+								"0001",
 								"test",
 								getResources().getString(R.string.sales_settle_noup),
 								new SimpleDateFormat("yyyy-MM-dd").format(currentTime),
 								new SimpleDateFormat("yyyy-MM-dd").format(currentTime).substring(0, 7),
 								uuid});
         	for(Product pro : products){
-        		db.execSQL("insert into c_settle_detail('pdtcode','price','discount'"
+        		db.execSQL("insert into c_settle_detail('barcode','price','discount'"
         				+ ",'count','money','settleUUID','pdtname','color','size','settleDate')"
         				+ " values(?,?,?,?,?,?,?,?,?,?)",
     					new Object[]{pro.getBarCode(),pro.getPrice(), pro.getDiscount(),
@@ -139,14 +140,13 @@ public class SalesSettleActivity extends BaseActivity {
         try {
         	Date currentTime = new Date();
         	db.execSQL("update c_settle set 'settleTime' = ?,'type' = ?,'count' = ?,"
-        			+ "'money' = ?,'orderEmployee' = ?,"
+        			+ "'money' = ?,"
         			+ "'status' = ?,'settleDate' = ?,'settleMonth' = ? "
         			+ " where settleUUID = ?",
 					new Object[]{new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(currentTime),
 								getResources().getString(R.string.sales_settle_novip),
 								count,
 								realityET.getText(),
-								"",
 								getResources().getString(R.string.sales_settle_noup),
 								new SimpleDateFormat("yyyy-MM-dd").format(currentTime),
 								new SimpleDateFormat("yyyy-MM-dd").format(currentTime).substring(0, 7),

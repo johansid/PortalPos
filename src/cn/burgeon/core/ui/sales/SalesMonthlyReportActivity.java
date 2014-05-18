@@ -6,13 +6,18 @@ import java.util.List;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import cn.burgeon.core.App;
 import cn.burgeon.core.R;
 import cn.burgeon.core.adapter.SalesMonthlyReportAdapter;
 import cn.burgeon.core.bean.Order;
 import cn.burgeon.core.ui.BaseActivity;
+import cn.burgeon.core.utils.PreferenceUtils;
 
 public class SalesMonthlyReportActivity extends BaseActivity {
 	
@@ -53,11 +58,25 @@ public class SalesMonthlyReportActivity extends BaseActivity {
 	}
 
 	private void init(){
+        TextView storeTV = (TextView) findViewById(R.id.storeTV);
+        storeTV.setText(App.getPreferenceUtils().getPreferenceStr(PreferenceUtils.store_key));
+
+        TextView currTimeTV = (TextView) findViewById(R.id.currTimeTV);
+        currTimeTV.setText(getCurrDate());
+        
         commonRecordnum = (TextView) findViewById(R.id.sales_common_recordnum);
         commonCount = (TextView) findViewById(R.id.sales_common_count);
         commonMoney = (TextView) findViewById(R.id.sales_common_money);
     	mList = (ListView) findViewById(R.id.salesMonthlyReportLV);
-    	btnSearch = (Button) findViewById(R.id.salesDailyReportQueryBtn);
+    	mList.setOnItemClickListener(itemClickListener);
+    	btnSearch = (Button) findViewById(R.id.salesMonthlyReportQueryBtn);
+    	btnSearch.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				forwardActivity(SalesDailyReportActivity.class, "settleMonth", currentSelectedOrder.getOrderDate());
+			}
+		});
     }
 
 	private List<Order> fetchData() {
@@ -75,4 +94,21 @@ public class SalesMonthlyReportActivity extends BaseActivity {
 		c.close();
 		return data;
 	}
+	
+	Order currentSelectedOrder;
+	View previous;
+	int selectedPosition;
+	
+	OnItemClickListener itemClickListener = new OnItemClickListener() {
+
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position,
+				long arg3) {
+			if(previous != null) previous.setBackgroundDrawable(view.getBackground());
+			view.setBackgroundResource(R.drawable.button_bg);
+			previous = view;
+			currentSelectedOrder = (Order) parent.getItemAtPosition(position);			// TODO Auto-generated method stub
+			
+		}
+	};
 }

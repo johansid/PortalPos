@@ -43,6 +43,7 @@
         <activity android:name="cn.burgeon.core.ui.sales.SalesNewOrderActivity" android:windowSoftInputMode="adjustPan|stateHidden"/>
         <activity android:name="cn.burgeon.core.ui.sales.SalesSettleActivity" android:windowSoftInputMode="adjustPan|stateHidden"/>
         <activity android:name="cn.burgeon.core.ui.sales.SalesOrderDetailActivity" android:windowSoftInputMode="adjustPan|stateHidden"/>
+        <activity android:name="cn.burgeon.core.ui.sales.SalesWareSummerDetailActivity" android:windowSoftInputMode="adjustPan|stateHidden"/>
         <activity android:name="cn.burgeon.core.ui.allot.AllotInActivity" android:windowSoftInputMode="adjustPan|stateHidden"/>
         <activity android:name="cn.burgeon.core.ui.allot.AllotInDetailActivity" android:windowSoftInputMode="adjustPan|stateHidden"/>
         <activity android:name="cn.burgeon.core.ui.allot.AllotOutActivity" android:windowSoftInputMode="adjustPan|stateHidden"/>

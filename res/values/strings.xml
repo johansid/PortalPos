@@ -27,6 +27,7 @@
     <string name="checkScan">盘点扫描</string>
     <string name="checkDocManager">盘点单据管理</string>
     <string name="checkQuery">盘点查询</string>
+    <string name="checktips">确认审核该盘点单据吗？审核后本单将不能续盘！</string>
     <string name="allotOutIn">调拨出入库</string>
     <string name="allotIn">调拨入库</string>
     <string name="docno">单据编号</string>
@@ -91,6 +92,10 @@
     <string name="sales_new_discount">折扣</string>
     <string name="sales_new_count">数量</string>
     <string name="sales_new_moeny">金额</string>
+    <string name="sales_new_name">品名</string>
+    <string name="sales_new_color">颜色</string>
+    <string name="sales_new_size">尺码</string>
+    <string name="sales_new_type">销售类型</string>
     <string name="sales_new_vip">会员</string>
     <string name="sales_new_jiezhang">结账</string>
     <string name="sales_new_verify">确定</string>
@@ -109,6 +114,7 @@
     <string name="sales_settle_noup">未上传</string>
     <string name="sales_settle_hasup">已上传</string>
     <string name="sales_report_query">销售查询</string>
+    <string name="sales_order_detail">单据明细</string>
     <string name="replenishmentOrderApply">补货订单申请</string> 
     <string name="replenishmentOrderQuery">补货订单查询</string>
     <string name="inventoryManager">库存管理</string>
@@ -122,6 +128,7 @@
     <string name="inventoryBarCode">条码</string>
     <string name="inventoryRefreshing">正在刷新库存</string>
     <string name="confirm">确定</string>
+    <string name="cancel">取消</string>
     <string name="inventoryCanotRefreshTips">当前存在未上传的调拨或者销售数据，请先上传</string>
     <string name="inventoryRefreshingTips">刷新中，请稍后</string>
     
@@ -252,4 +259,5 @@
     <string name="female">女</string>
     <string name="undo">Undo</string>
     <string name="retry">Retry</string>
+    <string name="systemtips">系统提示</string>
 </resources>

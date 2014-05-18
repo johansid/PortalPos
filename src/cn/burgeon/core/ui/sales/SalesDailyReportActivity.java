@@ -6,6 +6,7 @@ import java.util.List;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -14,14 +15,17 @@ import cn.burgeon.core.R;
 import cn.burgeon.core.adapter.SalesDailyReportAdapter;
 import cn.burgeon.core.bean.Order;
 import cn.burgeon.core.ui.BaseActivity;
+import cn.burgeon.core.ui.QueryDialog;
 import cn.burgeon.core.utils.PreferenceUtils;
 
 public class SalesDailyReportActivity extends BaseActivity {
 	
+	private final String TAG = "SalesDailyReportActivity";
 	ListView mList;
 	SalesDailyReportAdapter mAdapter;
 	Button btnSearch;
 	TextView commonRecordnum,commonCount,commonMoney;
+	String settleMonth;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +35,8 @@ public class SalesDailyReportActivity extends BaseActivity {
 
         init();
         bindList();
+        settleMonth = getIntent().getStringExtra("settleMonth");
+        Log.d(TAG, "======settleMonth=====" + settleMonth);
         //queryForUpdate();
     }
     
@@ -70,6 +76,7 @@ public class SalesDailyReportActivity extends BaseActivity {
         commonMoney = (TextView) findViewById(R.id.sales_common_money);
     	mList = (ListView) findViewById(R.id.salesDailyReportLV);
     	btnSearch = (Button) findViewById(R.id.salesDailyReportQueryBtn);
+    	btnSearch.setOnClickListener(onClickListener);
     }
 	
     private void queryForUpdate() {
@@ -84,9 +91,14 @@ public class SalesDailyReportActivity extends BaseActivity {
     }
 
 	private List<Order> fetchData() {
+		String sql = null;
+		if(settleMonth != null)
+			sql = "select settleDate, sum(count) as totalCount,sum(money) as totalMoney from c_settle where settleDate like '"+settleMonth+"%' group by settleDate";
+		else
+			sql = "select settleDate, sum(count) as totalCount,sum(money) as totalMoney from c_settle  group by settleDate";
 		Order order = null;
 		List<Order> data = new ArrayList<Order>();
-		Cursor c = db.rawQuery("select settleDate, sum(count) as totalCount,sum(money) as totalMoney from c_settle group by settleDate",null);
+		Cursor c = db.rawQuery(sql,null);
 		Log.d("zhang.h", "cursor size===========" + c.getCount());
 		while(c.moveToNext()){
 			order = new Order();
@@ -98,4 +110,20 @@ public class SalesDailyReportActivity extends BaseActivity {
 		c.close();
 		return data;
 	}
+	
+	View.OnClickListener onClickListener = new View.OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			switch (v.getId()) {
+			case R.id.salesDailyReportQueryBtn:
+				QueryDialog dialog = new QueryDialog(SalesDailyReportActivity.this);
+				dialog.show();
+				break;
+
+			default:
+				break;
+			}
+		}
+	};
 }
