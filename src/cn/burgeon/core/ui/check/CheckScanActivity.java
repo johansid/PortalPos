@@ -48,9 +48,9 @@ public class CheckScanActivity extends BaseActivity{
 
 	private ListView checkscanLV;
 	private TextView recodeNumTV, totalCountTV;
-	private EditText barcodeET;
+	private EditText barcodeET,shelfET;
 	private Button gatherBtn,reviewBtn;
-	SalesNewOrderAdapter mAdapter;
+	CheckScanLVAdapter mAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +59,6 @@ public class CheckScanActivity extends BaseActivity{
 
 		init();
 
-		initLVData();
 	}
 
 	private void init() {
@@ -69,7 +68,7 @@ public class CheckScanActivity extends BaseActivity{
 
 		TextView currTimeTV = (TextView) findViewById(R.id.currTimeTV);
 		currTimeTV.setText(getCurrDate());
-
+		shelfET = (EditText) findViewById(R.id.shelfET);
 		barcodeET = (EditText) findViewById(R.id.barcodeET);
 		barcodeET.setOnEditorActionListener(editorActionListener);
 
@@ -78,6 +77,8 @@ public class CheckScanActivity extends BaseActivity{
 		params.height = (int) ScreenUtils.getAllotInLVHeight(this);
 
 		checkscanLV = (ListView) findViewById(R.id.checkscanLV);
+		mAdapter = new CheckScanLVAdapter(data, this);
+		checkscanLV.setAdapter(mAdapter);
 		recodeNumTV = (TextView) findViewById(R.id.recodeNumTV);
 		totalCountTV = (TextView) findViewById(R.id.totalCountTV);
 		
@@ -85,10 +86,8 @@ public class CheckScanActivity extends BaseActivity{
 		reviewBtn = (Button) findViewById(R.id.reviewBtn);
 		gatherBtn.setOnClickListener(clickListener);
 		reviewBtn.setOnClickListener(clickListener);
-	}
-
-	private void initLVData() {
-		// nothing
+		
+		
 	}
 
 	private void verifyBarCode() {
@@ -117,23 +116,18 @@ public class CheckScanActivity extends BaseActivity{
 			List<Product> list = parseSQLResult(c);
 			data.addAll(list);
 			mAdapter.notifyDataSetChanged();
-			//upateBottomBarInfo();
+			upateBottomBarInfo();
 		}
 	}
 	
-/*	private void upateBottomBarInfo() {
-		float pay = 0.0f;
+	private void upateBottomBarInfo() {
 		int count = 0;
 		for(Product pro : data){
-			pay += Float.parseFloat(pro.getMoney());
 			count += Integer.parseInt(pro.getCount());
 		}
-		Log.d("zhang.h", "pay=" + pay+",count=" + count);
-		
-		commonMoney.setText(String.format(getResources().getString(R.string.sales_new_common_money),String.valueOf(pay)));
-		commonCount.setText(String.format(getResources().getString(R.string.sales_new_common_count), count));
-		commonRecordnum.setText(String.format(getResources().getString(R.string.sales_new_common_record), data.size()));
-	}*/
+		totalCountTV.setText(String.format(getResources().getString(R.string.sales_new_common_count), count));
+		recodeNumTV.setText(String.format(getResources().getString(R.string.sales_new_common_record), data.size()));
+	}
 	
 	private List<Product> parseSQLResult(Cursor c) {
 		List<Product> items = new ArrayList<Product>(1);
@@ -145,7 +139,6 @@ public class CheckScanActivity extends BaseActivity{
 		pro.setSize(c.getString(c.getColumnIndex("sizename")));
 		pro.setDiscount("0");
 		pro.setCount("1");
-		pro.setMoney(String.valueOf((Integer.parseInt(pro.getCount()) * Float.parseFloat(pro.getPrice()))));
 		items.add(pro);
 		return items;
 	}
@@ -211,10 +204,11 @@ public class CheckScanActivity extends BaseActivity{
         try {
         	String uuid = UUID.randomUUID().toString();
         	Date currentTime = new Date();
-        	db.execSQL("insert into c_check('checkTime','type','count','employeeID','orderEmployee',"
+        	db.execSQL("insert into c_check('shelf','checkTime','type','count','employeeID','orderEmployee',"
         			+ "'status','checkUUID')"+
         				" values(?,?,?,?,?,?,?,?)",
-					new Object[]{new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(currentTime),
+					new Object[]{shelfET.getText().toString(),
+        						new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(currentTime),
 								getResources().getString(R.string.sales_settle_novip),
 								data.size(),//数量count
 								"0001",

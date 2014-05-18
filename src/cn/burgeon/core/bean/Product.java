@@ -14,6 +14,13 @@ public class Product implements Parcelable{
 	private String money;
 	private String color;
 	private String size;
+	private String shelf;
+	public String getShelf() {
+		return shelf;
+	}
+	public void setShelf(String shelf) {
+		this.shelf = shelf;
+	}
 	public int getId() {
 		return id;
 	}

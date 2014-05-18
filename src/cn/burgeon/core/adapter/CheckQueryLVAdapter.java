@@ -8,10 +8,11 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import cn.burgeon.core.R;
 import cn.burgeon.core.bean.AllotReplenishment;
-import cn.burgeon.core.bean.CheckQuery;
+import cn.burgeon.core.bean.Order;
 
 /**
  * Created by Simon on 2014/4/16.
@@ -19,10 +20,10 @@ import cn.burgeon.core.bean.CheckQuery;
 public class CheckQueryLVAdapter extends BaseAdapter {
 
     private Context mContext;
-    private ArrayList<CheckQuery> list;
+    private List<Order> list;
     private int mLayoutRes;
 
-    public CheckQueryLVAdapter(Context c, ArrayList<CheckQuery> l, int layoutRes) {
+    public CheckQueryLVAdapter(Context c, List<Order> l, int layoutRes) {
         this.mContext = c;
         this.list = l;
         this.mLayoutRes = layoutRes;
@@ -61,12 +62,15 @@ public class CheckQueryLVAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-
+        Order order = list.get(position);
         // 赋值
-        holder.idTV.setText(list.get(position).getID());
-        holder.dateTV.setText(list.get(position).getBILLDATE());
-        holder.noTV.setText(list.get(position).getDOCNO());
-        holder.typeTV.setText(list.get(position).getDOCTYPE());
+        holder.idTV.setText(order.getId());
+        holder.dateTV.setText(order.getOrderDate());
+        holder.noTV.setText(order.getOrderCount());
+        holder.typeTV.setText("随机盘");
+        holder.operatorTV.setText(order.getSaleAsistant());
+        holder.stateTV.setText("已完成");
+        holder.uploadstateTV.setText("未上传");
         return convertView;
     }
 

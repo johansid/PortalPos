@@ -56,6 +56,7 @@
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <EditText
+                android:id="@+id/shelfET"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.90" 
@@ -87,14 +88,16 @@
                 android:id="@+id/barcodeET"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.90"
-                android:text="1351600237S" />
+                android:text="1351600237S" 
+                android:singleLine="true"
+                android:imeOptions="actionSearch"/>
         </LinearLayout>
 
         <HorizontalScrollView
             android:id="@+id/hsv"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent" 
+            android:scrollbars="none">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -106,9 +109,21 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/corners_bg"
                     android:orientation="horizontal" >
+                    
+                    <TextView
+                        android:layout_width="40dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="货架"
+                        android:textSize="15sp" />
+
+                    <View
+                        android:layout_width="0.5dp"
+                        android:layout_height="match_parent"
+                        android:background="@android:color/black" />
 
                     <TextView
-                        android:layout_width="80dp"
+                        android:layout_width="120dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="条码"
@@ -118,7 +133,19 @@
                         android:layout_width="0.5dp"
                         android:layout_height="match_parent"
                         android:background="@android:color/black" />
+                    
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="数量"
+                        android:textSize="15sp" />
 
+                    <View
+                        android:layout_width="0.5dp"
+                        android:layout_height="match_parent"
+                        android:background="@android:color/black" />
+                    
                     <TextView
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
@@ -135,19 +162,7 @@
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="尺寸"
-                        android:textSize="15sp" />
-
-                    <View
-                        android:layout_width="0.5dp"
-                        android:layout_height="match_parent"
-                        android:background="@android:color/black" />
-
-                    <TextView
-                        android:layout_width="80dp"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="数量"
+                        android:text="尺码"
                         android:textSize="15sp" />
 
                     <View
@@ -166,7 +181,7 @@
                 <ListView
                     android:id="@+id/checkscanLV"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="185dp" />
             </LinearLayout>
         </HorizontalScrollView>
     </LinearLayout>
@@ -179,7 +194,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/store_height"
+            android:layout_height="wrap_content"
             android:background="@drawable/corners_bg"
             android:paddingLeft="10dp"
             android:paddingRight="10dp" >
@@ -191,7 +206,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="20dp"
                 android:text="总数量：0件"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/totalCountTV"
@@ -201,13 +216,12 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="20dp"
                 android:text="当前货架：0件"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:textSize="15sp"/>
         </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/operate_height"
-            android:gravity="center_horizontal"
+            android:layout_height="wrap_content"
             android:orientation="horizontal" >
 
             <Button

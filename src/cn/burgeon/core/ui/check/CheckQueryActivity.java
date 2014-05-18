@@ -1,6 +1,8 @@
 package cn.burgeon.core.ui.check;
 
+import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
 import android.widget.ListView;
@@ -14,12 +16,15 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import cn.burgeon.core.App;
 import cn.burgeon.core.R;
 import cn.burgeon.core.adapter.CheckQueryLVAdapter;
+import cn.burgeon.core.adapter.SalesDailyAdapter;
 import cn.burgeon.core.bean.CheckQuery;
+import cn.burgeon.core.bean.Order;
 import cn.burgeon.core.ui.BaseActivity;
 import cn.burgeon.core.utils.PreferenceUtils;
 import cn.burgeon.core.utils.ScreenUtils;
@@ -28,6 +33,8 @@ public class CheckQueryActivity extends BaseActivity {
 
     private TextView recordCountTV, totalOutCountTV;
     private ListView checkQueryLV;
+    CheckQueryLVAdapter mAdapter;
+    ListView mList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +46,35 @@ public class CheckQueryActivity extends BaseActivity {
         initLVData();
     }
 
-    private void init() {
+    private void initLVData() {
+        	List<Order> data = fetchData();
+        	mAdapter = new CheckQueryLVAdapter(this,data, R.layout.check_query_item);
+        	mList.setAdapter(mAdapter);
+        	
+        	recordCountTV.setText(String.format(getResources().getString(R.string.sales_new_common_record),data.size())); 
+	}
+
+	private List<Order> fetchData() {
+		Order order = null;
+		List<Order> data = new ArrayList<Order>();
+		Cursor c = db.rawQuery("select * from c_check", null);
+		Log.d("zhang.h", "cursor size===========" + c.getCount());
+		while(c.moveToNext()){
+			order = new Order();
+			order.setId(c.getInt(c.getColumnIndex("_id")));
+			order.setUuid(c.getString(c.getColumnIndex("checkUUID")));
+			order.setOrderNo(c.getString(c.getColumnIndex("checkno")));
+			order.setOrderDate(c.getString(c.getColumnIndex("checkTime")));
+			order.setOrderType(c.getString(c.getColumnIndex("type")));
+			order.setOrderCount(c.getString(c.getColumnIndex("count")));
+			order.setOrderState(c.getString(c.getColumnIndex("status")));
+			order.setSaleAsistant(c.getString(c.getColumnIndex("orderEmployee")));
+			data.add(order);
+		}
+		return data;
+	}
+
+	private void init() {
         // 初始化门店信息
         TextView storeTV = (TextView) findViewById(R.id.storeTV);
         storeTV.setText(App.getPreferenceUtils().getPreferenceStr(PreferenceUtils.store_key));
@@ -51,11 +86,11 @@ public class CheckQueryActivity extends BaseActivity {
         ViewGroup.LayoutParams params = hsv.getLayoutParams();
         params.height = (int) ScreenUtils.getAllotInLVHeight(this);
 
-        checkQueryLV = (ListView) findViewById(R.id.checkQueryLV);
+        mList = (ListView) findViewById(R.id.checkQueryLV);
         recordCountTV = (TextView) findViewById(R.id.recordCountTV);
     }
 
-    private void initLVData() {
+/*    private void initLVData() {
         Map<String, String> params = new HashMap<String, String>();
         try {
             JSONArray array = new JSONArray();
@@ -111,5 +146,5 @@ public class CheckQueryActivity extends BaseActivity {
             lists.add(checkQuery);
         }
         return lists;
-    }
+    }*/
 }
