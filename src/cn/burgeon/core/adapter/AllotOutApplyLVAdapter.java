@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import cn.burgeon.core.R;
 import cn.burgeon.core.bean.AllotOutApply;
+import cn.burgeon.core.bean.Product;
 
 /**
  * Created by Simon on 2014/4/16.
@@ -18,10 +19,10 @@ import cn.burgeon.core.bean.AllotOutApply;
 public class AllotOutApplyLVAdapter extends BaseAdapter {
 
 	private Context mContext;
-	private ArrayList<AllotOutApply> list;
+	private ArrayList<Product> list;
 	private int mLayoutRes;
 
-	public AllotOutApplyLVAdapter(Context c, ArrayList<AllotOutApply> l, int layoutRes) {
+	public AllotOutApplyLVAdapter(Context c, ArrayList<Product> l, int layoutRes) {
 		this.mContext = c;
 		this.list = l;
 		this.mLayoutRes = layoutRes;
@@ -60,8 +61,7 @@ public class AllotOutApplyLVAdapter extends BaseAdapter {
 		}
 
 		// 赋值
-		holder.barcodeTV.setText(list.get(position).getBarcode());
-		// holder.numTV.setText(list.get(position).getNum());
+		holder.barcodeTV.setText(list.get(position).getBarCode());
 		holder.colorTV.setText(list.get(position).getColor());
 		holder.sizeTV.setText(list.get(position).getSize());
 		holder.priceTV.setText(list.get(position).getPrice());

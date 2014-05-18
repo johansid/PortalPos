@@ -1,13 +1,6 @@
 package cn.burgeon.core.ui.allot;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,20 +8,26 @@ import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import cn.burgeon.core.App;
 import cn.burgeon.core.R;
 import cn.burgeon.core.adapter.AllotOutLVAdapter;
 import cn.burgeon.core.bean.AllotOut;
+import cn.burgeon.core.bean.Order;
 import cn.burgeon.core.ui.BaseActivity;
 import cn.burgeon.core.utils.PreferenceUtils;
 import cn.burgeon.core.utils.ScreenUtils;
 
-import com.android.volley.Response;
-
 public class AllotOutActivity extends BaseActivity {
+
     private ListView allotOutLV;
     private TextView recodeNumTV;
     private Button addBtn, queryBtn, delBtn;
+
+    private AllotOutLVAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +60,33 @@ public class AllotOutActivity extends BaseActivity {
         delBtn = (Button) findViewById(R.id.delBtn);
     }
 
+    private void initLVData() {
+        ArrayList<AllotOut> lists = fetchData();
+        mAdapter = new AllotOutLVAdapter(AllotOutActivity.this, lists, R.layout.allot_out_item);
+        allotOutLV.setAdapter(mAdapter);
+
+        recodeNumTV.setText(String.format(getResources().getString(R.string.sales_new_common_record), lists.size()));
+    }
+
+    private ArrayList<AllotOut> fetchData() {
+        AllotOut allotOut = null;
+        ArrayList<AllotOut> allotOuts = new ArrayList<AllotOut>();
+        Cursor c = db.rawQuery("select * from c_allot_out", null);
+        while (c.moveToNext()) {
+            allotOut = new AllotOut();
+            allotOut.setID(c.getInt(c.getColumnIndex("_id")));
+            allotOut.setDOCNO(c.getString(c.getColumnIndex("dj_no")));
+            allotOut.setUPLOAD_STATUS(c.getString(c.getColumnIndex("upload_status")));
+            allotOut.setDOC_STATUS(c.getString(c.getColumnIndex("dj_status")));
+            allotOut.setBILLDATE(c.getString(c.getColumnIndex("dj_date")));
+            allotOut.setC_DEST_ID(c.getString(c.getColumnIndex("out_store")));
+            allotOut.setTOT_QTYOUT(c.getString(c.getColumnIndex("out_num")));
+            allotOuts.add(allotOut);
+        }
+        return allotOuts;
+    }
+
+    /*
     private void initLVData() {
         Map<String, String> params = new HashMap<String, String>();
         try {
@@ -119,6 +145,7 @@ public class AllotOutActivity extends BaseActivity {
         }
         return lists;
     }
+    */
 
     class ClickEvent implements View.OnClickListener {
 

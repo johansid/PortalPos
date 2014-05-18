@@ -97,16 +97,12 @@
 
             <EditText
                 android:id="@+id/barcodeET"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.90"
-                android:text="109454D334620" />
+                android:text="1351600237S"
+                android:singleLine="true"
+                android:imeOptions="actionSearch"/>
 
-            <Button
-                android:id="@+id/okBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="OK" />
         </LinearLayout>
 
         <HorizontalScrollView
@@ -241,6 +237,7 @@
             android:orientation="horizontal" >
 
             <Button
+                android:id="@+id/uploadBtn"
                 android:layout_width="@dimen/allot_in_btn"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"

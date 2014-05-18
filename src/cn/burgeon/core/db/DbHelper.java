@@ -39,8 +39,17 @@ public class DbHelper extends SQLiteOpenHelper {
                 "(_id INTEGER PRIMARY KEY AUTOINCREMENT, checkUUID VARCHAR,"+
 				"price VARCHAR, discount VARCHAR,count VARCHAR,money VARCHAR,checkDate VARCHAR,"
 				+ "pdtname VARCHAR,barcode VARCHAR,color VARCHAR,size VARCHAR)");
-		
-		
+
+        // -----------------------------------------------------------------------------------调拨出库 begin
+        db.execSQL("CREATE TABLE IF NOT EXISTS c_allot_out" +
+                "(_id INTEGER PRIMARY KEY AUTOINCREMENT, dj_no VARCHAR, upload_status VARCHAR, dj_status VARCHAR"+
+                "dj_date VARCHAR, in_store VARCHAR, num VARCHAR, checkUUID VARCHAR)");
+
+        db.execSQL("CREATE TABLE IF NOT EXISTS c_allot_out_detail" +
+                "(_id INTEGER PRIMARY KEY AUTOINCREMENT, checkUUID VARCHAR,"+
+                "desc VARCHAR, barcode VARCHAR, num VARCHAR, color VARCHAR, size VARCHAR, price VARCHAR, style VARCHAR)");
+        // -----------------------------------------------------------------------------------调拨出库 end
+
 		db.execSQL("CREATE TABLE IF NOT EXISTS tc_sku (_id INTEGER PRIMARY KEY AUTOINCREMENT,"
 				+ "sku varchar, style varchar, clr varchar, sizeid varchar, pname varchar, skuout varchar default null,timestamp varchar default null)");
 		

@@ -4,17 +4,19 @@ package cn.burgeon.core.bean;
  * Created by Simon on 2014/4/22.
  */
 public class AllotOut {
-    private String ID; // 调拨表单ID
-    private String DOCNO; // 单据编号
-    private String BILLDATE; // 单据日期
-    private String C_DEST_ID; // 收货店仓
-    private String TOT_QTYOUT; // 出库数量
+    private int ID;               // 调拨表单ID
+    private String DOCNO;         // 单据编号
+    private String UPLOAD_STATUS; // 上传状态
+    private String DOC_STATUS;    // 单据状态
+    private String BILLDATE;      // 单据日期
+    private String C_DEST_ID;     // 收货店仓
+    private String TOT_QTYOUT;    // 出库数量
 
-    public String getID() {
+    public int getID() {
         return ID;
     }
 
-    public void setID(String ID) {
+    public void setID(int ID) {
         this.ID = ID;
     }
 
@@ -24,6 +26,22 @@ public class AllotOut {
 
     public void setDOCNO(String DOCNO) {
         this.DOCNO = DOCNO;
+    }
+
+    public String getUPLOAD_STATUS() {
+        return UPLOAD_STATUS;
+    }
+
+    public void setUPLOAD_STATUS(String UPLOAD_STATUS) {
+        this.UPLOAD_STATUS = UPLOAD_STATUS;
+    }
+
+    public String getDOC_STATUS() {
+        return DOC_STATUS;
+    }
+
+    public void setDOC_STATUS(String DOC_STATUS) {
+        this.DOC_STATUS = DOC_STATUS;
     }
 
     public String getBILLDATE() {
