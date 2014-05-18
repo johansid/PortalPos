@@ -4,13 +4,17 @@
         <item>正常</item>
         <item>折扣</item>
     </string-array>
-    
+
     <string-array name="vipType">
         <item>团购单</item>
         <item>金卡</item>
     </string-array>
-    
-        <string-array name="empployee">
+
+    <string-array name="status">
+        <item>原始单</item>
+    </string-array>
+
+    <string-array name="empployee">
         <item>test</item>
     </string-array>
 </resources>
