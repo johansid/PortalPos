@@ -74,7 +74,8 @@ public class SalesMonthlyReportActivity extends BaseActivity {
 			
 			@Override
 			public void onClick(View v) {
-				forwardActivity(SalesDailyReportActivity.class, "settleMonth", currentSelectedOrder.getOrderDate());
+				if(currentSelectedOrder != null)
+					forwardActivity(SalesDailyReportActivity.class, "settleMonth", currentSelectedOrder.getOrderDate());
 			}
 		});
     }

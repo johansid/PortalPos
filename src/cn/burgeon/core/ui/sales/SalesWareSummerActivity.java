@@ -133,7 +133,8 @@ public class SalesWareSummerActivity extends BaseActivity {
 	            enddialog.show();
 	            break;
             case R.id.sales_ware_summer_minxibtn:
-            	forwardActivity(SalesWareSummerDetailActivity.class, "barCode", currentSelectedOrder.getBarCode());
+            	if(currentSelectedOrder != null)
+            		forwardActivity(SalesWareSummerDetailActivity.class, "barCode", currentSelectedOrder.getBarCode());
 	            break;
             case R.id.sales_ware_summer_query:
             	bindList();

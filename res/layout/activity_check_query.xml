@@ -57,14 +57,7 @@
                     android:background="@drawable/corners_bg">
 
                     <TextView
-                        android:layout_width="80dp"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="ID"
-                        android:textSize="15sp" />
-
-                    <TextView
-                        android:layout_width="80dp"
+                        android:layout_width="160dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="日期"
@@ -76,7 +69,7 @@
                         android:background="@android:color/black" />
 
                     <TextView
-                        android:layout_width="80dp"
+                        android:layout_width="170dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="单号"
@@ -186,12 +179,12 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/operate_height"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_horizontal">
 
             <Button
-                android:layout_width="@dimen/allot_in_btn"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/query"
                 android:layout_marginLeft="10dp" />

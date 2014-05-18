@@ -31,7 +31,7 @@ public class DbHelper extends SQLiteOpenHelper {
 				+ "pdtname VARCHAR,barcode VARCHAR,color VARCHAR,size VARCHAR,settleType VARCHAR)");
 		
 		db.execSQL("CREATE TABLE IF NOT EXISTS c_check" +  
-                "(_id INTEGER PRIMARY KEY AUTOINCREMENT, checkno VARCHAR,shelfid varchar,shelf varchar"+
+                "(_id INTEGER PRIMARY KEY AUTOINCREMENT, checkno VARCHAR,shelfid varchar,shelf varchar,"+
 				"checkTime VARCHAR, type VARCHAR,count VARCHAR,money VARCHAR,"
 				+ "orderEmployee VARCHAR,employeeID VARCHAR,status VARCHAR,checkUUID VARCHAR)");
 		

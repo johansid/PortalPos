@@ -199,7 +199,7 @@ public class CheckScanActivity extends BaseActivity{
     	dialog.show();
     }
     
-	private void reviewShelf() {
+	private void reviewShelf() {  
 		db.beginTransaction();
         try {
         	String uuid = UUID.randomUUID().toString();
@@ -223,7 +223,7 @@ public class CheckScanActivity extends BaseActivity{
         } catch(Exception e){}
         finally {  
             db.endTransaction();
-        } 
+        }
 	}
 	
 	/*@Override

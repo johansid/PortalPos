@@ -64,9 +64,9 @@ public class CheckQueryLVAdapter extends BaseAdapter {
         }
         Order order = list.get(position);
         // 赋值
-        holder.idTV.setText(order.getId());
         holder.dateTV.setText(order.getOrderDate());
-        holder.noTV.setText(order.getOrderCount());
+        holder.noTV.setText("IV31633614051800015");
+        holder.numTV.setText(order.getOrderCount());
         holder.typeTV.setText("随机盘");
         holder.operatorTV.setText(order.getSaleAsistant());
         holder.stateTV.setText("已完成");
