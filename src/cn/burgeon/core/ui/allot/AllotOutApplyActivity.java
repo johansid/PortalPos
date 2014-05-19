@@ -32,7 +32,7 @@ public class AllotOutApplyActivity extends BaseActivity implements OnClickListen
     private ListView allotoutapplyLV;
     private TextView recodeNumTV, totalCountTV;
     private EditText barcodeET;
-    private Button uploadBtn;
+    private Button uploadBtn, okBtn;
 
     private ArrayList<Product> data = new ArrayList<Product>();
     private AllotOutApplyLVAdapter mAdapter;
@@ -70,6 +70,9 @@ public class AllotOutApplyActivity extends BaseActivity implements OnClickListen
 
         uploadBtn = (Button) findViewById(R.id.uploadBtn);
         uploadBtn.setOnClickListener(this);
+
+        okBtn = (Button) findViewById(R.id.okBtn);
+        okBtn.setOnClickListener(this);
     }
 
     private void initLVData() {
@@ -143,6 +146,9 @@ public class AllotOutApplyActivity extends BaseActivity implements OnClickListen
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.okBtn:
+                verifyBarCode();
+                break;
             case R.id.uploadBtn:
                 db.beginTransaction();
                 try {
@@ -161,7 +167,7 @@ public class AllotOutApplyActivity extends BaseActivity implements OnClickListen
                             }
                     );
                     for (Product pro : data) {
-                        db.execSQL("insert into c_allot_out_detail('checkUUID','faguofang','desc','barcode','num','color','size','price','style') " +
+                        db.execSQL("insert into c_allot_out_detail('checkUUID','fahuofang','remark','barcode','num','color','size','price','style') " +
                                         "values (?,?,?,?,?,?,?,?,?)",
                                 new Object[]{uuid, "京东", "好东东", pro.getBarCode(), pro.getCount(), pro.getColor(), pro.getSize(), pro.getPrice(), "42码"}
                         );
@@ -172,6 +178,8 @@ public class AllotOutApplyActivity extends BaseActivity implements OnClickListen
                 } finally {
                     db.endTransaction();
                 }
+
+                forwardActivity(AllotOutActivity.class);
                 break;
         /*
         case R.id.okBtn:

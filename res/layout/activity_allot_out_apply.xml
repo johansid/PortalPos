@@ -1,11 +1,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="match_parent"
@@ -20,7 +20,7 @@
             android:layout_height="@dimen/store_height"
             android:background="@drawable/corners_bg"
             android:paddingLeft="10dp"
-            android:paddingRight="10dp" >
+            android:paddingRight="10dp">
 
             <TextView
                 android:id="@+id/storeTV"
@@ -46,7 +46,7 @@
             android:background="@drawable/corners_bg"
             android:orientation="horizontal"
             android:paddingLeft="10dp"
-            android:paddingRight="10dp" >
+            android:paddingRight="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -66,7 +66,7 @@
             android:background="@drawable/corners_bg"
             android:orientation="horizontal"
             android:paddingLeft="10dp"
-            android:paddingRight="10dp" >
+            android:paddingRight="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -86,7 +86,7 @@
             android:background="@drawable/corners_bg"
             android:orientation="horizontal"
             android:paddingLeft="10dp"
-            android:paddingRight="10dp" >
+            android:paddingRight="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -100,26 +100,32 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="1351600237S"
+                android:layout_weight="0.9"
                 android:singleLine="true"
-                android:imeOptions="actionSearch"/>
+                android:imeOptions="actionSearch" />
 
+            <Button
+                android:id="@+id/okBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="OK" />
         </LinearLayout>
 
         <HorizontalScrollView
             android:id="@+id/hsv"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical" >
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/corners_bg"
-                    android:orientation="horizontal" >
+                    android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="80dp"
@@ -201,14 +207,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/store_height"
             android:background="@drawable/corners_bg"
             android:paddingLeft="10dp"
-            android:paddingRight="10dp" >
+            android:paddingRight="10dp">
 
             <TextView
                 android:id="@+id/recodeNumTV"
@@ -234,7 +240,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/operate_height"
             android:gravity="center_horizontal"
-            android:orientation="horizontal" >
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/uploadBtn"

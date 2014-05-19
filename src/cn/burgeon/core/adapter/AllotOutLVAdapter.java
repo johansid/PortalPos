@@ -61,7 +61,7 @@ public class AllotOutLVAdapter extends BaseAdapter {
         }
 
         // 赋值
-        holder.idTV.setText(list.get(position).getID());
+        holder.idTV.setText(String.valueOf(list.get(position).getID()));
         holder.docnoTV.setText(list.get(position).getDOCNO());
         holder.billdateTV.setText(list.get(position).getBILLDATE());
         holder.cdestidTV.setText(list.get(position).getC_DEST_ID());

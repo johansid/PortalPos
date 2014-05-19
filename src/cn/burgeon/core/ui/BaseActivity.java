@@ -17,10 +17,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 
-import mexxen.mx5010.barcode.BarcodeEvent;
-import mexxen.mx5010.barcode.BarcodeListener;
-import mexxen.mx5010.barcode.BarcodeManager;
-
 import org.apache.http.client.methods.HttpUriRequest;
 
 import java.text.SimpleDateFormat;
@@ -32,7 +28,6 @@ import cn.burgeon.core.bean.IntentData;
 import cn.burgeon.core.db.DbHelper;
 import cn.burgeon.core.net.RequestManager;
 import cn.burgeon.core.net.SimonHttpStack;
-import cn.burgeon.core.ui.member.MemberRegistActivity;
 import cn.burgeon.core.widget.CustomProgressDialog;
 
 /**

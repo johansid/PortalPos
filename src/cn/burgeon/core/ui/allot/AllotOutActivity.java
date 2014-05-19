@@ -79,8 +79,8 @@ public class AllotOutActivity extends BaseActivity {
             allotOut.setUPLOAD_STATUS(c.getString(c.getColumnIndex("upload_status")));
             allotOut.setDOC_STATUS(c.getString(c.getColumnIndex("dj_status")));
             allotOut.setBILLDATE(c.getString(c.getColumnIndex("dj_date")));
-            allotOut.setC_DEST_ID(c.getString(c.getColumnIndex("out_store")));
-            allotOut.setTOT_QTYOUT(c.getString(c.getColumnIndex("out_num")));
+            allotOut.setC_DEST_ID(c.getString(c.getColumnIndex("in_store")));
+            allotOut.setTOT_QTYOUT(c.getString(c.getColumnIndex("num")));
             allotOuts.add(allotOut);
         }
         return allotOuts;
