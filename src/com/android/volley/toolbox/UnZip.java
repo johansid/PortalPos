@@ -17,8 +17,8 @@ public class UnZip{
 	 * @param descDir
 	 * @author isea533
 	 */	
-	public void unZip(String zipPath,String descDir)throws IOException{
-		unZip(new File(zipPath), descDir);
+	public String unZip(String zipPath,String descDir)throws IOException{
+		return unZip(new File(zipPath), descDir);
 	}
 	
 	/**
@@ -28,8 +28,9 @@ public class UnZip{
 	 * @author isea533
 	 */
 	@SuppressWarnings("rawtypes")
-	public void unZip(File zipFile,String descDir)throws IOException{
+	public String unZip(File zipFile,String descDir)throws IOException{
 		File pathFile = new File(descDir);
+		String outPath = null;
 		
 		if(!pathFile.exists()){
 			pathFile.mkdirs();
@@ -42,7 +43,7 @@ public class UnZip{
 			String zipEntryName = entry.getName();
 			InputStream in = zip.getInputStream(entry);
 			
-			String outPath = (descDir+zipEntryName).replaceAll("\\*", "/");;
+			outPath = (descDir+zipEntryName).replaceAll("\\*", "/");;
 			//判断路径是否存在,不存在则创建文件路径
 			File file = new File(outPath.substring(0, outPath.lastIndexOf('/')));
 			if(!file.exists()){
@@ -52,8 +53,7 @@ public class UnZip{
 			if(new File(outPath).isDirectory()){
 				continue;
 			}
-			//输出文件路径信息
-			System.out.println(outPath);
+
 			
 			OutputStream out = new FileOutputStream(outPath);
 			byte[] buf1 = new byte[1024];
@@ -65,5 +65,8 @@ public class UnZip{
 			out.close();
 		}
 		System.out.println("******************解压完毕********************");
+		//输出文件路径信息
+		System.out.println(outPath);
+		return outPath;
 	}
 }

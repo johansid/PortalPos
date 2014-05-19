@@ -1,10 +1,14 @@
 package cn.burgeon.core.ui.system;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -54,14 +58,14 @@ public class SystemDataDownloadActivity extends BaseActivity{
 	private final String itemStrategyDownloadFileName = "itemStrategy.zip";
 	private final String systemParamDownloadFileName  = "systemParam.zip";
 
-	/*
-	//解压完之后保存的名字
-	private final String userDataUnZipFileName     = "userData.txt";
-	private final String productUnZipFileName  	   = "productData.txt";
-	private final String vipTypeUnZipFileName      = "vipType.txt";
-	private final String itemStrategyUnZipFileName = "itemStrategy.txt";
-	private final String systemParamUnZipFileName  = "systemParam.txt";	
-	*/
+
+	//解压完之后返回的绝对路径
+	private String userDataUnZipFile;
+	private String productDataUnZipFile;
+	private String vipTypeUnZipFile;
+	private String itemStrategyUnZipFile;
+	private String systemParamUnZipFile;	
+
 	
 	/*
 	//解压之后保存的路径
@@ -204,7 +208,9 @@ public class SystemDataDownloadActivity extends BaseActivity{
 
 	//初始化下载
 	private void initDataDownload(){
-		downloadPath = "/storage/sdcard1/";
+		downloadPath = "/sdcard/";
+		//downloadPath = "/storage/sdcard1/";
+		//downloadPath = getSDPath2();
 	}
 
 	//初始化解压工具
@@ -435,7 +441,11 @@ public class SystemDataDownloadActivity extends BaseActivity{
 				e.printStackTrace();
 			}
 			
+			//解析下载的文件
+			parseDownloadFiles();
+			
 			//保存到SQlite
+			saveDownloadFilesToSqlite();
 		}
 	}
 	
@@ -448,42 +458,106 @@ public class SystemDataDownloadActivity extends BaseActivity{
 		if(Thread.currentThread().getName().equals(USER_DATA_THREAD)){ 
 			Log.d(TAG,"USER_DATA_UNZIP_THREAD" + "Start");
 			sendUnZipMsg(userDataStartUnZipMsg);
-			unZip.unZip(downloadPath + userDataDownloadFileName,downloadPath);
+			userDataUnZipFile =  unZip.unZip(downloadPath + userDataDownloadFileName,downloadPath);
 			sendUnZipMsg(userDataUnZipFinishMsg);
 
 		}
 		if(Thread.currentThread().getName().equals(PRODUCT_DATA_THREAD)){ 
 			Log.d(TAG,"PRODUCT_DATA_UNZIP_THREAD" + "Start");
 			sendUnZipMsg(productDataStartUnZipMsg);
-			unZip.unZip(downloadPath + productDataDownloadFileName,downloadPath);
+			productDataUnZipFile =  unZip.unZip(downloadPath + productDataDownloadFileName,downloadPath);
 			sendUnZipMsg(productDataUnZipFinishMsg);
 
 		}
 		if(Thread.currentThread().getName().equals(VIP_TYPE_THREAD)){
 			Log.d(TAG,"VIP_TYPE_UNZIP_THREAD" + "Start");
 			sendUnZipMsg(vipTypeStartUnZipMsg);
-			unZip.unZip(downloadPath + vipTypeDownloadFileName,downloadPath);
+			vipTypeUnZipFile =  unZip.unZip(downloadPath + vipTypeDownloadFileName,downloadPath);
 			sendUnZipMsg(vipTypeUnZipFinishMsg);
 
 		}
 		if(Thread.currentThread().getName().equals(ITEM_STRATEGY_THREAD)) {
 			Log.d(TAG,"ITEM_STRATEGY_UNZIP_THREAD" + "Start");
 			sendUnZipMsg(itemStrategyStartUnZipMsg);
-			unZip.unZip(downloadPath + itemStrategyDownloadFileName,downloadPath);
+			itemStrategyUnZipFile =  unZip.unZip(downloadPath + itemStrategyDownloadFileName,downloadPath);
 			sendUnZipMsg(itemStrategyUnZipFinishMsg);
 
 		}
 		if(Thread.currentThread().getName().equals(SYSTEM_PARAM_THREAD)) {
 			Log.d(TAG,"SYSTEM_PARAM_UNZIP_THREAD" + "Start");
 			sendUnZipMsg(systemParamStartUnZipMsg);
-			unZip.unZip(downloadPath + systemParamDownloadFileName,downloadPath);
+			systemParamUnZipFile =  unZip.unZip(downloadPath + systemParamDownloadFileName,downloadPath);
 			sendUnZipMsg(systemParamUnZipFinishMsg);
 			
 		}		
 	}
 
+	//解析下载文件
 	private void parseDownloadFiles(){
-		//即将添加，敬请期待！
+		if(Thread.currentThread().getName().equals(USER_DATA_THREAD)){ 
+			Log.d(TAG,"USER_DATA_PARSE_THREAD" + "Start");
+			//sendUnZipMsg(userDataStartUnZipMsg);
+			parseFile(userDataUnZipFile);
+			//sendUnZipMsg(userDataUnZipFinishMsg);
+
+		}
+		if(Thread.currentThread().getName().equals(PRODUCT_DATA_THREAD)){ 
+			Log.d(TAG,"PRODUCT_DATA_PARSE_THREAD" + "Start");
+			//sendUnZipMsg(productDataStartUnZipMsg);
+			parseFile(productDataUnZipFile);
+			//sendUnZipMsg(productDataUnZipFinishMsg);
+
+		}
+		if(Thread.currentThread().getName().equals(VIP_TYPE_THREAD)){
+			Log.d(TAG,"VIP_TYPE_PARSE_THREAD" + "Start");
+			//sendUnZipMsg(vipTypeStartUnZipMsg);
+			parseFile(vipTypeUnZipFile);
+			//sendUnZipMsg(vipTypeUnZipFinishMsg);
+
+		}
+		if(Thread.currentThread().getName().equals(ITEM_STRATEGY_THREAD)) {
+			Log.d(TAG,"ITEM_STRATEGY_PARSE_THREAD" + "Start");
+			sendUnZipMsg(itemStrategyStartUnZipMsg);
+			parseFile(itemStrategyUnZipFile);
+			sendUnZipMsg(itemStrategyUnZipFinishMsg);
+
+		}
+		if(Thread.currentThread().getName().equals(SYSTEM_PARAM_THREAD)) {
+			Log.d(TAG,"SYSTEM_PARAM_PARSE_THREAD" + "Start");
+			//sendUnZipMsg(systemParamStartUnZipMsg);
+			parseFile(systemParamUnZipFile);
+			//sendUnZipMsg(systemParamUnZipFinishMsg);
+			
+		}
+	}
+
+	//开始解析
+	private void parseFile(String filePath){
+
+        BufferedReader reader = null;
+        try {
+        	reader = new BufferedReader(new InputStreamReader(new FileInputStream(filePath)));
+        	//reader = new BufferedReader(new FileReader(new File(filePath)));
+    		String line = null; 
+    		String[]tmp = null;
+           
+            while ((line = reader.readLine()) != null) { 
+  		      tmp = line.split(",R_");
+
+  		      for(String tmp2:tmp)
+  		    	  Log.d(TAG,tmp2);                
+            }
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException e1) {}
+            }
+        }
+	
 	}
 	
 	private void saveDownloadFilesToSqlite(){
@@ -632,22 +706,23 @@ public class SystemDataDownloadActivity extends BaseActivity{
 	private void sendUnZipMsg(final int tipsMsg){
 		//创建消息
         Message msg = new Message();
-        
+        /*
 		if(Thread.currentThread().getName().equals(USER_DATA_THREAD)){ 
 			msg.what = tipsMsg;
 		}
 		if(Thread.currentThread().getName().equals(PRODUCT_DATA_THREAD)){ 
-			msg.what = productDataDownloadStartMsg;
+			msg.what = productDataStartUnZipMsg;
 		}
 		if(Thread.currentThread().getName().equals(VIP_TYPE_THREAD)){
-			msg.what = vipTypeDownloadStartMsg;
+			msg.what = vipTypeStartUnZipMsg;
 		}
 		if(Thread.currentThread().getName().equals(ITEM_STRATEGY_THREAD)) {
-			msg.what = itemStrategyDownloadStartMsg;
+			msg.what = itemStrategyStartUnZipMsg;
 		}
 		if(Thread.currentThread().getName().equals(SYSTEM_PARAM_THREAD)) {
-			msg.what = systemParamDownloadStartMsg;
+			msg.what = systemParamStartUnZipMsg;
 		}
+		*/
 		//发送！
 		updateTipsHandler.sendMessage(msg);
 	}
@@ -677,8 +752,8 @@ public class SystemDataDownloadActivity extends BaseActivity{
 	}
 
     public String getSDPath1(){    	
-    	//return Environment.getExternalStorageDirectory().getAbsolutePath()+"/";
-    	return downloadPath;
+    	return Environment.getExternalStorageDirectory().toString() +"/";
+    	//return downloadPath;
     }    
     
     //可以检测SDCARD是否插入
