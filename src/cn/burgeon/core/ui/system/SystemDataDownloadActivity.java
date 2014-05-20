@@ -39,9 +39,10 @@ import cn.burgeon.core.utils.PreferenceUtils;
 public class SystemDataDownloadActivity extends BaseActivity{
 		
 	private final String TAG = "SystemDataDownloadActivity";
-	//文件下载路径
-	//目前仅使用内置sdcard下载,如出现问题请更改     initDataDownload() 函数设置的路径
-	private String downloadPath = "/sdcard/myDataDownload/";
+	//调试标志
+	private boolean LocalDebug = true;
+	//文件下载和解压路径 程序data目录的 myDataDownload文件夹里
+	private String downloadPath;
 	
 	//用户资料下载地址
 	private final String userDataURL     =    "http://g.burgeon.cn:2080/portalpospda/DownloadFiles/sys_user.zip";
@@ -215,6 +216,7 @@ public class SystemDataDownloadActivity extends BaseActivity{
 		setContentView(R.layout.activity_system_data_download);	
 		
 		initViews();
+		initDownloadPath();
 		createDownloadDir();
 		initZipTool();
 	}
@@ -253,14 +255,25 @@ public class SystemDataDownloadActivity extends BaseActivity{
 		});			
 	}
 
+	//初始化下载路径
+	private void initDownloadPath(){
+		if(LocalDebug) Log.d(TAG,"this.getFilesDir().toString()");
+		downloadPath = this.getFilesDir().toString() + "/myDataDownload/";
+	}
+
+	//获取下载路径
+	private String getDownloadPath(){
+		return downloadPath;
+	}
+	
 	//创建下载目录
 	private void createDownloadDir(){
 		File destDir = new File(getDownloadPath());
 	    if (!destDir.exists()) {
 	    	destDir.mkdirs();
-	    	Log.d(TAG,"Create Download dir success!");
+	    	if(LocalDebug) Log.d(TAG,"Create Download dir success!");
 	    }else{
-	    	Log.d(TAG,"Dir already exist!");
+	    	if(LocalDebug) Log.d(TAG,"Dir already exist!");
 	    }	   
 	}
 
@@ -325,8 +338,6 @@ public class SystemDataDownloadActivity extends BaseActivity{
 		
 		//将下载文件存入数据库
 		//saveDownloadFilesToSqlite();
-			
-
 	}
 	
 	//检测用户是否有选择至少一个下载项
@@ -340,27 +351,27 @@ public class SystemDataDownloadActivity extends BaseActivity{
 		
 		if(userDataCheckBox.isChecked()){ 
 			userDataChecked = true;
-			Log.d(TAG,"userDataChecked" + userDataChecked);
+			if(LocalDebug) Log.d(TAG,"userDataChecked" + userDataChecked);
 		}
 		
 		if(productDataCheckBox.isChecked()){
 			productDataChecked = true;
-			Log.d(TAG,"productDataChecked" + productDataChecked);
+			if(LocalDebug) Log.d(TAG,"productDataChecked" + productDataChecked);
 		}
 		
 		if(vipTypeCheckBox.isChecked()){ 
 			vipTypeChecked = true;
-			Log.d(TAG,"vipTypeChecked" + vipTypeChecked);
+			if(LocalDebug) Log.d(TAG,"vipTypeChecked" + vipTypeChecked);
 		}
 		
 		if(itemStrategyCheckBox.isChecked()){
 			itemStrategyChecked = true;
-			Log.d(TAG,"itemStrategyChecked" + itemStrategyChecked);
+			if(LocalDebug) Log.d(TAG,"itemStrategyChecked" + itemStrategyChecked);
 		}
 		
 		if(systemParamCheckBox.isChecked()){ 
 			systemParamChecked = true;
-			Log.d(TAG,"systemParamChecked" + systemParamChecked);
+			if(LocalDebug) Log.d(TAG,"systemParamChecked" + systemParamChecked);
 		}
 		
 		return (userDataChecked || productDataChecked || vipTypeChecked
@@ -387,8 +398,7 @@ public class SystemDataDownloadActivity extends BaseActivity{
 	
 	//获取即将下载的文件大小
 	private void checkTheSizeOfDownloadData(){
-		//即将添加，敬请期待！
-				
+		//即将添加，敬请期待！				
 	}
 	
 	//检测设备存储空间大小
@@ -419,38 +429,38 @@ public class SystemDataDownloadActivity extends BaseActivity{
 	private void startDownload(){	
 		
 		//开始下载系统参数
-		if(systemParamChecked && !fileExist(systemParamDownloadFileName) && !systemParamDownloading){ 
+		if(systemParamChecked && !fileExist(systemParamDownloadFileNames) && !systemParamDownloading){ 
 			//干活线程
 			new Thread(new downloadFileRunnable(systemParamURLs,getDownloadPath(),systemParamDownloadFileNames),
 					SYSTEM_PARAM_THREAD)
 					.start();
-		}else if(systemParamChecked && fileExist(systemParamDownloadFileName) && !systemParamDownloading){
+		}else if(systemParamChecked && fileExist(systemParamDownloadFileNames) && !systemParamDownloading){
 			showTips(R.string.tipsSystemParamDownloadFileExist);
-		}else if(systemParamChecked && fileExist(systemParamDownloadFileName) && systemParamDownloading){
+		}else if(systemParamChecked && fileExist(systemParamDownloadFileNames) && systemParamDownloading){
 			showTips(R.string.tipsSystemParamDownloading);
 		}
 		
 		//开始下载单品策略
-		if(itemStrategyChecked && !fileExist(itemStrategyDownloadFileName) && !itemStrategyDownloading){ 
+		if(itemStrategyChecked && !fileExist(itemStrategyDownloadFileNames) && !itemStrategyDownloading){ 
 			//干活线程
 			new Thread(new downloadFileRunnable(itemStrategyURLs,getDownloadPath(),itemStrategyDownloadFileNames),
 					ITEM_STRATEGY_THREAD)
 					.start();			
-		}else if(itemStrategyChecked && fileExist(itemStrategyDownloadFileName) && !itemStrategyDownloading){
+		}else if(itemStrategyChecked && fileExist(itemStrategyDownloadFileNames) && !itemStrategyDownloading){
 			showTips(R.string.tipsItemStrategyDownloadFileExist);
-		}else if(itemStrategyChecked && fileExist(itemStrategyDownloadFileName) && itemStrategyDownloading){
+		}else if(itemStrategyChecked && fileExist(itemStrategyDownloadFileNames) && itemStrategyDownloading){
 			showTips(R.string.tipsItemStrategyDownloading);
 		}
 		
 		//开始下载会员类型
-		if(vipTypeChecked && !fileExist(vipTypeDownloadFileName) && !vipTypeDownloading){ 
+		if(vipTypeChecked && !fileExist(vipTypeDownloadFileNames) && !vipTypeDownloading){ 
 			//干活线程
 			new Thread(new downloadFileRunnable(vipTypeURLs,getDownloadPath(),vipTypeDownloadFileNames),
 					VIP_TYPE_THREAD)
 					.start();
-		}else if(vipTypeChecked && fileExist(vipTypeDownloadFileName) && !vipTypeDownloading){
+		}else if(vipTypeChecked && fileExist(vipTypeDownloadFileNames) && !vipTypeDownloading){
 			showTips(R.string.tipsVipTypeDownloadFileExist);
-		}else if(vipTypeChecked && fileExist(vipTypeDownloadFileName) && vipTypeDownloading){
+		}else if(vipTypeChecked && fileExist(vipTypeDownloadFileNames) && vipTypeDownloading){
 			showTips(R.string.tipsVipTypeDownloading);
 		}
 		
@@ -467,14 +477,14 @@ public class SystemDataDownloadActivity extends BaseActivity{
 		}
 		
 		//开始下载用户资料
-		if(userDataChecked && !fileExist(userDataDownloadFileName) && !userDataDownloading){ 
+		if(userDataChecked && !fileExist(userDataDownloadFileNames) && !userDataDownloading){ 
 			//干活线程
 			new Thread(new downloadFileRunnable(userDataURLs,getDownloadPath(),userDataDownloadFileNames),
 					USER_DATA_THREAD)
 					.start();
-		}else if(userDataChecked && fileExist(userDataDownloadFileName) && !userDataDownloading){
+		}else if(userDataChecked && fileExist(userDataDownloadFileNames) && !userDataDownloading){
 			showTips(R.string.tipsUserDataDownloadFileExist);
-		}else if(userDataChecked && fileExist(userDataDownloadFileName) && userDataDownloading){
+		}else if(userDataChecked && fileExist(userDataDownloadFileNames) && userDataDownloading){
 			showTips(R.string.tipsUserDataDownloading);
 		}
 	}
@@ -515,23 +525,22 @@ public class SystemDataDownloadActivity extends BaseActivity{
 				e.printStackTrace();
 			}
 				
-			//解析
+			//解析并插入数据库
 			parseDownloadFiles();
-				
-			//保存
-			saveDownloadFilesToSqlite();
 			
 		}
 	}
 
+	//检测下载的文件
 	private boolean checkDownloadFiles(){
+		//即将添加，敬请期待
 		return true;		
 	}
 	
 	//解压下载文件
 	private void unZipDownloadFiles() throws IOException{
 		if(Thread.currentThread().getName().equals(USER_DATA_THREAD)){ 
-			Log.d(TAG,"USER_DATA_UNZIP_THREAD" + "Start");
+			if(LocalDebug) Log.d(TAG,"USER_DATA_UNZIP_THREAD" + "Start");
 			sendUnZipMsg(userDataStartUnZipMsg);
 			for(int i = 0;i < userDataDownloadFileNames.length;i++){
 				userDataUnZipFiles[i] =  unZip.unZip(getDownloadPath() + userDataDownloadFileNames[i],getDownloadPath());
@@ -540,7 +549,7 @@ public class SystemDataDownloadActivity extends BaseActivity{
 
 		}
 		if(Thread.currentThread().getName().equals(PRODUCT_DATA_THREAD)){ 
-			Log.d(TAG,"PRODUCT_DATA_UNZIP_THREAD" + "Start");
+			if(LocalDebug) Log.d(TAG,"PRODUCT_DATA_UNZIP_THREAD" + "Start");
 			sendUnZipMsg(productDataStartUnZipMsg);
 			for(int i = 0;i < productDataDownloadFileNames.length;i ++){
 				productDataUnZipFiles[i] =  unZip.unZip(getDownloadPath() + productDataDownloadFileNames[i],getDownloadPath());
@@ -549,7 +558,7 @@ public class SystemDataDownloadActivity extends BaseActivity{
 
 		}
 		if(Thread.currentThread().getName().equals(VIP_TYPE_THREAD)){
-			Log.d(TAG,"VIP_TYPE_UNZIP_THREAD" + "Start");
+			if(LocalDebug) Log.d(TAG,"VIP_TYPE_UNZIP_THREAD" + "Start");
 			sendUnZipMsg(vipTypeStartUnZipMsg);
 			for(int i = 0;i < vipTypeDownloadFileNames.length;i++){
 				vipTypeUnZipFiles[i] =  unZip.unZip(getDownloadPath() + vipTypeDownloadFileNames[i],getDownloadPath());
@@ -558,7 +567,7 @@ public class SystemDataDownloadActivity extends BaseActivity{
 
 		}
 		if(Thread.currentThread().getName().equals(ITEM_STRATEGY_THREAD)) {
-			Log.d(TAG,"ITEM_STRATEGY_UNZIP_THREAD" + "Start");
+			if(LocalDebug) Log.d(TAG,"ITEM_STRATEGY_UNZIP_THREAD" + "Start");
 			sendUnZipMsg(itemStrategyStartUnZipMsg);
 			for(int i = 0;i < itemStrategyDownloadFileNames.length;i++){
 				itemStrategyUnZipFiles[i] =  unZip.unZip(getDownloadPath() + itemStrategyDownloadFileNames[i],getDownloadPath());
@@ -567,7 +576,7 @@ public class SystemDataDownloadActivity extends BaseActivity{
 
 		}
 		if(Thread.currentThread().getName().equals(SYSTEM_PARAM_THREAD)) {
-			Log.d(TAG,"SYSTEM_PARAM_UNZIP_THREAD" + "Start");
+			if(LocalDebug) Log.d(TAG,"SYSTEM_PARAM_UNZIP_THREAD" + "Start");
 			sendUnZipMsg(systemParamStartUnZipMsg);
 			for(int i = 0;i < systemParamDownloadFileNames.length;i++){
 				systemParamUnZipFiles[i] =  unZip.unZip(getDownloadPath() + systemParamDownloadFileNames[i],getDownloadPath());
@@ -580,68 +589,65 @@ public class SystemDataDownloadActivity extends BaseActivity{
 	//解析下载文件
 	private void parseDownloadFiles(){
 		if(Thread.currentThread().getName().equals(USER_DATA_THREAD)){ 
-			Log.d(TAG,"USER_DATA_PARSE_THREAD" + "Start");
-			//sendUnZipMsg(userDataStartUnZipMsg);
+			if(LocalDebug) Log.d(TAG,"USER_DATA_PARSE_THREAD" + "Start");
+			//sendUnZipMsg(userDataStartParseMsg);
 			for(int i = 0;i < userDataUnZipFiles.length;i++){
 				parseFile(userDataUnZipFiles[i]);
 			}
-			//sendUnZipMsg(userDataUnZipFinishMsg);
+			//sendUnZipMsg(userDataParseFinishMsg);
 
 		}
 		if(Thread.currentThread().getName().equals(PRODUCT_DATA_THREAD)){ 
-			Log.d(TAG,"PRODUCT_DATA_PARSE_THREAD" + "Start");
-			//sendUnZipMsg(productDataStartUnZipMsg);
+			if(LocalDebug) Log.d(TAG,"PRODUCT_DATA_PARSE_THREAD" + "Start");
+			//sendUnZipMsg(productDataStartParseMsg);
 			for(int i = 0;i < productDataUnZipFiles.length;i++){
 				parseFile(productDataUnZipFiles[i]);
 			}
-			//sendUnZipMsg(productDataUnZipFinishMsg);
+			//sendUnZipMsg(productDataParseFinishMsg);
 
 		}
 		if(Thread.currentThread().getName().equals(VIP_TYPE_THREAD)){
-			Log.d(TAG,"VIP_TYPE_PARSE_THREAD" + "Start");
-			//sendUnZipMsg(vipTypeStartUnZipMsg);
+			if(LocalDebug) Log.d(TAG,"VIP_TYPE_PARSE_THREAD" + "Start");
+			//sendUnZipMsg(vipTypeStartParseMsg);
 			for(int i = 0;i < vipTypeUnZipFiles.length;i++){
 				parseFile(vipTypeUnZipFiles[i]);
 			}
-			//sendUnZipMsg(vipTypeUnZipFinishMsg);
+			//sendUnZipMsg(vipTypeParseFinishMsg);
 
 		}
 		if(Thread.currentThread().getName().equals(ITEM_STRATEGY_THREAD)) {
-			Log.d(TAG,"ITEM_STRATEGY_PARSE_THREAD" + "Start");
-			//sendUnZipMsg(itemStrategyStartUnZipMsg);
+			if(LocalDebug) Log.d(TAG,"ITEM_STRATEGY_PARSE_THREAD" + "Start");
+			//sendUnZipMsg(itemStrategyStartParseMsg);
 			for(int i = 0;i < itemStrategyUnZipFiles.length;i++){
 				parseFile(itemStrategyUnZipFiles[i]);
 			}
-			//sendUnZipMsg(itemStrategyUnZipFinishMsg);
+			//sendUnZipMsg(itemStrategyParseFinishMsg);
 
 		}
 		if(Thread.currentThread().getName().equals(SYSTEM_PARAM_THREAD)) {
-			Log.d(TAG,"SYSTEM_PARAM_PARSE_THREAD" + "Start");
-			//sendUnZipMsg(systemParamStartUnZipMsg);
+			if(LocalDebug) Log.d(TAG,"SYSTEM_PARAM_PARSE_THREAD" + "Start");
+			//sendUnZipMsg(systemParamStartParseMsg);
 			for(int i = 0;i < systemParamUnZipFiles.length;i++){
 				parseFile(systemParamUnZipFiles[i]);
 			}
-			//sendUnZipMsg(systemParamUnZipFinishMsg);
+			//sendUnZipMsg(systemParamParseFinishMsg);
 			
 		}
 	}
 
 	//开始解析
 	private void parseFile(String filePath){
-
         BufferedReader reader = null;
         try {
-        	reader = new BufferedReader(new InputStreamReader(new FileInputStream(filePath)));
+        	reader = new BufferedReader(new InputStreamReader(new FileInputStream(filePath),"gbk"));
     		String line = null; 
     		String[]data = null;
            
             while ((line = reader.readLine()) != null) { 
             	data = line.split(",");
-  		      Log.d(TAG,"____" + data.length );
-  		      //让我们来插表吧
-			       插表(filePath,data);
-  		      for(String tmp2:data)
-  		    	  Log.d(TAG,tmp2);                
+  		        if(LocalDebug) Log.d(TAG,"____" + data.length );
+  		        //让我们来插表吧
+			              插表(filePath,data);               
             }
             reader.close();
         } catch (IOException e) {
@@ -656,25 +662,26 @@ public class SystemDataDownloadActivity extends BaseActivity{
 	
 	}
 
+	//插表！
 	private void 插表(String filePath,String[]temp){
-		Log.d(TAG,"插表！！");
+		if(LocalDebug) Log.d(TAG,"插表！！");
 		if(filePath.equals(userDataUnZipFiles[0])){
-			Log.d(TAG,"插user表");
+			if(LocalDebug) Log.d(TAG,"插user表");
 		}
 		
 		if(filePath.equals(productDataUnZipFiles[0])){
-			Log.d(TAG,"插tc_sku表");
+			if(LocalDebug) Log.d(TAG,"插tc_sku表");
 			try{
 				db.execSQL("insert into tc_sku(sku,style,clr,sizeid,pname) values (?,?,?,?,?)", 
 						new Object[]{temp[0],temp[1].substring(2),temp[2].substring(2),
 						temp[3].substring(2),temp[4].substring(2)});
 			}catch(Exception e){
-				Log.d(TAG,"插tc_sku表失败！");
+				if(LocalDebug) Log.d(TAG,"插tc_sku表失败！");
 			}				
 		}
 		
 		if(filePath.equals(productDataUnZipFiles[1])){
-			Log.d(TAG,"插tc_style表");
+			if(LocalDebug) Log.d(TAG,"插tc_style表");
 			try{
 				db.execSQL("insert into tc_style(style,style_name,attrib1,attrib2,attrib3,attrib4,attrib5,attrib6,attrib7,attrib8,attrib9,attrib10) "
 						+ "values (?,?,?,?,?,?,?,?,?,?,?,?)", 
@@ -683,57 +690,56 @@ public class SystemDataDownloadActivity extends BaseActivity{
 						,temp[6].substring(2),temp[7].substring(2),temp[8].substring(2)
 						,temp[9].substring(2),temp[10].substring(2),temp[11].substring(2)});	
 			}catch(Exception e){
-				Log.d(TAG,"插tc_style表失败！");
+				if(LocalDebug) Log.d(TAG,"插tc_style表失败！");
 			}
 		}
 		
 		if(filePath.equals(productDataUnZipFiles[2])){
-			Log.d(TAG,"插styleprice表");
+			if(LocalDebug) Log.d(TAG,"插styleprice表");
 			try{
 				db.execSQL("insert into tc_styleprice(style,store,fprice) values (?,?,?)", 
 						new Object[]{temp[0],temp[1].substring(2),temp[2].substring(2)});
 			}catch(Exception e){
-				Log.d(TAG,"插styleprice表失败！");
+				if(LocalDebug) Log.d(TAG,"插styleprice表失败！");
 			}			
 		}
 		
 		if(filePath.equals(productDataUnZipFiles[3])){
-			Log.d(TAG,"插TdefClr表");
+			if(LocalDebug) Log.d(TAG,"插TdefClr表");
 			try{
 				db.execSQL("insert into tdefclr(clr,clrname) values (?,?)", 
 					new Object[]{temp[0],temp[1].substring(2)});
 			}catch(Exception e){
-				Log.d(TAG,"插TdefClr表失败！");
+				if(LocalDebug) Log.d(TAG,"插TdefClr表失败！");
 			}
 		}
 		
 		if(filePath.equals(productDataUnZipFiles[4])){
-			Log.d(TAG,"插TdefSize表");
+			if(LocalDebug) Log.d(TAG,"插TdefSize表");
 			try{
 				db.execSQL("insert into tdefsize(sizeid,sizename) values (?,?)", 
 						new Object[]{temp[0],temp[1].substring(2)});
 			}catch(Exception e){
-				Log.d(TAG,"插TdefClr表失败！");
+				if(LocalDebug) Log.d(TAG,"插TdefClr表失败！");
 			}			
 		}
 		
 		if(filePath.equals(vipTypeUnZipFiles[0])){
+			if(LocalDebug) Log.d(TAG,"插vipType表");
 			
 		}
 		
 		if(filePath.equals(itemStrategyUnZipFiles[0])){
+			if(LocalDebug) Log.d(TAG,"插itemStrategy表");
 			
 		}
 		
 		if(filePath.equals(systemParamUnZipFiles[0])){
+			if(LocalDebug) Log.d(TAG,"插systemParam表");
 			
 		}
 	}
 	
-	
-	private void saveDownloadFilesToSqlite(){
-		//即将添加，敬请期待！
-	}
 	
 	public void downLoadFile(String urlstr,String savePath,String saveName){
 	     InputStream inputStream = null;
@@ -748,7 +754,7 @@ public class SystemDataDownloadActivity extends BaseActivity{
 				HttpURLConnection urlConn=(HttpURLConnection) url.openConnection();
 				inputStream=urlConn.getInputStream();
 				fileSize = urlConn.getContentLength();
-				Log.d(TAG,"__FILESIZE__" + fileSize);
+				if(LocalDebug) Log.d(TAG,"__FILESIZE__" + fileSize);
 			 } catch (MalformedURLException e) {
 				e.printStackTrace();
 				showTips(R.string.tipsPleaseDownloadAgain$_$);
@@ -757,7 +763,7 @@ public class SystemDataDownloadActivity extends BaseActivity{
 				showTips(R.string.tipsPleaseDownloadAgain$_$);
 			 }
 	    	 
-	         File resultFile = writeToSDfromInput(savePath, saveName, inputStream,fileSize);
+	         File resultFile = writeToFilefromInput(savePath, saveName, inputStream,fileSize);
 	         if(resultFile == null){
 	             return ;
 	         }
@@ -770,31 +776,31 @@ public class SystemDataDownloadActivity extends BaseActivity{
         Message msg = new Message();
         
 		if(Thread.currentThread().getName().equals(USER_DATA_THREAD)){ 
-			Log.d(TAG,USER_DATA_THREAD + "Start");
+			if(LocalDebug) Log.d(TAG,USER_DATA_THREAD + "Start");
 			msg.what = userDataDownloadStartMsg;
 			//设置下载开始标志
 			userDataDownloading = true;
 		}
 		if(Thread.currentThread().getName().equals(PRODUCT_DATA_THREAD)){ 
-			Log.d(TAG,PRODUCT_DATA_THREAD + "Start");
+			if(LocalDebug) Log.d(TAG,PRODUCT_DATA_THREAD + "Start");
 			msg.what = productDataDownloadStartMsg;
 			//设置下载开始标志
 			productDataDownloading = true;
 		}
 		if(Thread.currentThread().getName().equals(VIP_TYPE_THREAD)){
-			Log.d(TAG,VIP_TYPE_THREAD + "Start");
+			if(LocalDebug) Log.d(TAG,VIP_TYPE_THREAD + "Start");
 			msg.what = vipTypeDownloadStartMsg;
 			//设置下载开始标志				
 			vipTypeDownloading = true;
 		}
 		if(Thread.currentThread().getName().equals(ITEM_STRATEGY_THREAD)) {
-			Log.d(TAG,ITEM_STRATEGY_THREAD + "Start");
+			if(LocalDebug) Log.d(TAG,ITEM_STRATEGY_THREAD + "Start");
 			msg.what = itemStrategyDownloadStartMsg;
 			//设置下载开始标志
 			itemStrategyDownloading = true;
 		}
 		if(Thread.currentThread().getName().equals(SYSTEM_PARAM_THREAD)) {
-			Log.d(TAG,SYSTEM_PARAM_THREAD + "Start");
+			if(LocalDebug) Log.d(TAG,SYSTEM_PARAM_THREAD + "Start");
 			msg.what = systemParamDownloadStartMsg;
 			//设置下载开始标志
 			systemParamDownloading = true;			
@@ -809,23 +815,23 @@ public class SystemDataDownloadActivity extends BaseActivity{
 		Message msg = new Message();
 		
 		if(Thread.currentThread().getName().equals(USER_DATA_THREAD)){ 
-			Log.d(TAG,USER_DATA_THREAD + "Progress");
+			if(LocalDebug) Log.d(TAG,USER_DATA_THREAD + "Progress");
 			msg.what = userDataDownloadProgressMsg;
 		}
 		if(Thread.currentThread().getName().equals(PRODUCT_DATA_THREAD)){ 
-			Log.d(TAG,PRODUCT_DATA_THREAD + "Progress");
+			if(LocalDebug) Log.d(TAG,PRODUCT_DATA_THREAD + "Progress");
 			msg.what = productDataDownloadProgressMsg;
 		}
 		if(Thread.currentThread().getName().equals(VIP_TYPE_THREAD)){
-			Log.d(TAG,VIP_TYPE_THREAD + "Progress");
+			if(LocalDebug) Log.d(TAG,VIP_TYPE_THREAD + "Progress");
 			msg.what = vipTypeDownloadProgressMsg;
 		}
 		if(Thread.currentThread().getName().equals(ITEM_STRATEGY_THREAD)) {
-			Log.d(TAG,ITEM_STRATEGY_THREAD + "Progress");
+			if(LocalDebug) Log.d(TAG,ITEM_STRATEGY_THREAD + "Progress");
 			msg.what = itemStrategyDownloadProgressMsg;
 		}
 		if(Thread.currentThread().getName().equals(SYSTEM_PARAM_THREAD)) {
-			Log.d(TAG,SYSTEM_PARAM_THREAD + "Progress");
+			if(LocalDebug) Log.d(TAG,SYSTEM_PARAM_THREAD + "Progress");
 			msg.what = systemParamDownloadProgressMsg;		
 		}
 		//OK baby，we send Message now
@@ -838,31 +844,31 @@ public class SystemDataDownloadActivity extends BaseActivity{
 		Message msg = new Message();
 		
 		if(Thread.currentThread().getName().equals(USER_DATA_THREAD)){ 
-			Log.d(TAG,USER_DATA_THREAD + "OVER");
+			if(LocalDebug) Log.d(TAG,USER_DATA_THREAD + "OVER");
 			msg.what = userDataDownloadFinishMsg;
 			//设置下载完毕标志
 			userDataDownloading = false;
 		}
 		if(Thread.currentThread().getName().equals(PRODUCT_DATA_THREAD)){ 
-			Log.d(TAG,PRODUCT_DATA_THREAD + "OVER");
+			if(LocalDebug) Log.d(TAG,PRODUCT_DATA_THREAD + "OVER");
 			msg.what = productDataDownloadFinishMsg;
 			//设置下载完毕标志
 			productDataDownloading = false;
 		}
 		if(Thread.currentThread().getName().equals(VIP_TYPE_THREAD)){
-			Log.d(TAG,VIP_TYPE_THREAD + "OVER");
+			if(LocalDebug) Log.d(TAG,VIP_TYPE_THREAD + "OVER");
 			msg.what = vipTypeDownloadFinishMsg;
 			//设置下载完毕标志				
 			vipTypeDownloading = false;
 		}
 		if(Thread.currentThread().getName().equals(ITEM_STRATEGY_THREAD)) {
-			Log.d(TAG,ITEM_STRATEGY_THREAD + "OVER");
+			if(LocalDebug) Log.d(TAG,ITEM_STRATEGY_THREAD + "OVER");
 			msg.what = itemStrategyDownloadFinishMsg;
 			//设置下载完毕标志
 			itemStrategyDownloading = false;
 		}
 		if(Thread.currentThread().getName().equals(SYSTEM_PARAM_THREAD)) {
-			Log.d(TAG,SYSTEM_PARAM_THREAD + "OVER");
+			if(LocalDebug) Log.d(TAG,SYSTEM_PARAM_THREAD + "OVER");
 			msg.what = systemParamDownloadFinishMsg;
 			//设置下载完毕标志
 			systemParamDownloading = false;			
@@ -876,23 +882,6 @@ public class SystemDataDownloadActivity extends BaseActivity{
 		//创建消息
         Message msg = new Message();
         msg.what = tipsMsg;
-        /*
-		if(Thread.currentThread().getName().equals(USER_DATA_THREAD)){ 
-			msg.what = tipsMsg;
-		}
-		if(Thread.currentThread().getName().equals(PRODUCT_DATA_THREAD)){ 
-			msg.what = productDataStartUnZipMsg;
-		}
-		if(Thread.currentThread().getName().equals(VIP_TYPE_THREAD)){
-			msg.what = vipTypeStartUnZipMsg;
-		}
-		if(Thread.currentThread().getName().equals(ITEM_STRATEGY_THREAD)) {
-			msg.what = itemStrategyStartUnZipMsg;
-		}
-		if(Thread.currentThread().getName().equals(SYSTEM_PARAM_THREAD)) {
-			msg.what = systemParamStartUnZipMsg;
-		}
-		*/
 		//发送！
 		updateTipsHandler.sendMessage(msg);
 	}
@@ -920,34 +909,9 @@ public class SystemDataDownloadActivity extends BaseActivity{
 	private void processExistFiles(){
 		//即将添加，敬请期待！
 	}
-
-	private String getDownloadPath(){
-		return downloadPath;
-	}
-	
-    public String getSDPath1(){    	
-    	return Environment.getExternalStorageDirectory().toString() +"/";
-    	//return getDownloadPath();
-    }    
-    
-    //可以检测SDCARD是否插入
-    public String getSDPath2(){    	
-    	File sdDir = null; 
-    	//判断sd卡是否存在
-    	boolean sdCardExist = Environment.getExternalStorageState() 
-    		.equals(android.os.Environment.MEDIA_MOUNTED); 
-    	
-    	if (sdCardExist){ 
-    		//获取跟目录
-    		sdDir = Environment.getExternalStorageDirectory(); 
-    	} 
-    	Log.d(TAG,"____TRUELY DIR :" + sdDir.toString());
-    	return sdDir.toString();    	
-    } 
-    
-    //在SD卡上创建文件
-    public File createSDFile(String fileName){
-    	
+	    
+    //创建下载文件
+    public File createDownloadFile(String fileName){   	
         File file = new File(fileName);
         
         try {
@@ -959,10 +923,10 @@ public class SystemDataDownloadActivity extends BaseActivity{
         return file;
     }
     
-    //将一个inputStream里面的数据写到SD卡中
-    public File writeToSDfromInput(String path,String fileName,InputStream inputStream,long fileSize){
+    //将一个inputStream里面的数据写到下载文件中
+    public File writeToFilefromInput(String path,String fileName,InputStream inputStream,long fileSize){
         
-        File file = createSDFile(path+fileName);
+        File file = createDownloadFile(path+fileName);
         OutputStream outStream = null;
         
         try {
@@ -982,7 +946,7 @@ public class SystemDataDownloadActivity extends BaseActivity{
             	totalRead += hasRead;
             	
             	//打印显示当前正在下载的文件已下载百分比
-            	Log.d(TAG,"__Current File __Downloaded____:" + (int)(((float)totalRead / (float)fileSize) * 100) + " %");
+            	if(LocalDebug) Log.d(TAG,"__Current File __Downloaded____:" + (int)(((float)totalRead / (float)fileSize) * 100) + " %");
             	
             	//记录当前任务的已下载量
             	recordCurrentTaskDownloadSize(hasRead);
@@ -1057,31 +1021,31 @@ public class SystemDataDownloadActivity extends BaseActivity{
 			for(int i = 0;i < userDataURLs.length;i++){
 				userDataTotalSize += countDownloadFileSize(userDataURLs[i]);
 			}
-			Log.d(TAG,"____________USER DATA TOTAL DOWNLOAD SIZE:" + userDataTotalSize);
+			if(LocalDebug) Log.d(TAG,"USER DATA TOTAL DOWNLOAD SIZE:" + userDataTotalSize);
 		}
 		if(Thread.currentThread().getName().equals(PRODUCT_DATA_THREAD)){ 
 			for(int i = 0;i < productDataURLs.length;i++){
 				productDataTotalSize += countDownloadFileSize(productDataURLs[i]);
 			}
-			Log.d(TAG,"____________PRODUCT DATA TOTAL DOWNLOAD SIZE:" + productDataTotalSize);
+			if(LocalDebug) Log.d(TAG,"PRODUCT DATA TOTAL DOWNLOAD SIZE:" + productDataTotalSize);
 		}
 		if(Thread.currentThread().getName().equals(VIP_TYPE_THREAD)){
 			for(int i = 0;i < vipTypeURLs.length;i++){
 				vipTypeTotalSize += countDownloadFileSize(vipTypeURLs[i]);
 			}
-			Log.d(TAG,"____________VIP TYPE TOTAL DOWNLOAD SIZE:" + vipTypeTotalSize);
+			if(LocalDebug) Log.d(TAG,"VIP TYPE TOTAL DOWNLOAD SIZE:" + vipTypeTotalSize);
 		}
 		if(Thread.currentThread().getName().equals(ITEM_STRATEGY_THREAD)) {
 			for(int i = 0;i < itemStrategyURLs.length;i++){
 				itemStrategyTotalSize += countDownloadFileSize(itemStrategyURLs[i]);
 			}
-			Log.d(TAG,"____________ITEM STRATEGY TOTAL DOWNLOAD SIZE:" + itemStrategyTotalSize);
+			if(LocalDebug) Log.d(TAG,"ITEM STRATEGY TOTAL DOWNLOAD SIZE:" + itemStrategyTotalSize);
 		}
 		if(Thread.currentThread().getName().equals(SYSTEM_PARAM_THREAD)) {
 			for(int i = 0;i < systemParamURLs.length;i++){
 				systemParamTotalSize += countDownloadFileSize(systemParamURLs[i]);
 			}
-			Log.d(TAG,"____________SYSTEM PARAM TOTAL DOWNLOAD SIZE:" + systemParamTotalSize);
+			if(LocalDebug) Log.d(TAG,"SYSTEM PARAM TOTAL DOWNLOAD SIZE:" + systemParamTotalSize);
 		}    	
     }
  
@@ -1091,11 +1055,11 @@ public class SystemDataDownloadActivity extends BaseActivity{
 	     int fileSize = 0;
 	     
 		 try {
-			URL url=new URL(urlstr);
-			HttpURLConnection urlConn=(HttpURLConnection) url.openConnection();
-			inputStream=urlConn.getInputStream();
+			URL url = new URL(urlstr);
+			HttpURLConnection urlConn = (HttpURLConnection) url.openConnection();
+			inputStream = urlConn.getInputStream();
 			fileSize = urlConn.getContentLength();
-			Log.d(TAG,"__count__" + fileSize);
+			if(LocalDebug) Log.d(TAG,"_This Download File Size__" + fileSize);
 		 } catch (MalformedURLException e) {
 			e.printStackTrace();
 		 } catch (IOException e) {
@@ -1105,17 +1069,17 @@ public class SystemDataDownloadActivity extends BaseActivity{
     }
     
     private long disPlayBlockStatus(){
-    	StatFs statfs=new StatFs(getSDPath1()); 
+    	StatFs statfs=new StatFs("/sdcard/"); 
 	    //获取block的SIZE 	    
 	    long blockSize = statfs.getBlockSize(); 
-	    Log.d(TAG,"BlockSize:" + blockSize);
+	    if(LocalDebug) Log.d(TAG,"BlockSize:" + blockSize);
 	    //获取BLOCK数量 
 	    long totalBlocks = statfs.getBlockCount(); 
-	    Log.d(TAG,"totalBocks:" + totalBlocks);
+	    if(LocalDebug) Log.d(TAG,"totalBocks:" + totalBlocks);
 	    //可用的Block的数量 
 	    long availableBlock = statfs.getAvailableBlocks(); 
-	    Log.d(TAG,"avilable bolck:" + availableBlock);
-	    Log.d(TAG,"Size:" + blockSize * availableBlock / 1024 /1024);
+	    if(LocalDebug) Log.d(TAG,"avilable bolck:" + availableBlock);
+	    if(LocalDebug) Log.d(TAG,"Size:" + blockSize * availableBlock / 1024 /1024);
 	    return (long) blockSize * availableBlock;
     }
  
@@ -1166,8 +1130,7 @@ public class SystemDataDownloadActivity extends BaseActivity{
 					Toast.makeText(SystemDataDownloadActivity.this, R.string.tipsSystemParamDownloadFinish, Toast.LENGTH_SHORT).show();
 					break;
 					
-				//设置下载进度	
-				//我们有五个线程同时访问，所以Bundle数据必须独立			
+				//设置下载进度		
 				case userDataDownloadProgressMsg:{
 					int progress = (int)(((float)userDataTotalRead / (float)userDataTotalSize) * 100);
 					userDataProgressBar.setProgress(progress);
