@@ -214,11 +214,11 @@ public class SystemDataDownloadActivity extends BaseActivity{
 		super.onCreate(savedInstanceState);
 		setupFullscreen();
 		setContentView(R.layout.activity_system_data_download);	
-		
-		initViews();
-		initDownloadPath();
+		//设置下载路径
+		setDownloadPath();
 		createDownloadDir();
 		initZipTool();
+		initViews();
 	}
 	
 	private void initViews(){
@@ -256,7 +256,7 @@ public class SystemDataDownloadActivity extends BaseActivity{
 	}
 
 	//初始化下载路径
-	private void initDownloadPath(){
+	private void setDownloadPath(){
 		if(LocalDebug) Log.d(TAG,"this.getFilesDir().toString()");
 		downloadPath = this.getFilesDir().toString() + "/myDataDownload/";
 	}

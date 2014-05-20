@@ -174,7 +174,7 @@
  
     <string name="tipsDataDownload">温馨提示</string>
     <string name="tipsIAmAlreadyDownloadingFuckYou">我已经在下载了！！！</string>
-    <string name="tipsCanYouChooseOne$_$">亲，请至少选择一项开始下载！</string>
+    <string name="tipsCanYouChooseOne$_$">亲，请至少选择一项！</string>
     <string name="tipsNetworkUnReachable$_$">亲，检查下网络！</string>
     <string name="tipsBatteryNotEnough$_$">亲，这点电量不敢下载！</string>
     <string name="tipsServerUnReachable$_$">亲，服务器歇菜了！</string>
@@ -183,7 +183,7 @@
     <string name="tipsFileAlreadyExist$_$">亲，已经下载过了！如需重新下载请先清理系统数据！</string>
     
     <string name="tipsStartDownloadUserData">开始下载用户资料</string>
-    <string name="tipsStartDownloadProductData">开始下载产品资料</string>
+    <string name="tipsStartDownloadProductData">开始下载商品资料</string>
     <string name="tipsStartDownloadVipType">开始下载会员类型</string>
     <string name="tipsStartDownloadItemStrategy">开始下载单品策略</string>
     <string name="tipsStartDownloadSystemParam">开始下载系统参数</string>
@@ -217,7 +217,25 @@
     <string name="tipsUnZipVipTypeFinish">会员类型解压完毕</string>
     <string name="tipsUnZipItemStrategyFinish">单品策略解压完毕</string>
     <string name="tipsUnZipSystemParamFinish">系统参数解压完毕</string> 
-    
+
+    <string name="tipsStartDeleteUserData$_$">开始清理用户资料</string>
+	<string name="tipsStartDeleteProductData$_$">开始清理商品资料</string>
+	<string name="tipsStartDeleteVipType$_$">开始清理会员类型</string>
+	<string name="tipsStartDeleteItemStrategy$_$">开始清理单品策略</string>
+	<string name="tipsStartDeleteSystemParam$_$">开始清理系统参数</string>  
+        
+    <string name="tipsFinishDeleteUserData$_$">用户资料清理完毕</string>
+    <string name="tipsFinishDeleteProductData$_$">商品资料清理完毕</string> 
+    <string name="tipsFinishDeleteVipType$_$">会员类型清理完毕</string> 
+    <string name="tipsFinishDeleteItemStrategy$_$">单品策略清理完毕</string> 
+    <string name="tipsFinishDeleteSystemParam$_$">系统参数清理完毕</string> 
+                            
+    <string name="tipsUserDataNotExist$_$">用户资料不存在</string>
+    <string name="tipsProductDataNotExist$_$">商品资料不存在</string>
+    <string name="tipsVipTypeNotExist$_$">会员类型资料不存在</string>
+    <string name="tipsItemStrategyNotExist$_$">单品策略资料不存在</string>
+    <string name="tipsSystemParamNotExist$_$">系统参数资料不存在</string>                
+     
     <string name="storeInfoStoreIndex">门店编号</string>
     <string name="storeInfoCustomerName">顾客名称</string>
     <string name="storeInfoTerminalIndex">终端编号</string>
