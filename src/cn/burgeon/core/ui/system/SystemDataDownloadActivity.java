@@ -40,7 +40,7 @@ public class SystemDataDownloadActivity extends BaseActivity{
 		
 	private final String TAG = "SystemDataDownloadActivity";
 	//调试标志
-	private boolean LocalDebug = true;
+	private boolean LocalDebug = false;
 	//文件下载和解压路径 程序data目录的 myDataDownload文件夹里
 	private String downloadPath;
 	
