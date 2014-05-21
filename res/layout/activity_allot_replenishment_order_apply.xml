@@ -52,7 +52,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:text="@string/shipper"
+                android:text="@string/outer"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <EditText
@@ -153,7 +153,7 @@
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="尺寸"
+                        android:text="尺码"
                         android:textSize="15sp" />
 
                     <View
