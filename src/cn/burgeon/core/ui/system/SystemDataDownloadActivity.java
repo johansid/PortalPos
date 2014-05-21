@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -17,8 +16,13 @@ import java.net.URL;
 import com.android.volley.toolbox.UnZip;
 
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.os.StatFs;
@@ -159,6 +163,10 @@ public class SystemDataDownloadActivity extends BaseActivity{
 	private final int vipTypeUnZipFinishMsg           = 0x42;
 	private final int itemStrategyUnZipFinishMsg      = 0x43;
 	private final int systemParamUnZipFinishMsg       = 0x44;
+
+	//网络状态变化消息
+	private final int networkAvailableMsg         = 0x50;
+	private final int networkUnAvailableMsg       = 0x51;
 	
 	//下载线程名字
 	private final String USER_DATA_THREAD     = "userDataThread";
@@ -208,6 +216,8 @@ public class SystemDataDownloadActivity extends BaseActivity{
 	private Button mDownloadButton;
 	//解压
 	private UnZip unZip;
+	//网络状态变化Receiver
+	private NetworkReceiver networkReceiver;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
@@ -219,6 +229,7 @@ public class SystemDataDownloadActivity extends BaseActivity{
 		createDownloadDir();
 		initZipTool();
 		initViews();
+		registerNetReceiver();
 	}
 	
 	private void initViews(){
@@ -255,7 +266,7 @@ public class SystemDataDownloadActivity extends BaseActivity{
 		});			
 	}
 
-	//初始化下载路径
+	//设置下载路径
 	private void setDownloadPath(){
 		if(LocalDebug) Log.d(TAG,"this.getFilesDir().toString()");
 		downloadPath = this.getFilesDir().toString() + "/myDataDownload/";
@@ -286,6 +297,15 @@ public class SystemDataDownloadActivity extends BaseActivity{
 	private void initStoreNameAndTime(){
 		statusStoreName.setText(App.getPreferenceUtils().getPreferenceStr(PreferenceUtils.store_key));
 		statusTime.setText(getCurrDate());				
+	}
+
+	//注册网络状态接收器
+	private void registerNetReceiver(){
+		if(networkReceiver == null){
+			IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+			networkReceiver = new NetworkReceiver();
+			registerReceiver(networkReceiver,intentFilter);
+		}
 	}
 	
 	private void checkToStartDownload(){
@@ -380,8 +400,10 @@ public class SystemDataDownloadActivity extends BaseActivity{
 	
 	//检测网络状态
 	private boolean networkReachable(){
-		//即将添加，敬请期待！
-		return true;		
+		ConnectivityManager connectivityManager = (ConnectivityManager) this.getSystemService(CONNECTIVITY_SERVICE);
+		NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+		if(networkInfo != null)  return true;
+		return false;	
 	}
 	
 	//检测电池电量
@@ -424,6 +446,14 @@ public class SystemDataDownloadActivity extends BaseActivity{
     	}
     	return false;
     }
+
+    //网络状态变化接收器
+	private class NetworkReceiver extends BroadcastReceiver{
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			sendNetStateTips();
+		}
+	}
     
 	//用户所有选择同时下载
 	private void startDownload(){	
@@ -885,6 +915,18 @@ public class SystemDataDownloadActivity extends BaseActivity{
 		//发送！
 		updateTipsHandler.sendMessage(msg);
 	}
+
+	//发送网络状态消息
+	private void sendNetStateTips(){
+        Message msg = new Message();
+        if(this.networkReachable()){
+        	msg.what = networkAvailableMsg;
+        }else if(!this.networkReachable()){
+        	msg.what = networkUnAvailableMsg;
+        }
+        updateTipsHandler.sendMessage(msg);
+	}
+
 	
 	//根据网址得到输入流
 	public InputStream getInputStreamFormUrl(String urlstr){
@@ -1205,6 +1247,15 @@ public class SystemDataDownloadActivity extends BaseActivity{
 					Toast.makeText(SystemDataDownloadActivity.this, R.string.tipsUnZipSystemParamFinish, Toast.LENGTH_SHORT).show();
 					break;	
 				}
+				//显示网络状态消息
+				case networkAvailableMsg:{
+					Toast.makeText(SystemDataDownloadActivity.this, R.string.tipsNetworkAvailable, Toast.LENGTH_SHORT).show();
+					break;	
+				}
+				case networkUnAvailableMsg:{
+					Toast.makeText(SystemDataDownloadActivity.this, R.string.tipsNetworkUnAvailable, Toast.LENGTH_SHORT).show();
+					break;	
+				}
 			}
 			
 		}
@@ -1227,7 +1278,13 @@ public class SystemDataDownloadActivity extends BaseActivity{
     		.show();
     	
     }
-	
+	@Override
+	protected void onDestroy(){
+		super.onDestroy();
+		if(networkReceiver != null){
+			unregisterReceiver(networkReceiver);
+		}
+	}
 	@Override
 	public void onBackPressed() {
 		super.onBackPressed();

@@ -235,6 +235,9 @@
     <string name="tipsVipTypeNotExist$_$">会员类型资料不存在</string>
     <string name="tipsItemStrategyNotExist$_$">单品策略资料不存在</string>
     <string name="tipsSystemParamNotExist$_$">系统参数资料不存在</string>                
+
+    <string name="tipsNetworkAvailable">有可用网络</string>
+    <string name="tipsNetworkUnAvailable">无可用网络</string>
      
     <string name="storeInfoStoreIndex">门店编号</string>
     <string name="storeInfoCustomerName">顾客名称</string>
