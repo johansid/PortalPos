@@ -10,7 +10,6 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import cn.burgeon.core.R;
-import cn.burgeon.core.bean.AllotOut;
 import cn.burgeon.core.bean.AllotReplenishment;
 
 /**
@@ -49,7 +48,6 @@ public class AllotReplenishmentLVAdapter extends BaseAdapter {
         if (convertView == null) {
             convertView = LayoutInflater.from(mContext).inflate(mLayoutRes, null);
             holder = new ViewHolder();
-            holder.idTV = (TextView) convertView.findViewById(R.id.idTV);
             holder.docnoTV = (TextView) convertView.findViewById(R.id.docnoTV);
             holder.uploadStateTV = (TextView) convertView.findViewById(R.id.uploadStateTV);
             holder.billdateIV = (TextView) convertView.findViewById(R.id.billdateIV);
@@ -62,17 +60,15 @@ public class AllotReplenishmentLVAdapter extends BaseAdapter {
         }
 
         // 赋值
-        holder.idTV.setText(list.get(position).getID());
         holder.docnoTV.setText(list.get(position).getDOCNO());
-        holder.billdateIV.setText(list.get(position).getBILLDATE());
-        holder.cdestidIV.setText(list.get(position).getC_DEST_ID());
-        holder.statuserTV.setText(list.get(position).getSTATUSERID());
-        holder.descTV.setText(list.get(position).getDESCRIPTION());
+        holder.billdateIV.setText(list.get(position).getDOCDATE());
+        holder.cdestidIV.setText(list.get(position).getOUT_STORE());
+        holder.statuserTV.setText(list.get(position).getAPPLY_PEOPLE());
+        holder.descTV.setText(list.get(position).getREMARK());
         return convertView;
     }
 
     static class ViewHolder {
-        TextView idTV;
         TextView docnoTV;
         TextView uploadStateTV;
         TextView billdateIV;

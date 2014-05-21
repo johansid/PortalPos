@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import cn.burgeon.core.R;
 import cn.burgeon.core.bean.AllotReplenishmentApply;
+import cn.burgeon.core.bean.Product;
 
 /**
  * Created by Simon on 2014/4/16.
@@ -18,10 +19,10 @@ import cn.burgeon.core.bean.AllotReplenishmentApply;
 public class AllotReplenishmentApplyLVAdapter extends BaseAdapter {
 
 	private Context mContext;
-	private ArrayList<AllotReplenishmentApply> list;
+	private ArrayList<Product> list;
 	private int mLayoutRes;
 
-	public AllotReplenishmentApplyLVAdapter(Context c, ArrayList<AllotReplenishmentApply> l, int layoutRes) {
+	public AllotReplenishmentApplyLVAdapter(Context c, ArrayList<Product> l, int layoutRes) {
 		this.mContext = c;
 		this.list = l;
 		this.mLayoutRes = layoutRes;
@@ -59,11 +60,10 @@ public class AllotReplenishmentApplyLVAdapter extends BaseAdapter {
 		}
 
 		// 赋值
-		holder.barcodeTV.setText(list.get(position).getBarcode());
-		// holder.numTV.setText(list.get(position).getNum());
-		holder.colorTV.setText(list.get(position).getColor());
-		holder.sizeTV.setText(list.get(position).getSize());
-		holder.styleTV.setText(list.get(position).getStyle());
+        holder.barcodeTV.setText(list.get(position).getBarCode());
+        holder.colorTV.setText(list.get(position).getColor());
+        holder.sizeTV.setText(list.get(position).getSize());
+        holder.styleTV.setText(list.get(position).getStyle());
 		return convertView;
 	}
 

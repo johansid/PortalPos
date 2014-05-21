@@ -158,4 +158,10 @@ public class AllotOutActivity extends BaseActivity {
             }
         }
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initLVData();
+    }
 }

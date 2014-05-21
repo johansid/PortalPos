@@ -178,8 +178,7 @@ public class AllotOutApplyActivity extends BaseActivity implements OnClickListen
                 } finally {
                     db.endTransaction();
                 }
-
-                forwardActivity(AllotOutActivity.class);
+                finish();
                 break;
         /*
         case R.id.okBtn:

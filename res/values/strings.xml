@@ -35,8 +35,8 @@
     <string name="docstate">单据状态</string>
     <string name="billdate">单据日期</string>
     <string name="c_dest_id">收货店仓</string>
-    <string name="c_orig_id">收货店仓</string>
-    <string name="tot_qtyout">出库数量</string>
+    <string name="c_orig_id">发货店仓</string>
+    <string name="tot_qtyout">数量</string>
     <string name="statuserid">申请人</string>
     <string name="description">备注</string>
     <string name="allotInQuery">调入查询</string>
@@ -44,6 +44,7 @@
     <string name="allotOut">调拨出库</string>
     <string name="allotOutQuery">调出查询</string>
     <string name="allotOutApply">发货申请</string>
+    <string name="outer">发货方</string>
     <string name="shipper">收货方</string>
     <string name="shelf">货架</string>
     <string name="delshelf">删除货架</string>
@@ -52,6 +53,7 @@
     <string name="replenishmentQuery">补货查询</string>
     <string name="replenishmentApply">补货申请</string>
     <string name="replenishmentOrderManager">补货订单</string>
+    <string name="replenishment_record">共%1$d个补货单</string>
     <string name="sales_richangxiaoshou">日常销售</string>
     <string name="sales_xiaoshoubaobiao">销售报表</string>
     <string name="sales_xiaoshoushangchuan">销售上传</string>

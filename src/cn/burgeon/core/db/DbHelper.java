@@ -50,6 +50,16 @@ public class DbHelper extends SQLiteOpenHelper {
                 "remark VARCHAR, barcode VARCHAR, num VARCHAR, color VARCHAR, size VARCHAR, price VARCHAR, style VARCHAR)");
         // -----------------------------------------------------------------------------------调拨出库 end
 
+        // -----------------------------------------------------------------------------------补货 begin
+        db.execSQL("CREATE TABLE IF NOT EXISTS c_replenishment" +
+                "(_id INTEGER PRIMARY KEY AUTOINCREMENT, dj_no VARCHAR, upload_status VARCHAR, " +
+                "dj_date VARCHAR, out_store VARCHAR, apply_people VARCHAR, remark VARCHAR, checkUUID VARCHAR)");
+
+        db.execSQL("CREATE TABLE IF NOT EXISTS c_replenishment_detail" +
+                "(_id INTEGER PRIMARY KEY AUTOINCREMENT, checkUUID VARCHAR, fahuofang VARCHAR, "+
+                "remark VARCHAR, barcode VARCHAR, color VARCHAR, size VARCHAR, num VARCHAR, style VARCHAR)");
+        // -----------------------------------------------------------------------------------补货 end
+
 		db.execSQL("CREATE TABLE IF NOT EXISTS tc_sku (_id INTEGER PRIMARY KEY AUTOINCREMENT,"
 				+ "sku varchar, style varchar, clr varchar, sizeid varchar, pname varchar, skuout varchar default null,timestamp varchar default null)");
 		

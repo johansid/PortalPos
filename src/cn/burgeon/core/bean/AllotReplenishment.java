@@ -4,18 +4,19 @@ package cn.burgeon.core.bean;
  * Created by Simon on 2014/4/22.
  */
 public class AllotReplenishment {
-    private String ID; // 调拨表单ID
-    private String DOCNO; // 单据编号
-    private String BILLDATE; // 单据日期
-    private String C_DEST_ID; // 出货店仓
-    private String STATUSERID; // 申请人
-    private String DESCRIPTION; // 备注
+    private int ID;
+    private String DOCNO;         // 单据编号
+    private String UPLOAD_STATUS; // 上传状态
+    private String DOCDATE;       // 单据日期
+    private String OUT_STORE;     // 发货店仓
+    private String APPLY_PEOPLE;  // 申请人
+    private String REMARK;        // 备注
 
-    public String getID() {
+    public int getID() {
         return ID;
     }
 
-    public void setID(String ID) {
+    public void setID(int ID) {
         this.ID = ID;
     }
 
@@ -27,35 +28,43 @@ public class AllotReplenishment {
         this.DOCNO = DOCNO;
     }
 
-    public String getBILLDATE() {
-        return BILLDATE;
+    public String getUPLOAD_STATUS() {
+        return UPLOAD_STATUS;
     }
 
-    public void setBILLDATE(String BILLDATE) {
-        this.BILLDATE = BILLDATE;
+    public void setUPLOAD_STATUS(String UPLOAD_STATUS) {
+        this.UPLOAD_STATUS = UPLOAD_STATUS;
     }
 
-    public String getC_DEST_ID() {
-        return C_DEST_ID;
+    public String getDOCDATE() {
+        return DOCDATE;
     }
 
-    public void setC_DEST_ID(String c_DEST_ID) {
-        C_DEST_ID = c_DEST_ID;
+    public void setDOCDATE(String DOCDATE) {
+        this.DOCDATE = DOCDATE;
     }
 
-    public String getSTATUSERID() {
-        return STATUSERID;
+    public String getOUT_STORE() {
+        return OUT_STORE;
     }
 
-    public void setSTATUSERID(String STATUSERID) {
-        this.STATUSERID = STATUSERID;
+    public void setOUT_STORE(String OUT_STORE) {
+        this.OUT_STORE = OUT_STORE;
     }
 
-    public String getDESCRIPTION() {
-        return DESCRIPTION;
+    public String getAPPLY_PEOPLE() {
+        return APPLY_PEOPLE;
     }
 
-    public void setDESCRIPTION(String DESCRIPTION) {
-        this.DESCRIPTION = DESCRIPTION;
+    public void setAPPLY_PEOPLE(String APPLY_PEOPLE) {
+        this.APPLY_PEOPLE = APPLY_PEOPLE;
+    }
+
+    public String getREMARK() {
+        return REMARK;
+    }
+
+    public void setREMARK(String REMARK) {
+        this.REMARK = REMARK;
     }
 }

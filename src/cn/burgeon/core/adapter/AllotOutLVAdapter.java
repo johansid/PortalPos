@@ -48,7 +48,6 @@ public class AllotOutLVAdapter extends BaseAdapter {
         if (convertView == null) {
             convertView = LayoutInflater.from(mContext).inflate(mLayoutRes, null);
             holder = new ViewHolder();
-            holder.idTV = (TextView) convertView.findViewById(R.id.idTV);
             holder.docnoTV = (TextView) convertView.findViewById(R.id.docnoTV);
             holder.uploadStateTV = (TextView) convertView.findViewById(R.id.uploadStateTV);
             holder.docStateTV = (TextView) convertView.findViewById(R.id.docStateTV);
@@ -61,7 +60,6 @@ public class AllotOutLVAdapter extends BaseAdapter {
         }
 
         // 赋值
-        holder.idTV.setText(String.valueOf(list.get(position).getID()));
         holder.docnoTV.setText(list.get(position).getDOCNO());
         holder.billdateTV.setText(list.get(position).getBILLDATE());
         holder.cdestidTV.setText(list.get(position).getC_DEST_ID());
@@ -70,7 +68,6 @@ public class AllotOutLVAdapter extends BaseAdapter {
     }
 
     static class ViewHolder {
-        TextView idTV;
         TextView docnoTV;
         TextView uploadStateTV;
         TextView docStateTV;

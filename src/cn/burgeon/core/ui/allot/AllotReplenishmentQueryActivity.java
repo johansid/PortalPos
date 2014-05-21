@@ -1,20 +1,13 @@
 package cn.burgeon.core.ui.allot;
 
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.android.volley.Response;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import cn.burgeon.core.App;
 import cn.burgeon.core.R;
@@ -56,6 +49,33 @@ public class AllotReplenishmentQueryActivity extends BaseActivity {
     }
 
     private void initLVData() {
+        ArrayList<AllotReplenishment> lists = fetchData();
+        AllotReplenishmentLVAdapter mAdapter = new AllotReplenishmentLVAdapter(AllotReplenishmentQueryActivity.this, lists, R.layout.allot_replenishment_item);
+        allotreplenishmentLV.setAdapter(mAdapter);
+
+        recodeNumTV.setText(String.format(getResources().getString(R.string.replenishment_record), lists.size()));
+    }
+
+    private ArrayList<AllotReplenishment> fetchData() {
+        AllotReplenishment allotReplenishment = null;
+        ArrayList<AllotReplenishment> allotOuts = new ArrayList<AllotReplenishment>();
+        Cursor c = db.rawQuery("select * from c_replenishment", null);
+        while (c.moveToNext()) {
+            allotReplenishment = new AllotReplenishment();
+            allotReplenishment.setID(c.getInt(c.getColumnIndex("_id")));
+            allotReplenishment.setDOCNO(c.getString(c.getColumnIndex("dj_no")));
+            allotReplenishment.setUPLOAD_STATUS(c.getString(c.getColumnIndex("upload_status")));
+            allotReplenishment.setDOCDATE(c.getString(c.getColumnIndex("dj_date")));
+            allotReplenishment.setOUT_STORE(c.getString(c.getColumnIndex("out_store")));
+            allotReplenishment.setAPPLY_PEOPLE(c.getString(c.getColumnIndex("apply_people")));
+            allotReplenishment.setREMARK(c.getString(c.getColumnIndex("remark")));
+            allotOuts.add(allotReplenishment);
+        }
+        return allotOuts;
+    }
+
+    /*
+    private void initLVData() {
         Map<String, String> params = new HashMap<String, String>();
         try {
             JSONArray array = new JSONArray();
@@ -90,7 +110,6 @@ public class AllotReplenishmentQueryActivity extends BaseActivity {
         }
     }
 
-
     private ArrayList<AllotReplenishment> resJAToList(String response) throws JSONException {
         ArrayList<AllotReplenishment> lists = new ArrayList<AllotReplenishment>();
 
@@ -115,4 +134,5 @@ public class AllotReplenishmentQueryActivity extends BaseActivity {
         }
         return lists;
     }
+    */
 }

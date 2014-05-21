@@ -11,7 +11,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/title_height"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/replenishmentQuery"
+            android:text="@string/replenishmentManager"
             android:gravity="center"
             android:background="@drawable/corners_bg" />
 
@@ -56,12 +56,14 @@
                     android:orientation="horizontal"
                     android:background="@drawable/corners_bg">
 
+                    <!--
                     <TextView
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="ID"
                         android:textSize="15sp" />
+                    -->
 
                     <TextView
                         android:layout_width="80dp"
