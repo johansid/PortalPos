@@ -5,16 +5,16 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
+import android.widget.TextView;
 import cn.burgeon.core.Constant;
 import cn.burgeon.core.R;
 import cn.burgeon.core.adapter.MemberManagerAdapter;
 import cn.burgeon.core.ui.BaseActivity;
-import cn.burgeon.core.ui.allot.AllotReplenishmentActivity;
-import cn.burgeon.core.ui.allot.AllotReplenishmentOrderActivity;
 
 public class MemberManagerActivity extends BaseActivity {
 	private GridView memberGV;
 	private MemberManagerAdapter mAdapter;
+	private TextView storeTV;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -23,9 +23,11 @@ public class MemberManagerActivity extends BaseActivity {
 		setContentView(R.layout.activity_member_manager);
 
 		init();
+		initStoreData(storeTV);
 	}
 
 	private void init() {
+		storeTV = (TextView) findViewById(R.id.storeTV);
 		memberGV = (GridView) findViewById(R.id.memberGV);
 		mAdapter = new MemberManagerAdapter(this);
 		memberGV.setAdapter(mAdapter);

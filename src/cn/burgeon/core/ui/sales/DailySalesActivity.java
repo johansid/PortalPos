@@ -1,25 +1,9 @@
 package cn.burgeon.core.ui.sales;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.burgeon.core.App;
-import cn.burgeon.core.R;
-import cn.burgeon.core.adapter.SalesDailyAdapter;
-import cn.burgeon.core.bean.Order;
-import cn.burgeon.core.bean.Product;
-import cn.burgeon.core.ui.BaseActivity;
-import cn.burgeon.core.ui.QueryDialog;
-import cn.burgeon.core.utils.PreferenceUtils;
-import cn.burgeon.core.utils.ScreenUtils;
-import android.content.res.Resources.NotFoundException;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -30,6 +14,13 @@ import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.ListView;
 import android.widget.TextView;
+import cn.burgeon.core.App;
+import cn.burgeon.core.R;
+import cn.burgeon.core.adapter.SalesDailyAdapter;
+import cn.burgeon.core.bean.Order;
+import cn.burgeon.core.ui.BaseActivity;
+import cn.burgeon.core.utils.PreferenceUtils;
+import cn.burgeon.core.utils.ScreenUtils;
 
 public class DailySalesActivity extends BaseActivity {
 	
@@ -105,55 +96,10 @@ public class DailySalesActivity extends BaseActivity {
 				//queryForUpdate();
 				//QueryDialog dialog = new QueryDialog(DailySalesActivity.this, R.style.QueryDialog);
 				//dialog.show();
-				new Thread(new Runnable() {
-					@Override
-					public void run() {
-						createSku();
-					}
-				}).start();
-				new Thread(new Runnable() {
-					@Override
-					public void run() {
-						createStyle();
-					}
-				}).start();
-				new Thread(new Runnable() {
-					@Override
-					public void run() {
-						createtdefclr();
-					}
-				}).start();
-				new Thread(new Runnable() {
-					@Override
-					public void run() {
-						createtdefsize();
-					}
-				}).start();
-				
-				new Thread(new Runnable() {
-					@Override
-					public void run() {
-						createstyleprice();
-					}
-				}).start();
-				
-				new Thread(new Runnable() {
-					@Override
-					public void run() {
-						createSysUser();
-					}
-				}).start();
-				
-				new Thread(new Runnable() {
-					@Override
-					public void run() {
-						createStore();
-					}
-				}).start();
 				break;
 			case R.id.sales_daily_btn_delete:
-				//delete();
-				queryForUpdate();
+				delete();
+				//queryForUpdate();
 				//querySku();
 				break;
 			default:
@@ -165,179 +111,6 @@ public class DailySalesActivity extends BaseActivity {
     private void querySku() {
 		Cursor c = db.rawQuery("select * from tc_styleprice", null);
 		Log.d("zhang.h", "result size:" + c.getCount());
-    }
-    
-    private void createStyle(){
-    	InputStream is = null;
-		BufferedReader br = null;
-		try{
-			String line = null;
-			is = getResources().openRawResource(R.raw.tc_style);
-			br = new BufferedReader(new InputStreamReader(is));
-			while((line = br.readLine()) != null){
-				
-				String[] temp = line.split(",");
-				Log.d(TAG, "sytle_name:" + temp[1].substring(2));
-				db.execSQL("insert into tc_style(style,style_name,attrib1,attrib2,attrib3,attrib4,attrib5,attrib6,attrib7,attrib8,attrib9,attrib10) "
-						+ "values (?,?,?,?,?,?,?,?,?,?,?,?)", 
-						new Object[]{temp[0],temp[1].substring(2),temp[2].substring(2),
-						temp[3].substring(2),temp[4].substring(2),temp[5].substring(2)
-						,temp[6].substring(2),temp[7].substring(2),temp[8].substring(2)
-						,temp[9].substring(2),temp[10].substring(2),temp[11].substring(2)});
-			}
-		}catch(Exception e){}
-		finally{
-			try {
-				br.close();
-				is.close();
-			} catch (IOException e) {
-			}
-		}
-		Log.d(TAG, "CREATE TABLE STYLE DONE...");
-    }
-    
-    private void createtdefclr(){
-    	InputStream is = null;
-		BufferedReader br = null;
-		try{
-			String line = null;
-			is = getResources().openRawResource(R.raw.tdefclr);
-			br = new BufferedReader(new InputStreamReader(is));
-			while((line = br.readLine()) != null){
-				String[] temp = line.split(",");
-				db.execSQL("insert into tdefclr(clr,clrname) values (?,?)", 
-						new Object[]{temp[0],temp[1].substring(2)});
-			}
-		}catch(Exception e){}
-		finally{
-			try {
-				br.close();
-				is.close();
-			} catch (IOException e) {
-			}
-		}
-		Log.d(TAG, "CREATE TABLE tdefclr DONE...");
-    }
-    
-    private void createstyleprice(){
-    	InputStream is = null;
-		BufferedReader br = null;
-		try{
-			String line = null;
-			is = getResources().openRawResource(R.raw.tc_styleprice);
-			br = new BufferedReader(new InputStreamReader(is));
-			while((line = br.readLine()) != null){
-				String[] temp = line.split(",");
-				db.execSQL("insert into tc_styleprice(style,store,fprice) values (?,?,?)", 
-						new Object[]{temp[0],temp[1].substring(2),temp[2].substring(2)});
-			}
-		}catch(Exception e){}
-		finally{
-			try {
-				br.close();
-				is.close();
-			} catch (IOException e) {
-			}
-		}
-		Log.d(TAG, "CREATE TABLE tc_styleprice DONE...");
-    }
-	
-	private void createSku(){
-		InputStream is = null;
-		BufferedReader br = null;
-		try {
-			is = getResources().openRawResource(R.raw.tc_sku);
-			br = new BufferedReader(new InputStreamReader(is));
-			String line = null;
-			while((line = br.readLine()) != null){
-				String[] temp = line.split(",");
-				db.execSQL("insert into tc_sku(sku,style,clr,sizeid,pname) values (?,?,?,?,?)", 
-						new Object[]{temp[0],temp[1].substring(2),temp[2].substring(2),
-						temp[3].substring(2),temp[4].substring(2)});
-			}
-		} catch (Exception e) {}
-		finally{
-			try {
-				br.close();
-				is.close();
-			} catch (IOException e) {
-			}
-		}
-		Log.d(TAG, "CREATE TABLE SKU DONE...");
-	}
-	
-    private void createtdefsize(){
-    	InputStream is = null;
-		BufferedReader br = null;
-		try{
-			String line = null;
-			is = getResources().openRawResource(R.raw.tdefsize);
-			br = new BufferedReader(new InputStreamReader(is));
-			while((line = br.readLine()) != null){
-				String[] temp = line.split(",");
-				db.execSQL("insert into tdefsize(sizeid,sizename) values (?,?)", 
-						new Object[]{temp[0],temp[1].substring(2)});
-			}
-		}catch(Exception e){}
-		finally{
-			try {
-				br.close();
-				is.close();
-			} catch (IOException e) {
-			}
-		}
-		Log.d(TAG, "CREATE TABLE tdefsize DONE...");
-    }
-    
-    private void createSysUser(){
-//    	InputStream is = null;
-//		BufferedReader br = null;
-//		try{
-//			String line = null;
-//			is = getResources().openRawResource(R.raw.sys_user);
-//			br = new BufferedReader(new InputStreamReader(is));
-//			while((line = br.readLine()) != null){
-//				String[] temp = line.split(",");
-//				db.execSQL("insert into sys_user(user_id ,user_name , password ,usercode ,lowestdiscount ,storeid ) "
-//						+ "values (?,?,?,?,?,?)",
-//						new Object[]{temp[0],temp[1].substring(2),temp[2].substring(2),
-//								temp[3].substring(2),temp[4].substring(2),temp[5].substring(2)});
-//			}
-//		}catch(Exception e){}
-//		finally{
-//			try {
-//				br.close();
-//				is.close();
-//			} catch (IOException e) {
-//			}
-//		}
-//		Log.d(TAG, "CREATE TABLE tdefsize DONE...");
-    }
-    
-    private void createStore(){
-//    	InputStream is = null;
-//		BufferedReader br = null;
-//		try{
-//			String line = null;
-//			is = getResources().openRawResource(R.raw.tc_store);
-//			br = new BufferedReader(new InputStreamReader(is));
-//			while((line = br.readLine()) != null){
-//				String[] temp = line.split(",");
-//				db.execSQL("insert into tc_store(store ,st_name , abolishied ,buyerid ,buyerid1 ,storeno ,clientid ,organiseid ) "
-//						+ "values (?,?,?,?,?,?,?,?)",
-//						new Object[]{temp[0],temp[1].substring(2),temp[2].substring(2),
-//								temp[3].substring(2),temp[4].substring(2),temp[5].substring(2),
-//								temp[6].substring(2),temp[7].substring(2),temp[8].substring(2)});
-//			}
-//		}catch(Exception e){}
-//		finally{
-//			try {
-//				br.close();
-//				is.close();
-//			} catch (IOException e) {
-//			}
-//		}
-//		Log.d(TAG, "CREATE TABLE tdefsize DONE...");
     }
     
     private void queryForUpdate() {
@@ -371,7 +144,7 @@ public class DailySalesActivity extends BaseActivity {
 		Order order = null;
 		List<Order> data = new ArrayList<Order>();
 		Cursor c = db.rawQuery("select * from c_settle", null);
-		Log.d("zhang.h", "cursor size===========" + c.getCount());
+		Log.d(TAG, "cursor size===========" + c.getCount());
 		while(c.moveToNext()){
 			order = new Order();
 			order.setId(c.getInt(c.getColumnIndex("_id")));
@@ -385,6 +158,8 @@ public class DailySalesActivity extends BaseActivity {
 			order.setSaleAsistant(c.getString(c.getColumnIndex("orderEmployee")));
 			data.add(order);
 		}
+		if(c != null && !c.isClosed())
+			c.close();
 		return data;
 	}
 	

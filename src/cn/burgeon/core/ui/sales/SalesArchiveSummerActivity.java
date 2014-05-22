@@ -106,7 +106,8 @@ public class SalesArchiveSummerActivity extends BaseActivity {
 			order.setOrderMoney(c.getString(c.getColumnIndex("totalMoney")));
 			data.add(order);
 		}
-		c.close();
+		if(c != null && !c.isClosed())
+			c.close();
 		return data;
 	}
 	

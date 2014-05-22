@@ -35,7 +35,6 @@
         android:layout_height="wrap_content"
         android:background="@drawable/corners_bg"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="门店：门店1+张三"
         android:padding="15dp"
         android:layout_alignParentBottom="true" />
 </RelativeLayout>

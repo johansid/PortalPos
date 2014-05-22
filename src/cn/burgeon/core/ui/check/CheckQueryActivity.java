@@ -1,5 +1,8 @@
 package cn.burgeon.core.ui.check;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
@@ -7,23 +10,9 @@ import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import com.android.volley.Response;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import cn.burgeon.core.App;
 import cn.burgeon.core.R;
 import cn.burgeon.core.adapter.CheckQueryLVAdapter;
-import cn.burgeon.core.adapter.SalesDailyAdapter;
-import cn.burgeon.core.bean.CheckQuery;
 import cn.burgeon.core.bean.Order;
 import cn.burgeon.core.ui.BaseActivity;
 import cn.burgeon.core.utils.PreferenceUtils;
@@ -57,7 +46,7 @@ public class CheckQueryActivity extends BaseActivity {
 	private List<Order> fetchData() {
 		Order order = null;
 		List<Order> data = new ArrayList<Order>();
-		Cursor c = db.rawQuery("select * from c_check", null);
+		Cursor c = db.rawQuery("select * from c_check",null);
 		Log.d("zhang.h", "cursor size===========" + c.getCount());
 		while(c.moveToNext()){
 			order = new Order();
@@ -68,9 +57,12 @@ public class CheckQueryActivity extends BaseActivity {
 			order.setOrderType(c.getString(c.getColumnIndex("type")));
 			order.setOrderCount(c.getString(c.getColumnIndex("count")));
 			order.setOrderState(c.getString(c.getColumnIndex("status")));
+			order.setIsChecked(c.getString(c.getColumnIndex("isChecked")));
 			order.setSaleAsistant(c.getString(c.getColumnIndex("orderEmployee")));
 			data.add(order);
 		}
+		if(c != null && !c.isClosed())
+			c.close();
 		return data;
 	}
 

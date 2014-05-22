@@ -118,6 +118,8 @@ public class CheckScanActivity extends BaseActivity{
 			mAdapter.notifyDataSetChanged();
 			upateBottomBarInfo();
 		}
+		if(c != null && !c.isClosed())
+			c.close();
 	}
 	
 	private void upateBottomBarInfo() {
@@ -166,7 +168,7 @@ public class CheckScanActivity extends BaseActivity{
 		public void onClick(View v) {
 			switch (v.getId()) {
 			case R.id.gatherBtn:
-				
+				reviewShelf("0");
 				break;
 			case R.id.reviewBtn:
 				showTips();
@@ -187,7 +189,7 @@ public class CheckScanActivity extends BaseActivity{
 
 				@Override
 				public void onClick(DialogInterface arg0, int arg1) {
-					reviewShelf();
+					reviewShelf("1");
 				}})
 			.setNegativeButton(getString(R.string.cancel),new DialogInterface.OnClickListener(){
 
@@ -199,14 +201,14 @@ public class CheckScanActivity extends BaseActivity{
     	dialog.show();
     }
     
-	private void reviewShelf() {  
+	private void reviewShelf(String isChecked) {//0.未审核 1.已审核  
 		db.beginTransaction();
         try {
         	String uuid = UUID.randomUUID().toString();
         	Date currentTime = new Date();
         	db.execSQL("insert into c_check('shelf','checkTime','type','count','employeeID','orderEmployee',"
-        			+ "'status','checkUUID')"+
-        				" values(?,?,?,?,?,?,?,?)",
+        			+ "'status','checkUUID','isChecked')"+
+        				" values(?,?,?,?,?,?,?,?,?)",
 					new Object[]{shelfET.getText().toString(),
         						new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(currentTime),
 								getResources().getString(R.string.sales_settle_novip),
@@ -214,7 +216,8 @@ public class CheckScanActivity extends BaseActivity{
 								"0001",
 								"test",
 								getResources().getString(R.string.sales_settle_noup),
-								uuid});
+								uuid,
+								isChecked});
         	for(Product pro : data){
         		db.execSQL("insert into c_check_detail('checkUUID','barcode','count','color','size','pdtname') values (?,?,?,?,?,?)",
     					new Object[]{uuid,pro.getBarCode(),pro.getCount(),pro.getColor(),pro.getSize(),pro.getName()});

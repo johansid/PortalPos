@@ -16,6 +16,7 @@ public class Order {
 	private String orderType;
 	private String orderCount;
 	private String orderMoney;
+	private String isChecked;
 	public Order() {
 		super();
 	}
@@ -38,6 +39,12 @@ public class Order {
 	}
 	public String getName() {
 		return name;
+	}
+	public String getIsChecked() {
+		return isChecked;
+	}
+	public void setIsChecked(String isChecked) {
+		this.isChecked = isChecked;
 	}
 	public void setName(String name) {
 		this.name = name;

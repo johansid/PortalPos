@@ -8,7 +8,6 @@ import android.widget.TextView;
 import cn.burgeon.core.Constant;
 import cn.burgeon.core.R;
 import cn.burgeon.core.adapter.SystemAdapter;
-import cn.burgeon.core.bean.IntentData;
 import cn.burgeon.core.ui.allot.AllotManagerActivity;
 import cn.burgeon.core.ui.check.CheckManagerActivity;
 import cn.burgeon.core.ui.inventory.InventoryManagerActivity;
@@ -30,8 +29,7 @@ public class SystemActivity extends BaseActivity {
 
         init();
 
-        IntentData iData = (IntentData) getIntent().getParcelableExtra(PAR_KEY);
-        initStoreData(iData, storeTV);
+        initStoreData(storeTV);
     }
 
     private void init() {

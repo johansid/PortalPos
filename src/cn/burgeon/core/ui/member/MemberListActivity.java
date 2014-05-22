@@ -102,6 +102,7 @@ public class MemberListActivity extends BaseActivity {
 			member.setSex(c.getString(c.getColumnIndex("sex")));
 			data.add(member);
 		}
+		if(c != null && !c.isClosed())
 		c.close();
 		return data;
 	}
