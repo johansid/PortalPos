@@ -11,25 +11,23 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.DatePickerDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.text.Editable;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import cn.burgeon.core.App;
 import cn.burgeon.core.R;
-import cn.burgeon.core.bean.Member;
 import cn.burgeon.core.ui.BaseActivity;
 import cn.burgeon.core.ui.sales.SalesNewOrderActivity;
+import cn.burgeon.core.utils.PreferenceUtils;
 import cn.burgeon.core.widget.UndoBarController;
 import cn.burgeon.core.widget.UndoBarStyle;
 
@@ -61,7 +59,7 @@ public class MemberRegistActivity extends BaseActivity {
 				getMemberInfo();
 			from = intent.getStringExtra("from");
 			if("search".equals(from)){
-				saveBtn.setText("使用新增会员");
+				saveBtn.setText(getString(R.string.useNewMember));
 			}
 		}
 	}
@@ -161,7 +159,7 @@ public class MemberRegistActivity extends BaseActivity {
 
 	
 	private boolean isRequired(Editable src){
-		return "".equals(cardNOET.getText()) || null == cardNOET.getText();
+		return "".equals(src) || null == src;
 	}
 	
 	private void validate(){
@@ -222,7 +220,7 @@ public class MemberRegistActivity extends BaseActivity {
 								emailET.getText().toString().trim(),
 								birthdayET.getText().toString().trim(),
 								new SimpleDateFormat("yyyyMMdd").format(new Date()),
-								"",
+								App.getPreferenceUtils().getPreferenceStr(PreferenceUtils.user_key),
 								typeSp.getSelectedItem().toString(),
 								_id
 								});
@@ -293,17 +291,4 @@ public class MemberRegistActivity extends BaseActivity {
 		} catch (JSONException e) {}
 	}
 	
-/*	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-		InputMethodManager imm= (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-		if (event.getAction() == MotionEvent.ACTION_DOWN) {
-			if (MemberRegistActivity.this.getCurrentFocus() != null) {
-				if (MemberRegistActivity.this.getCurrentFocus().getWindowToken() != null) {
-					imm.hideSoftInputFromWindow(MemberRegistActivity.this.getCurrentFocus().getWindowToken(),
-							InputMethodManager.HIDE_NOT_ALWAYS);
-				}
-			}
-		}
-		return true;
-	}*/
 }

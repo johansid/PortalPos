@@ -8,6 +8,7 @@ public class PreferenceUtils {
 
     public static final String Burgeon_PREF = "BurgeonPreference";
     public static final String store_key = "storeKey";
+    public static final String user_key = "userKey";
 
     private static Context mContext;
     private static final int PRIVATE_MODE = ContextWrapper.MODE_PRIVATE;

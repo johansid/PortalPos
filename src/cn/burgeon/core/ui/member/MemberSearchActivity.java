@@ -90,7 +90,8 @@ public class MemberSearchActivity extends BaseActivity {
 	public List<Member> query(){
 		List<Member> data = new ArrayList<Member>();
 		Member member = null;
-		Cursor c = db.rawQuery("select * from c_vip where cardno = ?", new String[]{cardNoET.getText().toString()});
+		Cursor c = db.rawQuery("select * from c_vip where cardno = ? or mobile = ?",
+				new String[]{cardNoET.getText().toString(),mobileET.getText().toString()});
 		while(c.moveToNext()){
 			member = new Member();
 			//member.setId(c.getInt(c.getColumnIndex("_ID")));
@@ -108,6 +109,8 @@ public class MemberSearchActivity extends BaseActivity {
 		}
 		if(member != null)
 			intentValue = member.getCardNum()+ "\\100";
+		if(c != null && !c.isClosed())
+			c.close();
 		return data;
 	}
 

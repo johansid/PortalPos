@@ -25,7 +25,7 @@
     <string name="allotManager">调拨管理</string>
     <string name="checkManager">盘点管理</string>
     <string name="checkScan">盘点扫描</string>
-    <string name="checkDocManager">盘点单据管理</string>
+    <string name="checkDocManager">盘点单管理</string>
     <string name="checkQuery">盘点查询</string>
     <string name="checktips">确认审核该盘点单据吗？审核后本单将不能续盘！</string>
     <string name="allotOutIn">调拨出入库</string>
@@ -278,6 +278,8 @@
     <string name="memberRegistVerification">验证</string>
     <string name="memberRegistSave">保存</string>
     <string name="memberListTitle">会员列表</string>
+    <string name="useNewMember">使用新增会员</string>
+    
     <string name="member">会员</string>
     <string name="male">男</string>
     <string name="female">女</string>

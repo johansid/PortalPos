@@ -86,6 +86,10 @@ public class SalesNewOrderActivity extends BaseActivity {
 			data.add(product);
 		}
 		mAdapter.notifyDataSetChanged();
+		if(data.size() > 0)
+			upateBottomBarInfo();
+		if(c != null && !c.isClosed())
+			c.close();
     }
 
 	@Override
@@ -226,6 +230,8 @@ public class SalesNewOrderActivity extends BaseActivity {
 			mAdapter.notifyDataSetChanged();
 			upateBottomBarInfo();
 		}
+		if(c != null && !c.isClosed())
+			c.close();
 	}
 
 	private List<Product> parseSQLResult(Cursor c) {

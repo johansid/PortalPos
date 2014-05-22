@@ -28,13 +28,11 @@ public class SalesManagerActivity extends BaseActivity {
 		setContentView(R.layout.activity_sales_manager);
 		
 		init();
-		
+		initStoreData(storeTV);
 	}
 	
     private void init() {
     	storeTV = (TextView) findViewById(R.id.storeTV);
-        storeTV.setText(App.getPreferenceUtils().getPreferenceStr(PreferenceUtils.store_key));
-
     	salesGV = (GridView) findViewById(R.id.salesGV);
         mAdapter = new SalesManagerAdapter(this);
         salesGV.setAdapter(mAdapter);

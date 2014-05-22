@@ -69,7 +69,7 @@ public class CheckQueryLVAdapter extends BaseAdapter {
         holder.numTV.setText(order.getOrderCount());
         holder.typeTV.setText("随机盘");
         holder.operatorTV.setText(order.getSaleAsistant());
-        holder.stateTV.setText("已完成");
+        holder.stateTV.setText("0".equals(order.getIsChecked())?"未完成":"已完成");
         holder.uploadstateTV.setText("未上传");
         return convertView;
     }

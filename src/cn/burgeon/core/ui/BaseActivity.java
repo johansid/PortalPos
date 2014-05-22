@@ -28,6 +28,7 @@ import cn.burgeon.core.bean.IntentData;
 import cn.burgeon.core.db.DbHelper;
 import cn.burgeon.core.net.RequestManager;
 import cn.burgeon.core.net.SimonHttpStack;
+import cn.burgeon.core.utils.PreferenceUtils;
 import cn.burgeon.core.widget.CustomProgressDialog;
 
 /**
@@ -52,8 +53,14 @@ public class BaseActivity extends Activity {
         //因为getWritableDatabase内部调用了mContext.openOrCreateDatabase(mName, 0, mFactory);  
         //所以要确保context已初始化,我们可以把实例化DBManager的步骤放在Activity的onCreate里  
         db = helper.getWritableDatabase();
-        
-       
+    }
+    
+    @Override
+    protected void onStop() {
+    	// TODO Auto-generated method stub
+    	super.onStop();
+    	if(db != null)
+    		db.close();
     }
 
     // 设置程序全屏显示
@@ -159,8 +166,8 @@ public class BaseActivity extends Activity {
     }
     
     // 初始化门店和用户信息
-    public void initStoreData(IntentData iData, TextView tv) {
-        tv.setText("门店：" + iData.getStore());
+    public void initStoreData(TextView tv) {
+        tv.setText("门店：" + App.getPreferenceUtils().getPreferenceStr(PreferenceUtils.store_key));
     }
     
 	@Override

@@ -7,13 +7,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -23,13 +21,13 @@ import cn.burgeon.core.App;
 import cn.burgeon.core.R;
 import cn.burgeon.core.bean.IntentData;
 import cn.burgeon.core.ui.system.SystemConfigurationActivity;
-import cn.burgeon.core.ui.system.SystemNetTestActivity;
 import cn.burgeon.core.utils.PreferenceUtils;
 
 import com.android.volley.Response;
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
-
+ 
+	private final String TAG = "LoginActivity";
     private Spinner storeSpinner;
     private EditText userET, pswET;
     private ImageView configBtn, loginBtn;
@@ -45,24 +43,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
         // 初始化布局控件
         init();
+        
     }
 
     private void init() {
         storeSpinner = (Spinner) findViewById(R.id.storeSpin);
-        storeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                // 存入本地
-                String storeItem = parent.getSelectedItem().toString();
-                App.getPreferenceUtils().savePreferenceStr(PreferenceUtils.store_key, storeItem);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
         userET = (EditText) findViewById(R.id.userET);
         pswET = (EditText) findViewById(R.id.pswET);
 
@@ -125,11 +110,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             	forwardActivity(SystemConfigurationActivity.class);
                 break;
             case R.id.loginBtn:
+            	 // 存入本地
+                App.getPreferenceUtils().savePreferenceStr(PreferenceUtils.store_key, storeSpinner.getSelectedItem().toString());
+                App.getPreferenceUtils().savePreferenceStr(PreferenceUtils.user_key, userET.getText().toString());
             	// 跳转并传递数据
-                IntentData intentData = new IntentData();
-                intentData.setStore(storeSpinner.getSelectedItem().toString());
-                intentData.setUser(userET.getText().toString());
-                forwardActivity(SystemActivity.class, intentData);
+                //IntentData intentData = new IntentData();
+                //intentData.setStore(storeSpinner.getSelectedItem().toString());
+                //intentData.setUser(userET.getText().toString());
+                forwardActivity(SystemActivity.class);
 
             	/*
                 try {

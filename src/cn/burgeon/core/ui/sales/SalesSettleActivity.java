@@ -93,7 +93,7 @@ public class SalesSettleActivity extends BaseActivity {
 		
 		@Override
 		public void onClick(View v) {
-			if("unknow".equals(command))
+			if("unknow".equals(command) || null == command)
 				save();
 			else
 				update();

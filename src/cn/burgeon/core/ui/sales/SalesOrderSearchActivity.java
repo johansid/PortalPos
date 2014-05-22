@@ -84,6 +84,8 @@ public class SalesOrderSearchActivity extends BaseActivity {
 			order.setSaleAsistant(c.getString(c.getColumnIndex("orderEmployee")));
 			data.add(order);
 		}
+		if(c != null && !c.isClosed())
+			c.close();
 		return data;
 	}
 	

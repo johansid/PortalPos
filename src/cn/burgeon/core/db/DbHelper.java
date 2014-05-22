@@ -32,7 +32,7 @@ public class DbHelper extends SQLiteOpenHelper {
 		
 		db.execSQL("CREATE TABLE IF NOT EXISTS c_check" +  
                 "(_id INTEGER PRIMARY KEY AUTOINCREMENT, checkno VARCHAR,shelfid varchar,shelf varchar,"+
-				"checkTime VARCHAR, type VARCHAR,count VARCHAR,money VARCHAR,"
+				"checkTime VARCHAR, type VARCHAR,count VARCHAR,money VARCHAR,isChecked VARCHAR,"
 				+ "orderEmployee VARCHAR,employeeID VARCHAR,status VARCHAR,checkUUID VARCHAR)");
 		
 		db.execSQL("CREATE TABLE IF NOT EXISTS c_check_detail" +  
@@ -79,7 +79,7 @@ public class DbHelper extends SQLiteOpenHelper {
 				+ "attrib9 varchar,attrib10 varchar)");
 		
 		db.execSQL("CREATE TABLE IF NOT EXISTS tc_styleprice (_id INTEGER PRIMARY KEY AUTOINCREMENT,"
-				+ "style varchar, store varchar, fprice varchar, timestamp varchar)");
+				+ "style varchar, store v  archar, fprice varchar, timestamp varchar)");
 		
 		db.execSQL("CREATE TABLE IF NOT EXISTS tdefclr(clr varchar PRIMARY KEY,clrname varchar, timestamp varchar)");
 		

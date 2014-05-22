@@ -56,6 +56,8 @@ public class SalesWareSummerDetailActivity extends BaseActivity {
 			data.add(product);
 		}
 		mAdapter.notifyDataSetChanged();
+		if(c != null && !c.isClosed())
+			c.close();
     }
 
 	@Override
