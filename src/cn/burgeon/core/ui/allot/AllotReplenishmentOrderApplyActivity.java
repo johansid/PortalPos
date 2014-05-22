@@ -120,6 +120,8 @@ public class AllotReplenishmentOrderApplyActivity extends BaseActivity implement
             mAdapter.notifyDataSetChanged();
             upateBottomBarInfo();
         }
+        if(c != null && !c.isClosed())
+            c.close();
     }
 
     private List<Product> parseSQLResult(Cursor c) {

@@ -16,7 +16,7 @@ import android.widget.EditText;
 
 import cn.burgeon.core.R;
 
-class CustomDialog {
+public class CustomDialog {
 
 	private AlertDialog ad;
 	private Context mContext;

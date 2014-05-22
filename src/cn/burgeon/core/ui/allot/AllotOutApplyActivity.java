@@ -119,6 +119,8 @@ public class AllotOutApplyActivity extends BaseActivity implements OnClickListen
             mAdapter.notifyDataSetChanged();
             upateBottomBarInfo();
         }
+        if(c != null && !c.isClosed())
+            c.close();
     }
 
     private List<Product> parseSQLResult(Cursor c) {

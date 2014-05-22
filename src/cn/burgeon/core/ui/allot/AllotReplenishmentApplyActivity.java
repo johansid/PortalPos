@@ -119,6 +119,8 @@ public class AllotReplenishmentApplyActivity extends BaseActivity implements OnC
             mAdapter.notifyDataSetChanged();
             upateBottomBarInfo();
         }
+        if(c != null && !c.isClosed())
+            c.close();
     }
 
     private List<Product> parseSQLResult(Cursor c) {

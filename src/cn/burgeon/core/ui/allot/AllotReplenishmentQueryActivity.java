@@ -71,6 +71,8 @@ public class AllotReplenishmentQueryActivity extends BaseActivity {
             allotReplenishment.setREMARK(c.getString(c.getColumnIndex("remark")));
             allotReplenishments.add(allotReplenishment);
         }
+        if(c != null && !c.isClosed())
+            c.close();
         return allotReplenishments;
     }
 

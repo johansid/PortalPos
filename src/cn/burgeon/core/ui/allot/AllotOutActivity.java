@@ -10,16 +10,15 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import cn.burgeon.core.App;
 import cn.burgeon.core.R;
 import cn.burgeon.core.adapter.AllotOutLVAdapter;
 import cn.burgeon.core.bean.AllotOut;
-import cn.burgeon.core.bean.Order;
 import cn.burgeon.core.ui.BaseActivity;
 import cn.burgeon.core.utils.PreferenceUtils;
 import cn.burgeon.core.utils.ScreenUtils;
+import cn.burgeon.core.widget.CustomDialog;
 
 public class AllotOutActivity extends BaseActivity {
 
@@ -28,6 +27,8 @@ public class AllotOutActivity extends BaseActivity {
     private Button addBtn, queryBtn, delBtn;
 
     private AllotOutLVAdapter mAdapter;
+
+    private CustomDialog customDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +58,7 @@ public class AllotOutActivity extends BaseActivity {
         addBtn = (Button) findViewById(R.id.addBtn);
         addBtn.setOnClickListener(new ClickEvent());
         queryBtn = (Button) findViewById(R.id.queryBtn);
+        queryBtn.setOnClickListener(new ClickEvent());
         delBtn = (Button) findViewById(R.id.delBtn);
     }
 
@@ -83,6 +85,8 @@ public class AllotOutActivity extends BaseActivity {
             allotOut.setTOT_QTYOUT(c.getString(c.getColumnIndex("num")));
             allotOuts.add(allotOut);
         }
+        if (c != null && !c.isClosed())
+            c.close();
         return allotOuts;
     }
 
@@ -155,13 +159,21 @@ public class AllotOutActivity extends BaseActivity {
                 case R.id.addBtn:
                     forwardActivity(AllotOutApplyActivity.class);
                     break;
+                case R.id.queryBtn:
+                    customDialog = new CustomDialog.Builder(AllotOutActivity.this).setPositiveButton("确定", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            customDialog.dismiss();
+                        }
+                    }).setNegativeButton("取消", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            customDialog.dismiss();
+                        }
+                    }).show();
+                    break;
             }
         }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        initLVData();
-    }
 }
