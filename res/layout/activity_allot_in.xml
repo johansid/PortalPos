@@ -116,7 +116,7 @@
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="@string/c_dest_id"
+                        android:text="@string/c_orig_id"
                         android:textSize="15sp" />
 
                     <View
@@ -128,7 +128,7 @@
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="@string/tot_qtyout"
+                        android:text="@string/diaobo_num"
                         android:textSize="15sp" />
                 </LinearLayout>
 

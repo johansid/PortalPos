@@ -29,7 +29,7 @@
     <string name="checkQuery">盘点查询</string>
     <string name="checktips">确认审核该盘点单据吗？审核后本单将不能续盘！</string>
     <string name="allotOutIn">调拨出入库</string>
-    <string name="allotIn">调拨入库</string>
+    <string name="allotIn">调入界面</string>
     <string name="docno">单据编号</string>
     <string name="upload_state">上传状态</string>
     <string name="docstate">单据状态</string>
@@ -37,6 +37,8 @@
     <string name="c_dest_id">收货店仓</string>
     <string name="c_orig_id">发货店仓</string>
     <string name="tot_qtyout">数量</string>
+    <string name="out_num">出库数量</string>
+    <string name="diaobo_num">调拨数</string>
     <string name="statuserid">申请人</string>
     <string name="description">备注</string>
     <string name="allotInQuery">调入查询</string>
