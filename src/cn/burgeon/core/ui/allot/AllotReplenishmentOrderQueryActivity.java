@@ -1,5 +1,6 @@
 package cn.burgeon.core.ui.allot;
 
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
@@ -19,6 +20,7 @@ import java.util.Map;
 import cn.burgeon.core.App;
 import cn.burgeon.core.R;
 import cn.burgeon.core.adapter.AllotReplenishmentOrderLVAdapter;
+import cn.burgeon.core.bean.AllotReplenishment;
 import cn.burgeon.core.bean.AllotReplenishmentOrder;
 import cn.burgeon.core.ui.BaseActivity;
 import cn.burgeon.core.utils.PreferenceUtils;
@@ -57,6 +59,33 @@ public class AllotReplenishmentOrderQueryActivity extends BaseActivity {
     }
 
     private void initLVData() {
+        ArrayList<AllotReplenishmentOrder> lists = fetchData();
+        AllotReplenishmentOrderLVAdapter mAdapter = new AllotReplenishmentOrderLVAdapter(AllotReplenishmentOrderQueryActivity.this, lists, R.layout.allot_replenishment_order_item);
+        allotreplenishmentorderLV.setAdapter(mAdapter);
+
+        recodeNumTV.setText(String.format(getResources().getString(R.string.replenishment_order_record), lists.size()));
+    }
+
+    private ArrayList<AllotReplenishmentOrder> fetchData() {
+        AllotReplenishmentOrder allotReplenishmentOrder = null;
+        ArrayList<AllotReplenishmentOrder> allotReplenishmentOrders = new ArrayList<AllotReplenishmentOrder>();
+        Cursor c = db.rawQuery("select * from c_replenishment_order", null);
+        while (c.moveToNext()) {
+            allotReplenishmentOrder = new AllotReplenishmentOrder();
+            allotReplenishmentOrder.setID(c.getInt(c.getColumnIndex("_id")));
+            allotReplenishmentOrder.setDOCNO(c.getString(c.getColumnIndex("dj_no")));
+            allotReplenishmentOrder.setUPLOAD_STATUS(c.getString(c.getColumnIndex("upload_status")));
+            allotReplenishmentOrder.setDOCDATE(c.getString(c.getColumnIndex("dj_date")));
+            allotReplenishmentOrder.setOUT_STORE(c.getString(c.getColumnIndex("out_store")));
+            allotReplenishmentOrder.setAPPLY_PEOPLE(c.getString(c.getColumnIndex("apply_people")));
+            allotReplenishmentOrder.setREMARK(c.getString(c.getColumnIndex("remark")));
+            allotReplenishmentOrders.add(allotReplenishmentOrder);
+        }
+        return allotReplenishmentOrders;
+    }
+
+    /*
+    private void initLVData() {
         Map<String, String> params = new HashMap<String, String>();
         try {
             JSONArray array = new JSONArray();
@@ -91,7 +120,6 @@ public class AllotReplenishmentOrderQueryActivity extends BaseActivity {
         }
     }
 
-
     private ArrayList<AllotReplenishmentOrder> resJAToList(String response) throws JSONException {
         ArrayList<AllotReplenishmentOrder> lists = new ArrayList<AllotReplenishmentOrder>();
 
@@ -116,5 +144,5 @@ public class AllotReplenishmentOrderQueryActivity extends BaseActivity {
         }
         return lists;
     }
-
+    */
 }

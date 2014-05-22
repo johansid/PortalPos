@@ -1,7 +1,5 @@
 package cn.burgeon.core.adapter;
 
-import java.util.ArrayList;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,8 +7,11 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+
 import cn.burgeon.core.R;
-import cn.burgeon.core.bean.AllotReplenishmentOrderApply;
+import cn.burgeon.core.bean.Product;
 
 /**
  * Created by Simon on 2014/4/16.
@@ -18,10 +19,10 @@ import cn.burgeon.core.bean.AllotReplenishmentOrderApply;
 public class AllotReplenishmentOrderApplyLVAdapter extends BaseAdapter {
 
 	private Context mContext;
-	private ArrayList<AllotReplenishmentOrderApply> list;
+	private ArrayList<Product> list;
 	private int mLayoutRes;
 
-	public AllotReplenishmentOrderApplyLVAdapter(Context c, ArrayList<AllotReplenishmentOrderApply> l, int layoutRes) {
+	public AllotReplenishmentOrderApplyLVAdapter(Context c, ArrayList<Product> l, int layoutRes) {
 		this.mContext = c;
 		this.list = l;
 		this.mLayoutRes = layoutRes;
@@ -59,19 +60,18 @@ public class AllotReplenishmentOrderApplyLVAdapter extends BaseAdapter {
 		}
 
 		// 赋值
-		holder.barcodeTV.setText(list.get(position).getBarcode());
-		// holder.numTV.setText(list.get(position).getNum());
-		holder.colorTV.setText(list.get(position).getColor());
-		holder.sizeTV.setText(list.get(position).getSize());
-		holder.styleTV.setText(list.get(position).getStyle());
+        holder.barcodeTV.setText(list.get(position).getBarCode());
+        holder.colorTV.setText(list.get(position).getColor());
+        holder.sizeTV.setText(list.get(position).getSize());
+        holder.styleTV.setText(list.get(position).getStyle());
 		return convertView;
 	}
 
 	static class ViewHolder {
-		TextView barcodeTV;
-		TextView colorTV;
-		TextView sizeTV;
-		EditText numET;
-		TextView styleTV;
+        TextView barcodeTV;
+        TextView colorTV;
+        TextView sizeTV;
+        EditText numET;
+        TextView styleTV;
 	}
 }

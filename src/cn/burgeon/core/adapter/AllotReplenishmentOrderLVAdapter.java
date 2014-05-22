@@ -62,10 +62,10 @@ public class AllotReplenishmentOrderLVAdapter extends BaseAdapter {
 
         // 赋值
         holder.docnoTV.setText(list.get(position).getDOCNO());
-        holder.billdateIV.setText(list.get(position).getBILLDATE());
-        holder.cdestidIV.setText(list.get(position).getC_DEST_ID());
-        holder.statuserTV.setText(list.get(position).getSTATUSERID());
-        holder.descTV.setText(list.get(position).getDESCRIPTION());
+        holder.billdateIV.setText(list.get(position).getDOCDATE());
+        holder.cdestidIV.setText(list.get(position).getOUT_STORE());
+        holder.statuserTV.setText(list.get(position).getAPPLY_PEOPLE());
+        holder.descTV.setText(list.get(position).getREMARK());
         return convertView;
     }
 

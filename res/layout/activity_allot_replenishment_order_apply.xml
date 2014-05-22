@@ -100,7 +100,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.90"
-                android:text="109454D334620" />
+                android:text="1351600224L" />
 
             <Button
                 android:id="@+id/okBtn"
@@ -229,6 +229,7 @@
             android:orientation="horizontal" >
 
             <Button
+                android:id="@+id/uploadBtn"
                 android:layout_width="@dimen/allot_in_btn"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"

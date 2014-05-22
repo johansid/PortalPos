@@ -54,6 +54,7 @@
     <string name="replenishmentApply">补货申请</string>
     <string name="replenishmentOrderManager">补货订单</string>
     <string name="replenishment_record">共%1$d个补货单</string>
+    <string name="replenishment_order_record">共%1$d个补货订单</string>
     <string name="sales_richangxiaoshou">日常销售</string>
     <string name="sales_xiaoshoubaobiao">销售报表</string>
     <string name="sales_xiaoshoushangchuan">销售上传</string>

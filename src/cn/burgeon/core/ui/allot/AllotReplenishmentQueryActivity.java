@@ -58,7 +58,7 @@ public class AllotReplenishmentQueryActivity extends BaseActivity {
 
     private ArrayList<AllotReplenishment> fetchData() {
         AllotReplenishment allotReplenishment = null;
-        ArrayList<AllotReplenishment> allotOuts = new ArrayList<AllotReplenishment>();
+        ArrayList<AllotReplenishment> allotReplenishments = new ArrayList<AllotReplenishment>();
         Cursor c = db.rawQuery("select * from c_replenishment", null);
         while (c.moveToNext()) {
             allotReplenishment = new AllotReplenishment();
@@ -69,9 +69,9 @@ public class AllotReplenishmentQueryActivity extends BaseActivity {
             allotReplenishment.setOUT_STORE(c.getString(c.getColumnIndex("out_store")));
             allotReplenishment.setAPPLY_PEOPLE(c.getString(c.getColumnIndex("apply_people")));
             allotReplenishment.setREMARK(c.getString(c.getColumnIndex("remark")));
-            allotOuts.add(allotReplenishment);
+            allotReplenishments.add(allotReplenishment);
         }
-        return allotOuts;
+        return allotReplenishments;
     }
 
     /*
