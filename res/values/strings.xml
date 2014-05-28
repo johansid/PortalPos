@@ -250,6 +250,13 @@
     <string name="storeInfoInventoryShowLines">盘点显示行数</string>
     <string name="storeInfoInventoryDetailInfo">盘点详细信息</string> 
     
+    <string name="tipsInputDataNotChanged">输入数据未发生变化</string>
+    <string name="tipsNoInputData">请输入内容</string>
+    <string name="tipsPleaseInput">说多少遍了，请输入内容！</string>
+    <string name="tipsCannotUnderstand">听不明白？</string>
+    <string name="twoB">2B</string>
+    <string name="tipsSaveSucess">保存成功</string>
+    
     <string name="add">新增</string>
     <string name="query">查询</string>
     <string name="del">删除</string>

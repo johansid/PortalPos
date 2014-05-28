@@ -10,8 +10,32 @@ public class PreferenceUtils {
     public static final String store_key = "storeKey";
     public static final String user_key = "userKey";
 
-    private static Context mContext;
-    private static final int PRIVATE_MODE = ContextWrapper.MODE_PRIVATE;
+    //系统配置：门店信息  关键字
+    	//门店编号
+    public static final String storeNumberKey = "storeNumberKey";
+    	//顾客名称
+    public static final String customerNameKey = "customerNameKey";
+    	//中断编号
+    public static final String terminalNumberKey = "terminalNumberKey";
+    	//盘点显示行数
+    public static final String inventoryRowCountKey = "inventoryRowCountKey";
+    
+    //系统配置：参数配置 关键字
+    	//扫描条码截取位数
+    public static final String scanBarcodeInterceptNumberKey = "scanBarcodeInterceptNumberKey";
+    	//金额数据精度
+    public static final String	moneyDataAccuracyKey = "moneyDataAccuracyKey";
+    	//金额取整方式
+    public static final String	moenyRoundingStyleKey = "moenyRoundingStyleKey";
+    	//启用商场结算
+    public static final String	enableMallsSettlementKey = "enableMallsSettlementKey";
+    	//控制营业员最低折扣
+    public static final String	controlSalesmanLowestRebateKey = "controlSalesmanLowestRebateKey";
+    	//使用外部条码
+    public static final String	useOutsideBarcodeKey = "useOutsideBarcodeKey";
+    
+    public static Context mContext;
+    public static final int PRIVATE_MODE = ContextWrapper.MODE_PRIVATE;
 
     public PreferenceUtils(Context context) {
         mContext = context;
