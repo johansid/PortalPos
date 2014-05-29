@@ -23,7 +23,8 @@
 		    android:layout_alignParentRight="true"
 		    android:layout_toRightOf="@id/scanBarcodeInterceptNumberTextView"
 		    android:layout_marginLeft="50dp"
-		    android:layout_marginRight="20dp"/>
+		    android:layout_marginRight="20dp"
+		    android:entries="@array/scanBarcodeInterceptNumber"/>
 	  	
 	    <TextView 
 	        android:id="@+id/moneyDataAccuracyTextView"
@@ -34,32 +35,34 @@
 	        android:text="@string/paramConfigMoneyDataAccuracy"/>
 	    
 	     <Spinner
-		    android:id="@+id/moneyDataAccuracyTextViewSpinner"
+		    android:id="@+id/moneyDataAccuracySpinner"
 		    android:layout_height="wrap_content"
 		    android:layout_width="100dp"
 		    android:layout_alignParentRight="true"
 		    android:layout_toRightOf="@id/moneyDataAccuracyTextView"
 		    android:layout_marginLeft="76dp"
 		    android:layout_marginRight="20dp"
-		    android:layout_marginTop="50dp"/>
+		    android:layout_marginTop="50dp"
+		    android:entries="@array/moneyDataAccuracy"/>
 	          
 	    <TextView 
 	        android:id="@+id/moenyRoundingStyleTextView"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:layout_below="@id/moneyDataAccuracyTextViewSpinner"
+	        android:layout_below="@id/moneyDataAccuracySpinner"
 	        android:layout_marginTop="15dp"
 	        android:text="@string/paramConfigMoenyRoundingStyle"/>
 	    
 	    <Spinner
-		    android:id="@+id/paramConfigMoenyRoundingStyleSpinner"
+		    android:id="@+id/moenyRoundingStyleSpinner"
 		    android:layout_height="wrap_content"
 		    android:layout_width="100dp"
 		    android:layout_alignParentRight="true"
 		    android:layout_toRightOf="@id/moenyRoundingStyleTextView"
 		    android:layout_marginLeft="76dp"
 		    android:layout_marginRight="20dp"
-		    android:layout_marginTop="100dp"/>
+		    android:layout_marginTop="100dp"
+		    android:entries="@array/moenyRoundingStyle"/>
          
     </RelativeLayout>
     
@@ -71,7 +74,7 @@
         android:paddingTop="30dp">
         
 	    <CheckBox 
-	        android:id="@+id/paramConfigEnableMallsSettlementCheckBox"
+	        android:id="@+id/enableMallsSettlementCheckBox"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:paddingTop="20dp"
@@ -81,42 +84,42 @@
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:paddingTop="18dp"
-	        android:layout_toRightOf="@id/paramConfigEnableMallsSettlementCheckBox"
+	        android:layout_toRightOf="@id/enableMallsSettlementCheckBox"
 	        android:text="@string/paramConfigEnableMallsSettlement"/>
     
 	    <CheckBox 
-	        android:id="@+id/paramConfigControlSalesmanLowestRebateCheckBox"
+	        android:id="@+id/controlSalesmanLowestRebateCheckBox"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:paddingTop="10dp"
 	        android:checked="true"
-	        android:layout_below="@id/paramConfigEnableMallsSettlementCheckBox"/>
+	        android:layout_below="@id/enableMallsSettlementCheckBox"/>
     
 	    <TextView 
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:paddingTop="65dp"
-	        android:layout_toRightOf="@id/paramConfigControlSalesmanLowestRebateCheckBox"
+	        android:layout_toRightOf="@id/controlSalesmanLowestRebateCheckBox"
 	         android:text="@string/paramConfigControlSalesmanLowestRebate"/>
     
 	     <CheckBox 
-	        android:id="@+id/paramConfigUseOutsideBarcodeCheckBox"
+	        android:id="@+id/useOutsideBarcodeCheckBox"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:layout_below="@id/paramConfigControlSalesmanLowestRebateCheckBox"
+	        android:layout_below="@id/controlSalesmanLowestRebateCheckBox"
 	        android:checked="true"/>
 	        
 	      <TextView 
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:paddingTop="115dp"
-	        android:layout_toRightOf="@id/paramConfigUseOutsideBarcodeCheckBox"
+	        android:layout_toRightOf="@id/useOutsideBarcodeCheckBox"
 	        android:text="@string/paramConfigUseOutsideBarcode"/>
       
    	</RelativeLayout>
    
     <Button 
-		android:id="@+id/config_param_save"
+		android:id="@+id/saveButton"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_marginTop="45dp"

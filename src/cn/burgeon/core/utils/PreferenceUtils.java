@@ -77,6 +77,18 @@ public class PreferenceUtils {
         }
     }
 
+    public boolean savePreferenceBoolean(String PrefKey, boolean PrefValue) {
+        try {
+            SharedPreferences cbhPref = new ContextWrapper(mContext).getSharedPreferences(Burgeon_PREF, PRIVATE_MODE);
+            SharedPreferences.Editor editor = cbhPref.edit();
+            editor.putBoolean(PrefKey, PrefValue);
+            editor.commit();
+            return true;
+        } catch (Exception ee) {
+            return false;
+        }
+    }
+    
     public String getPreferenceStr(String RefKey) {
         try {
             SharedPreferences cbhPref = new ContextWrapper(mContext).getSharedPreferences(Burgeon_PREF, PRIVATE_MODE);
@@ -104,5 +116,13 @@ public class PreferenceUtils {
         }
     }
 
+    public boolean getPreferenceBoolean(String RefKey) {
+        try {
+            SharedPreferences cbhPref = new ContextWrapper(mContext).getSharedPreferences(Burgeon_PREF, PRIVATE_MODE);
+            return cbhPref.getBoolean(RefKey, false);
+        } catch (Exception ee) {
+            return false;
+        }
+    }
 
 }

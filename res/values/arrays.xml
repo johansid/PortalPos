@@ -17,4 +17,31 @@
     <string-array name="empployee">
         <item>test</item>
     </string-array>
+    
+    <!--扫描条码截取位数-->
+    <string-array name="scanBarcodeInterceptNumber">
+        <item>位数1</item>
+        <item>位数2</item>
+        <item>位数3</item>
+        <item>位数4</item>
+        <item>位数5</item>
+    </string-array>
+    
+    <!--金额数据精度-->
+    <string-array name="moneyDataAccuracy">
+        <item>精度1</item>
+        <item>精度2</item>
+        <item>精度3</item>
+        <item>精度4</item>
+        <item>精度5</item>
+    </string-array>
+    
+    <!--金额取整方式-->
+    <string-array name="moenyRoundingStyle">
+        <item>方式1</item>
+        <item>方式2</item>
+        <item>方式3</item>
+        <item>方式4</item>
+        <item>方式5</item>
+    </string-array>
 </resources>

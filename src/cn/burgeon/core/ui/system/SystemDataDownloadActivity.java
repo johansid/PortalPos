@@ -165,8 +165,8 @@ public class SystemDataDownloadActivity extends BaseActivity{
 	private final int systemParamUnZipFinishMsg       = 0x44;
 
 	//网络状态变化消息
-	private final int networkAvailableMsg         = 0x50;
-	private final int networkUnAvailableMsg       = 0x51;
+	private final int networkAvailableMsg          	  = 0x50;
+	private final int networkUnAvailableMsg           = 0x51;
 	
 	//下载线程名字
 	private final String USER_DATA_THREAD     = "userDataThread";
