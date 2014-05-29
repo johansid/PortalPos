@@ -13,6 +13,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import cn.burgeon.core.R;
 
@@ -25,6 +26,7 @@ public class CustomDialog {
 	private EditText startTime, endTime;
 	private Button okButton;
 	private Button cancelButton;
+    private TextView stateTV;
 
 	private Calendar c = Calendar.getInstance();
 
@@ -64,6 +66,7 @@ public class CustomDialog {
 
 		okButton = (Button) customView.findViewById(R.id.okButton);
 		cancelButton = (Button) customView.findViewById(R.id.cancelButton);
+        stateTV = (TextView) customView.findViewById(R.id.stateTV);
 
 		window.setContentView(customView);
 	}
@@ -87,6 +90,10 @@ public class CustomDialog {
 			e.printStackTrace();
 		}
 	}
+
+    private void setState(CharSequence stateText) {
+        stateTV.setText(stateText);
+    }
 
 	public void setOKButton(CharSequence title, OnClickListener listener) {
 		okButton.setText(title);
@@ -147,8 +154,14 @@ public class CustomDialog {
 			return this;
 		}
 
+        public Builder setState(CharSequence stateText) {
+            params.stateText = stateText;
+            return this;
+        }
+
 		public CustomDialog show() {
 			CustomDialog dialog = new CustomDialog(params.context);
+            dialog.setState(params.stateText);
 			dialog.setOKButton(params.mOKButtonText, params.mOKButtonListener);
 			dialog.setCancelButton(params.mCancelButtonText, params.mCancelButtonListener);
 			dialog.setCancelable(false);
@@ -157,7 +170,7 @@ public class CustomDialog {
 		}
 	}
 
-	public static class AlertParams {
+    public static class AlertParams {
 		public Context context;
 
 		public CharSequence mTitle;
@@ -165,8 +178,9 @@ public class CustomDialog {
 		public CharSequence mCancelButtonText;
 		public OnClickListener mOKButtonListener;
 		public OnClickListener mCancelButtonListener;
+        public CharSequence stateText;
 
-		public AlertParams(Context context) {
+        public AlertParams(Context context) {
 			this.context = context;
 		}
 	}

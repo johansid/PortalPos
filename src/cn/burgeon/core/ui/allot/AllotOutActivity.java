@@ -170,7 +170,7 @@ public class AllotOutActivity extends BaseActivity {
                         public void onClick(View v) {
                             customDialog.dismiss();
                         }
-                    }).show();
+                    }).setState("卧槽:").show();
                     break;
             }
         }
