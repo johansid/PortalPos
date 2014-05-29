@@ -1,7 +1,5 @@
 package cn.burgeon.core.widget;
 
-import java.util.Calendar;
-
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
@@ -10,10 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
+
+import java.util.Calendar;
 
 import cn.burgeon.core.R;
 
@@ -27,6 +29,7 @@ public class CustomDialog {
 	private Button okButton;
 	private Button cancelButton;
     private TextView stateTV;
+    private Spinner statusSpin;
 
 	private Calendar c = Calendar.getInstance();
 
@@ -67,6 +70,7 @@ public class CustomDialog {
 		okButton = (Button) customView.findViewById(R.id.okButton);
 		cancelButton = (Button) customView.findViewById(R.id.cancelButton);
         stateTV = (TextView) customView.findViewById(R.id.stateTV);
+        statusSpin = (Spinner) customView.findViewById(R.id.statusSpin);
 
 		window.setContentView(customView);
 	}
@@ -91,10 +95,6 @@ public class CustomDialog {
 		}
 	}
 
-    private void setState(CharSequence stateText) {
-        stateTV.setText(stateText);
-    }
-
 	public void setOKButton(CharSequence title, OnClickListener listener) {
 		okButton.setText(title);
 		okButton.setOnClickListener(listener);
@@ -104,6 +104,16 @@ public class CustomDialog {
 		cancelButton.setText(title);
 		cancelButton.setOnClickListener(listener);
 	}
+
+    private void setState(CharSequence stateText) {
+        stateTV.setText(stateText);
+    }
+
+    private void setSpinner(String[] vals) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_item, vals);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        statusSpin.setAdapter(adapter);
+    }
 
 	/**
 	 * 弹出对话框的时候 点击Back健是否取消对话框
@@ -159,14 +169,20 @@ public class CustomDialog {
             return this;
         }
 
+        public Builder setSpinner(String[] vals) {
+            params.spinnerVals = vals;
+            return this;
+        }
+
 		public CustomDialog show() {
 			CustomDialog dialog = new CustomDialog(params.context);
-            dialog.setState(params.stateText);
 			dialog.setOKButton(params.mOKButtonText, params.mOKButtonListener);
-			dialog.setCancelButton(params.mCancelButtonText, params.mCancelButtonListener);
-			dialog.setCancelable(false);
-			dialog.setCanceledOnTouchOutside(false);
-			return dialog;
+            dialog.setCancelButton(params.mCancelButtonText, params.mCancelButtonListener);
+            dialog.setCancelable(false);
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.setState(params.stateText);
+            dialog.setSpinner(params.spinnerVals);
+            return dialog;
 		}
 	}
 
@@ -179,6 +195,7 @@ public class CustomDialog {
 		public OnClickListener mOKButtonListener;
 		public OnClickListener mCancelButtonListener;
         public CharSequence stateText;
+        public String[] spinnerVals;
 
         public AlertParams(Context context) {
 			this.context = context;
