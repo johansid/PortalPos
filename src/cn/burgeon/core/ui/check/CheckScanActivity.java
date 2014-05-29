@@ -211,7 +211,7 @@ public class CheckScanActivity extends BaseActivity{
         				" values(?,?,?,?,?,?,?,?,?)",
 					new Object[]{shelfET.getText().toString(),
         						new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(currentTime),
-								getResources().getString(R.string.sales_settle_novip),
+								getResources().getString(R.string.sales_settle_type),
 								data.size(),//数量count
 								"0001",
 								"test",

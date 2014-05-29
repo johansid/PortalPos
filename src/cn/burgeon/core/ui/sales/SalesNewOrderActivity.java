@@ -6,14 +6,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import mexxen.mx5010.barcode.BarcodeEvent;
+import mexxen.mx5010.barcode.BarcodeListener;
+import mexxen.mx5010.barcode.BarcodeManager;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -35,10 +42,14 @@ import cn.burgeon.core.ui.BaseActivity;
 import cn.burgeon.core.ui.member.MemberSearchActivity;
 import cn.burgeon.core.utils.PreferenceUtils;
 import cn.burgeon.core.utils.ScreenUtils;
+import cn.burgeon.core.widget.UndoBarController;
+import cn.burgeon.core.widget.UndoBarStyle;
+import cn.burgeon.core.widget.UndoBarController.UndoListener;
 
 public class SalesNewOrderActivity extends BaseActivity {
 	
 	private static final String TAG = "SalesNewOrderActivity";
+	private BarcodeManager bm;
 	Button vipBtn, accountBtn;
 	EditText cardNoET, styleBarcodeET,newSalesOrderDateET;
 	TextView commonRecordnum,commonCount,commonMoney;
@@ -46,6 +57,8 @@ public class SalesNewOrderActivity extends BaseActivity {
 	SalesNewOrderAdapter mAdapter;
 	ArrayList<Product> data = new ArrayList<Product>();
 	String updateID = "unknow";
+	boolean flag = false;
+	static ArrayList<Product> temp = new ArrayList<Product>();
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,19 +67,43 @@ public class SalesNewOrderActivity extends BaseActivity {
         setContentView(R.layout.activity_sales_new_order);
 
         init();
+        Log.d(TAG, "=========onCreate==========");
+        dealForward();
         
-        Bundle bundle = getIntent().getExtras();
+        bm = new BarcodeManager(this);
+		bm.addListener(barcodeListener);
+    }
+
+	private void dealForward() {
+		Bundle bundle = getIntent().getExtras();
         if(bundle != null){
         	String searchedMember = getIntent().getExtras().getString("searchedMember");
-        	if(searchedMember != null)
-        		cardNoET.setText(searchedMember);
+        	if(searchedMember != null){
+        		cardNoET.setText(searchedMember); 
+        		data.addAll(temp);
+        		mAdapter.notifyDataSetChanged();
+        		upateBottomBarInfo();
+        	}
         	updateID = getIntent().getExtras().getString("updateID");
         	Log.d("xxxx", "updateID = " + updateID ==null?"null" : updateID + "");
-        	if(!"unknow".equals(updateID) && (updateID != null)){
+        	if(!"unknow".equals(updateID) && (updateID != null) && !flag){
         		queryForUpdate();
         	}
         }
-    }
+	}
+    
+    BarcodeListener barcodeListener = new BarcodeListener() {
+		// 重写 barcodeEvent 方法，获取条码事件
+		@Override
+		public void barcodeEvent(BarcodeEvent event) {
+			// 当条码事件的命令为“SCANNER_READ”时，进行操作
+			if (event.getOrder().equals("SCANNER_READ")) {
+				// 调用 getBarcode()方法读取条码信息
+				Log.d(TAG, "=======barcode========" + bm.getBarcode());
+				verifyBarCode(bm.getBarcode());
+			}
+		}
+	};
 
 
 	private void queryForUpdate() {
@@ -86,8 +123,7 @@ public class SalesNewOrderActivity extends BaseActivity {
 			data.add(product);
 		}
 		mAdapter.notifyDataSetChanged();
-		if(data.size() > 0)
-			upateBottomBarInfo();
+		upateBottomBarInfo();
 		if(c != null && !c.isClosed())
 			c.close();
     }
@@ -95,16 +131,24 @@ public class SalesNewOrderActivity extends BaseActivity {
 	@Override
     protected void onNewIntent(Intent intent) {
     	super.onNewIntent(intent);
-    	String searchedMember = getIntent().getExtras().getString("searchedMember");
-    	Log.d("SalesNewOrderActivity", searchedMember);
-    	cardNoET.setText(searchedMember);
+    	Log.d(TAG, "=========onNewIntent==========");
+        dealForward();
     }
     
     
-    @Override
+/*    @Override
     protected void onStop() {
     	super.onStop();
+    	bm.removeListener(barcodeListener);
+    	bm.dismiss();
     	finish();
+    }*/
+    
+    @Override
+    protected void onDestroy() {
+    	super.onDestroy();
+    	bm.removeListener(barcodeListener);
+    	bm.dismiss();
     }
 
 	private void init() {
@@ -147,7 +191,13 @@ public class SalesNewOrderActivity extends BaseActivity {
 			switch (v.getId()) {
 			case R.id.salesNewVIPbtn:
 				//跳转到会员注册页面
-				forwardActivity(MemberSearchActivity.class);
+				if(!"unknow".equals(updateID) && (updateID != null)){
+					showTips();
+				}else{
+					temp.clear();
+					temp.addAll(data);
+					forwardActivity(MemberSearchActivity.class);
+				}
 				break;
 			case R.id.salesNewJiezhangBtn:
 				// 跳转并传递数据
@@ -191,9 +241,11 @@ public class SalesNewOrderActivity extends BaseActivity {
 	private void upateBottomBarInfo() {
 		float pay = 0.0f;
 		int count = 0;
-		for(Product pro : data){
-			pay += Float.parseFloat(pro.getMoney());
-			count += Integer.parseInt(pro.getCount());
+		if(data != null && data.size() > 0){
+			for(Product pro : data){
+				pay += Float.parseFloat(pro.getMoney());
+				count += Integer.parseInt(pro.getCount());
+			}
 		}
 		Log.d("zhang.h", "pay=" + pay+",count=" + count);
 		
@@ -202,15 +254,15 @@ public class SalesNewOrderActivity extends BaseActivity {
 		commonRecordnum.setText(String.format(getResources().getString(R.string.sales_new_common_record), data.size()));
 	}
 	
-	private void verifyBarCode() {
+	private void verifyBarCode(String barcode) {
 		//从本地获取
-		varLocal();
+		varLocal(barcode);
 		//从网络获取
 		//varNet();
 	}
 
-	private void varLocal() {
-		Log.d(TAG, "=========varLocal========");
+	private void varLocal(String barcode) {
+		Log.d(TAG, "barcode2======" + barcode);
 		String sql = "select b.style_name,c.clrname,d.sizename,e.fprice"
 					+" from tc_sku as a"
 					+" left join tc_style as b"
@@ -222,10 +274,10 @@ public class SalesNewOrderActivity extends BaseActivity {
 					+" left join tc_styleprice as e"
 					+" on a.style = e.style"
 					+" where a.sku = ?";
-		Cursor c = db.rawQuery(sql, new String[]{styleBarcodeET.getText().toString()});
+		Cursor c = db.rawQuery(sql, new String[]{barcode});
 		Log.d(TAG, "result size = " + c.getCount());
 		if(c.moveToFirst()){
-			List<Product> list = parseSQLResult(c);
+			List<Product> list = parseSQLResult(c,barcode);
 			data.addAll(list);
 			mAdapter.notifyDataSetChanged();
 			upateBottomBarInfo();
@@ -234,10 +286,10 @@ public class SalesNewOrderActivity extends BaseActivity {
 			c.close();
 	}
 
-	private List<Product> parseSQLResult(Cursor c) {
+	private List<Product> parseSQLResult(Cursor c, String barcode) {
 		List<Product> items = new ArrayList<Product>(1);
 		Product pro = new Product();
-		pro.setBarCode(styleBarcodeET.getText().toString());
+		pro.setBarCode(barcode);
 		pro.setName(c.getString(c.getColumnIndex("style_name")));
 		pro.setPrice(c.getString(c.getColumnIndex("fprice")));
 		pro.setColor(c.getString(c.getColumnIndex("clrname")));
@@ -328,7 +380,7 @@ public class SalesNewOrderActivity extends BaseActivity {
 		public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 			switch (actionId) {
 			case EditorInfo.IME_ACTION_SEARCH:
-				verifyBarCode();
+				verifyBarCode(styleBarcodeET.getText().toString());
 				break;
 
 			default:
@@ -338,5 +390,30 @@ public class SalesNewOrderActivity extends BaseActivity {
 		}
 		
 	};
+	
+	 //显示对话框
+    private void showTips(){
+    	AlertDialog dialog = null;
+    	AlertDialog.Builder builder = new AlertDialog.Builder(this)
+    		.setTitle(getString(R.string.systemtips))
+    		.setMessage(R.string.sales_settle_clear2)
+    		.setPositiveButton(getString(R.string.yes),new DialogInterface.OnClickListener(){
+
+				@Override
+				public void onClick(DialogInterface arg0, int arg1) {
+					/*temp.clear();
+					data.clear();
+					flag = true;
+					forwardActivity(MemberSearchActivity.class);*/
+				}});
+			/*.setNegativeButton(getString(R.string.no),new DialogInterface.OnClickListener(){
+
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.dismiss();
+				}});*/
+    	dialog = builder.create();
+    	dialog.show();
+    }
 
 }

@@ -13,7 +13,7 @@
             android:background="@drawable/corners_bg"
             android:gravity="center_horizontal"
             android:padding="10dp"
-            android:text="@string/sales_order_search_title"
+            android:text="@string/sales_richangxiaoshou"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <RelativeLayout
@@ -258,7 +258,6 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
                 android:text="@string/sales_new_jiezhang"/>
         </LinearLayout>
     </LinearLayout>

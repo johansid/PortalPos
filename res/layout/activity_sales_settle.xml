@@ -13,7 +13,7 @@
             android:background="@drawable/corners_bg"
             android:gravity="center_horizontal"
             android:padding="20dp"
-            android:text="@string/sales_order_search_title"
+            android:text="@string/sales_new_jiezhang"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <RelativeLayout
@@ -91,7 +91,8 @@
             android:background="@drawable/corners_bg">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1.1"
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:text="@string/sales_settle_discount"
@@ -99,8 +100,25 @@
 
             <EditText
                 android:id="@+id/salesSettleDiscountET"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_width="0dp"
+                android:layout_weight="0.9"
+                android:layout_height="wrap_content"
+                android:inputType="number"/>
+            
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:text="@string/sales_settle_reality"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <EditText
+                android:id="@+id/salesSettleRealityET"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:inputType="number"/>
         </LinearLayout>
         
         <LinearLayout
@@ -109,17 +127,7 @@
             android:orientation="horizontal" 
             android:background="@drawable/corners_bg">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:text="@string/sales_settle_reality"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
 
-            <EditText
-                android:id="@+id/salesSettleRealityET"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
         </LinearLayout>
         
         <LinearLayout
@@ -160,7 +168,7 @@
         <ListView
             android:id="@+id/settleLV"
             android:layout_width="match_parent"
-            android:layout_height="160dp" />
+            android:layout_height="185dp" />
     </LinearLayout> 
 
     <LinearLayout
@@ -178,7 +186,6 @@
                 android:id="@+id/settleJiezhangBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
                 android:text="@string/sales_new_jiezhang" />
         </LinearLayout>
     </LinearLayout>

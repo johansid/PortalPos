@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
@@ -134,9 +135,16 @@ public class SalesWareSummerActivity extends BaseActivity {
 	            enddialog.show();
 	            break;
             case R.id.sales_ware_summer_minxibtn:
-            	if(currentSelectedOrder != null)
-            		forwardActivity(SalesWareSummerDetailActivity.class, "barCode", currentSelectedOrder.getBarCode());
-	            break;
+            	if(currentSelectedOrder != null){
+            		Intent intent = new Intent(SalesWareSummerActivity.this,SalesWareSummerDetailActivity.class);
+            		Bundle bundle = new Bundle();
+            		bundle.putString("barcode", currentSelectedOrder.getBarCode());
+            		bundle.putString("startDate", starDateET.getText().toString());
+            		bundle.putString("endDate", endDateET.getText().toString());
+            		intent.putExtras(intent);
+            		startActivity(intent);
+            	}
+            	break;
             case R.id.sales_ware_summer_query:
             	bindList();
 	            break;

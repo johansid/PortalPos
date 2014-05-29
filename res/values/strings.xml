@@ -115,11 +115,16 @@
     <string name="sales_settle_payway">付款方式</string>
     <string name="sales_settle_paymoney">付款金额</string>
     <string name="sales_settle_cash">现金</string>
-    <string name="sales_settle_novip">非会员</string>
+    <string name="sales_settle_auto">自动费用</string>
+    <string name="sales_settle_other">其他付款方式</string>
+    <string name="sales_settle_type">正常零售</string>
     <string name="sales_settle_noup">未上传</string>
     <string name="sales_settle_hasup">已上传</string>
     <string name="sales_report_query">销售查询</string>
     <string name="sales_order_detail">单据明细</string>
+    <string name="sales_settle_dialogmsg">请确认是否要结账？</string>
+    <string name="sales_settle_clear">您要切换到会员销售模式，并清除商品数据吗？</string>
+    <string name="sales_settle_clear2">已销售的不能再切换到会员模式！</string>
     <string name="replenishmentOrderApply">补货申请</string>
     <string name="replenishmentOrderQuery">补货订单</string>
     <string name="inventoryManager">库存管理</string>
@@ -134,6 +139,8 @@
     <string name="inventoryRefreshing">正在刷新库存</string>
     <string name="confirm">确定</string>
     <string name="cancel">取消</string>
+    <string name="yes">是(Y)</string>
+    <string name="no">否(N)</string>
     <string name="inventoryCanotRefreshTips">当前存在未上传的调拨或者销售数据，请先上传</string>
     <string name="inventoryRefreshingTips">刷新中，请稍后</string>
     
@@ -295,4 +302,6 @@
     <string name="undo">Undo</string>
     <string name="retry">Retry</string>
     <string name="systemtips">系统提示</string>
+    <string name="login_test_user">虞旻琦</string>
+    <string name="no_update_uploaded_data">已上传的数据不能修改</string>
 </resources>

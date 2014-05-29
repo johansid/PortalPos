@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -14,6 +15,8 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.Editable;
 import android.util.Log;
 import android.view.View;
@@ -35,6 +38,7 @@ import com.android.volley.Response;
 
 public class MemberRegistActivity extends BaseActivity {
 	
+	private final String TAG = "MemberRegistActivity";
 	Button saveBtn,veryfiyBtn;
 	EditText cardNOET,nameET,identityET,emailET;
 	EditText createDateET,mobilePhoneET,birthdayET;
@@ -115,8 +119,6 @@ public class MemberRegistActivity extends BaseActivity {
 		        	UndoBarController.show(MemberRegistActivity.this, "更新会员成功", null, MESSAGESTYLE);
 				}else{
 					save();
-					UndoBarStyle MESSAGESTYLE = new UndoBarStyle(-1, -1, 3000);
-		        	UndoBarController.show(MemberRegistActivity.this, "注册会员成功", null, MESSAGESTYLE);
 		        	if("search".equals(from)){
 		        		forwardActivity(SalesNewOrderActivity.class, "searchedMember",cardNOET.getText()+"\\"+100);
 		        	}
@@ -124,7 +126,7 @@ public class MemberRegistActivity extends BaseActivity {
 				
 	        	break;
 			case R.id.memberRegistVerifyBtn:
-				verify();
+				verifyNet();
 				break;
 			case R.id.memberRegistBirthdayET:
 				Calendar c = Calendar.getInstance();
@@ -156,94 +158,91 @@ public class MemberRegistActivity extends BaseActivity {
         }
     }
 	
-
+    String phoneRegExp = "^[1]([3][0-9]{1}|59|58|88|89)[0-9]{8}$";
+    String identityRegExp = "(\\d{14}\\w)|\\d{17}\\w";
 	
 	private boolean isRequired(Editable src){
-		return "".equals(src) || null == src;
+		return src.length() > 0;
 	}
 	
-	private void validate(){
-		if(isRequired(cardNOET.getText())){   
+	private boolean validate(){
+		if(!isRequired(cardNOET.getText())){   
 			UndoBarStyle MESSAGESTYLE = new UndoBarStyle(-1, -1, 3000);
         	UndoBarController.show(MemberRegistActivity.this, "卡号不能为空", null, MESSAGESTYLE);
-        	return;
-		}else if(isRequired(nameET.getText())){
+        	return false;
+		}else if(!isRequired(nameET.getText())){
 			UndoBarStyle MESSAGESTYLE = new UndoBarStyle(-1, -1, 3000);
         	UndoBarController.show(MemberRegistActivity.this, "姓名不能为空", null, MESSAGESTYLE);
-        	return;
-		}else if(isRequired(mobilePhoneET.getText())){
+        	return false;
+		}else if(!Pattern.compile(phoneRegExp).matcher(mobilePhoneET.getText()).find()){
 			UndoBarStyle MESSAGESTYLE = new UndoBarStyle(-1, -1, 3000);
-        	UndoBarController.show(MemberRegistActivity.this, "手机号码不能为空", null, MESSAGESTYLE);
-        	return;
-		}else if(isRequired(identityET.getText())){
+        	UndoBarController.show(MemberRegistActivity.this, "手机号码不正确", null, MESSAGESTYLE);
+        	return false;
+		}else if(!isRequired(identityET.getText())){
 			UndoBarStyle MESSAGESTYLE = new UndoBarStyle(-1, -1, 3000);
-        	UndoBarController.show(MemberRegistActivity.this, "身份证号码不能为空", null, MESSAGESTYLE);
-        	return;
+        	UndoBarController.show(MemberRegistActivity.this, "身份证号码不正确", null, MESSAGESTYLE);
+        	return false;
 		}
+		return true;
 	}
 	
 	public void save(){
-		validate();
-		db.beginTransaction();
-        try {
-        	db.execSQL("insert into c_vip('cardno','name','idno','mobile','sex','email','birthday','createTime','employee','type')"+
-        				" values(?,?,?,?,?,?,?,?,?,?)",
-					new Object[]{cardNOET.getText().toString().trim(),
-								nameET.getText().toString().trim(),
-								identityET.getText().toString().trim(),
-								mobilePhoneET.getText().toString().trim(),
-								radioGroup.getCheckedRadioButtonId()==R.id.radioMale?getResources().getString(R.string.male):getResources().getString(R.string.female),
-								emailET.getText().toString().trim(),
-								birthdayET.getText().toString().trim(),
-								new SimpleDateFormat("yyyyMMdd").format(new Date()),
-								"",
-								typeSp.getSelectedItem().toString(),
-								});
-            db.setTransactionSuccessful();
-        } finally {  
-            db.endTransaction();
-        }
+		if(validate()){
+			db.beginTransaction();
+	        try {
+	        	db.execSQL("insert into c_vip('cardno','name','idno','mobile','sex','email','birthday','createTime','employee','type','status')"+
+	        				" values(?,?,?,?,?,?,?,?,?,?,?)",
+						new Object[]{cardNOET.getText().toString().trim(),
+									nameET.getText().toString().trim(),
+									identityET.getText().toString().trim(),
+									mobilePhoneET.getText().toString().trim(),
+									radioGroup.getCheckedRadioButtonId()==R.id.radioMale?getResources().getString(R.string.male):getResources().getString(R.string.female),
+									emailET.getText().toString().trim(),
+									birthdayET.getText().toString().trim(),
+									new SimpleDateFormat("yyyyMMdd").format(new Date()),
+									App.getPreferenceUtils().getPreferenceStr(PreferenceUtils.store_key),
+									typeSp.getSelectedItem().toString(),
+									getString(R.string.sales_settle_noup)
+									});
+	            db.setTransactionSuccessful();
+	        } finally {  
+	            db.endTransaction();
+	        }
+			UndoBarStyle MESSAGESTYLE = new UndoBarStyle(-1, -1, 3000);
+	    	UndoBarController.show(MemberRegistActivity.this, "注册会员成功", null, MESSAGESTYLE);
+		}
 	}
 	
 	private void update() {
-		validate();
-		db.beginTransaction();
-        try {
-        	db.execSQL("update c_vip set 'cardno'=?,'name'=?,'idno'=?,'mobile'=?,'sex'=?,"
-        			+ "'email'=?,'birthday'=?,'createTime'=?,'employee'=?,'type'=?"+
-        				" where _id = ?",
-					new Object[]{cardNOET.getText().toString().trim(),
-								nameET.getText().toString().trim(),
-								identityET.getText().toString().trim(),
-								mobilePhoneET.getText().toString().trim(),
-								radioGroup.getCheckedRadioButtonId()==R.id.radioMale?getResources().getString(R.string.male):getResources().getString(R.string.female),
-								emailET.getText().toString().trim(),
-								birthdayET.getText().toString().trim(),
-								new SimpleDateFormat("yyyyMMdd").format(new Date()),
-								App.getPreferenceUtils().getPreferenceStr(PreferenceUtils.user_key),
-								typeSp.getSelectedItem().toString(),
-								_id
-								});
-            db.setTransactionSuccessful();
-        } finally {  
-            db.endTransaction();
-        }
+		if(validate()){
+			db.beginTransaction();
+	        try {
+	        	db.execSQL("update c_vip set 'cardno'=?,'name'=?,'idno'=?,'mobile'=?,'sex'=?,"
+	        			+ "'email'=?,'birthday'=?,'createTime'=?,'employee'=?,'type'=?"+
+	        				" where _id = ?",
+						new Object[]{cardNOET.getText().toString().trim(),
+									nameET.getText().toString().trim(),
+									identityET.getText().toString().trim(),
+									mobilePhoneET.getText().toString().trim(),
+									radioGroup.getCheckedRadioButtonId()==R.id.radioMale?getResources().getString(R.string.male):getResources().getString(R.string.female),
+									emailET.getText().toString().trim(),
+									birthdayET.getText().toString().trim(),
+									new SimpleDateFormat("yyyyMMdd").format(new Date()),
+									App.getPreferenceUtils().getPreferenceStr(PreferenceUtils.user_key),
+									typeSp.getSelectedItem().toString(),
+									_id
+									});
+	            db.setTransactionSuccessful();
+	        } finally {  
+	            db.endTransaction();
+	        }
+		}
 	}
 	
 	public void query(){
 		Cursor c = db.rawQuery("select * from c_vip where _id = ?", new String[]{String.valueOf(_id)});
 		Log.d("zhang.h", "record number::::::::;" + c.getCount());
 		while(c.moveToNext()){
-			Log.d("zhang.h", c.getString(c.getColumnIndex("cardno")));
-			Log.d("zhang.h", c.getString(c.getColumnIndex("name")));
-			Log.d("zhang.h", c.getString(c.getColumnIndex("idno")));
-			Log.d("zhang.h", c.getString(c.getColumnIndex("mobile")));
-			Log.d("zhang.h", c.getString(c.getColumnIndex("birthday")));
-			Log.d("zhang.h", c.getString(c.getColumnIndex("employee")));
-			Log.d("zhang.h", c.getString(c.getColumnIndex("email")));
-			Log.d("zhang.h", c.getString(c.getColumnIndex("createTime")));
-			Log.d("zhang.h", c.getString(c.getColumnIndex("type")));
-			Log.d("zhang.h", c.getString(c.getColumnIndex("sex")));
 			cardNOET.setText(c.getString(c.getColumnIndex("cardno")));
 			nameET.setText(c.getString(c.getColumnIndex("name")));
 			identityET.setText(c.getString(c.getColumnIndex("idno")));
@@ -255,12 +254,7 @@ public class MemberRegistActivity extends BaseActivity {
 		}
 	}
 	
-	private void verify() {
-		if(isRequired(cardNOET.getText())){
-			UndoBarStyle MESSAGESTYLE = new UndoBarStyle(-1, -1, 3000);
-        	UndoBarController.show(MemberRegistActivity.this, "卡号不能为空", null, MESSAGESTYLE);
-        	return;
-		}
+	private boolean verifyNet(){
 		Map<String,String> params = new HashMap<String, String>();
 		JSONArray array;
 		JSONObject transactions;
@@ -275,20 +269,67 @@ public class MemberRegistActivity extends BaseActivity {
 			//查询条件的params
 			JSONObject queryParams = new JSONObject();
 			queryParams.put("column", "cardno");
-			queryParams.put("condition", cardNOET.getText().toString().trim());
+			queryParams.put("condition", "="+cardNOET.getText().toString().trim());
 			paramsInTransactions.put("params", queryParams);
 			
 			transactions.put("params", paramsInTransactions);
 			array.put(transactions);
+			//Log.d(TAG, array.toString());
 			params.put("transactions", array.toString());
 			sendRequest(params,new Response.Listener<String>() {
 				@Override
 				public void onResponse(String response) {
-					//Log.d("zhang.h", response);
-					
+					//Log.d(TAG, response);
+					Message msg = handler.obtainMessage();
+					msg.obj = response;
+					handler.dispatchMessage(msg);
 				}
 			});
 		} catch (JSONException e) {}
+
+		return false;
 	}
+	
+	private boolean parseResult(String response) {
+	    try {
+			JSONArray resJA = new JSONArray(response);
+			JSONObject resJO = resJA.getJSONObject(0);
+			JSONArray rowsJA = resJO.getJSONArray("rows");
+			return rowsJA.length() > 0;
+		} catch (JSONException e) {}
+		return false;
+	}
+
+	private boolean verifyLocal() {
+		boolean flag = false;
+		Cursor c = db.rawQuery("select * from c_vip where cardno = ?", new String[]{cardNOET.getText().toString()});
+		if(c.moveToFirst())
+			flag = true;
+		c.close();
+		return flag;
+	}
+	
+	Handler handler = new Handler(){
+
+		@Override
+		public void handleMessage(Message msg) {
+			super.handleMessage(msg);
+			String response = (String) msg.obj;
+			stopProgressDialog();
+			if(parseResult(response)){
+				UndoBarStyle MESSAGESTYLE = new UndoBarStyle(-1, -1, 3000);
+	        	UndoBarController.show(MemberRegistActivity.this, "对不起，此卡号已被使用", null, MESSAGESTYLE);
+			}else{
+				if(verifyLocal()){
+					UndoBarStyle MESSAGESTYLE = new UndoBarStyle(-1, -1, 3000);
+		        	UndoBarController.show(MemberRegistActivity.this, "对不起，此卡号已被使用", null, MESSAGESTYLE);
+				}else{
+					UndoBarStyle MESSAGESTYLE = new UndoBarStyle(-1, -1, 3000);
+		        	UndoBarController.show(MemberRegistActivity.this, "此卡号可以使用", null, MESSAGESTYLE);
+				}
+			}
+		}
+		
+	};
 	
 }

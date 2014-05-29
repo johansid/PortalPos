@@ -6,8 +6,9 @@
     </string-array>
 
     <string-array name="vipType">
-        <item>团购单</item>
-        <item>金卡</item>
+        <item>超级普通卡</item>
+        <item>超级白金卡</item>
+        <item>超级黄金卡</item>
     </string-array>
 
     <string-array name="status">
@@ -15,7 +16,11 @@
     </string-array>
 
     <string-array name="empployee">
-        <item>test</item>
+        <item>虞旻琦</item>
+    </string-array>
+    
+    <string-array name="store">
+        <item>苏州001</item>
     </string-array>
     
     <!--扫描条码截取位数-->

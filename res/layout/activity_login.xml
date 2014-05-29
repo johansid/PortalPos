@@ -72,7 +72,7 @@
         android:layout_marginLeft="70dp"
         android:layout_marginRight="10dp"
         android:hint="@string/input_user_name_hint"
-        android:text="test"/>
+        android:text="@string/login_test_user"/>
 
     <ImageView
         android:layout_height="wrap_content"
@@ -93,7 +93,7 @@
         android:layout_marginBottom="30dp"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="70dp" 
-        android:entries="@array/empployee"/>
+        android:entries="@array/store"/>
     <!-- 登录输入框 -->
 
 </RelativeLayout>

@@ -16,6 +16,13 @@ public class Member implements Parcelable{
 	private String employee;
 	private String discount;
 	private String yue;
+	private String status;
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
 	public String getYue() {
 		return yue;
 	}

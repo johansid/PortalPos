@@ -7,7 +7,7 @@
 
     <uses-sdk
         android:minSdkVersion="14"
-        android:targetSdkVersion="19" />
+        android:targetSdkVersion="14" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
@@ -41,7 +41,7 @@
         <activity android:name="cn.burgeon.core.ui.sales.SalesMonthlyReportActivity" android:windowSoftInputMode="adjustPan|stateHidden"/>
         <activity android:name="cn.burgeon.core.ui.sales.SalesWareSummerActivity" android:windowSoftInputMode="adjustPan|stateHidden"/>
         <activity android:name="cn.burgeon.core.ui.sales.SalesArchiveSummerActivity" android:windowSoftInputMode="adjustPan|stateHidden"/>
-        <activity android:name="cn.burgeon.core.ui.sales.SalesNewOrderActivity" android:windowSoftInputMode="adjustPan|stateHidden"/>
+        <activity android:name="cn.burgeon.core.ui.sales.SalesNewOrderActivity" android:windowSoftInputMode="adjustPan|stateHidden" android:launchMode="singleTask"/>
         <activity android:name="cn.burgeon.core.ui.sales.SalesSettleActivity" android:windowSoftInputMode="adjustPan|stateHidden"/>
         <activity android:name="cn.burgeon.core.ui.sales.SalesOrderDetailActivity" android:windowSoftInputMode="adjustPan|stateHidden"/>
         <activity android:name="cn.burgeon.core.ui.sales.SalesWareSummerDetailActivity" android:windowSoftInputMode="adjustPan|stateHidden"/>

@@ -1,5 +1,7 @@
 package cn.burgeon.core.ui.member;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -100,6 +102,7 @@ public class MemberListActivity extends BaseActivity {
 			member.setCreateCardDate(c.getString(c.getColumnIndex("createTime")));
 			member.setType(c.getString(c.getColumnIndex("type")));
 			member.setSex(c.getString(c.getColumnIndex("sex")));
+			member.setStatus(c.getString(c.getColumnIndex("status")));
 			data.add(member);
 		}
 		if(c != null && !c.isClosed())
@@ -171,14 +174,13 @@ public class MemberListActivity extends BaseActivity {
 				forwardActivity(MemberRegistActivity.class);
 				break;
 			case R.id.memberListUpdate:
-				/*Intent intent = new Intent(MemberListActivity.this,MemberRegistActivity.class);
-				Bundle bundle = new Bundle();
-				bundle.putParcelable("member", selectedMember);
-				intent.putExtras(bundle);
-				startActivity(intent);*/
-				Intent intent = new Intent(MemberListActivity.this,MemberRegistActivity.class);
-				intent.putExtra("_id", _id);
-				startActivity(intent);
+				if(getString(R.string.sales_settle_hasup).equals(selectedMember.getStatus())){
+					showTips();
+				}else{
+					Intent intent = new Intent(MemberListActivity.this,MemberRegistActivity.class);
+					intent.putExtra("_id", _id);
+					startActivity(intent);
+				}
 				break;
 			default:
 				break;
@@ -186,7 +188,22 @@ public class MemberListActivity extends BaseActivity {
 		}
 	}; 
 	
+    private void showTips(){
+    	AlertDialog dialog = null;
+    	AlertDialog.Builder builder = new AlertDialog.Builder(this)
+    		.setTitle(getString(R.string.systemtips))
+    		.setMessage(R.string.no_update_uploaded_data)
+    		.setPositiveButton(getString(R.string.confirm),new DialogInterface.OnClickListener(){
+				@Override
+				public void onClick(DialogInterface dialog, int arg1) {
+					dialog.dismiss();
+				}});
+    	dialog = builder.create();
+    	dialog.show();
+    }
+	
 	int _id;
+	Member selectedMember;
 	View previous;
 	
 	OnItemClickListener OnItemSelectedListener = new OnItemClickListener() {
@@ -195,7 +212,7 @@ public class MemberListActivity extends BaseActivity {
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 			if(previous != null) previous.setBackgroundDrawable(view.getBackground());
 			view.setBackgroundResource(R.drawable.button_bg);
-			Member selectedMember = (Member) parent.getAdapter().getItem(position);
+			selectedMember = (Member) parent.getAdapter().getItem(position);
 			previous = view;
 			_id = selectedMember.getId();
 			Log.d("MemberListActivity", "_id=" +_id);

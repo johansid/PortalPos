@@ -59,8 +59,8 @@ public class BaseActivity extends Activity {
     protected void onStop() {
     	// TODO Auto-generated method stub
     	super.onStop();
-    	if(db != null)
-    		db.close();
+    	/*if(db != null)
+    		db.close();*/
     }
 
     // 设置程序全屏显示

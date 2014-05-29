@@ -22,6 +22,8 @@ public class SalesWareSummerDetailActivity extends BaseActivity {
 	SalesWareSummerDetailAdapter mAdapter;
 	ArrayList<Product> data = new ArrayList<Product>();
 	String barCode;
+	String startDate;
+	String endDate;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,16 +33,21 @@ public class SalesWareSummerDetailActivity extends BaseActivity {
 
         init();
         
-        barCode = getIntent().getExtras().getString("barCode");
-    	if(barCode != null){
-    		query();
-    	}
+        Bundle bundle =  getIntent().getExtras();
+        if(bundle != null){
+	        barCode = bundle.getString("barCode");
+	        startDate = bundle.getString("startDate");
+	        endDate = bundle.getString("endDate");
+	    	if(barCode != null){
+	    		query();
+	    	}
+        }
     	upateBottomBarInfo();
     }
 
 
 	private void query() {
-		Cursor c = db.rawQuery("select * from c_settle_detail where barcode = ?", new String[]{barCode});
+		Cursor c = db.rawQuery("select * from c_settle_detail where barcode = ? and settleDate between '"+startDate+"' and '"+endDate+"'", new String[]{barCode});
 		Log.d("zhang.h", "result size:" + c.getCount());
 		Product product = null;
 		while(c.moveToNext()){
@@ -87,9 +94,11 @@ public class SalesWareSummerDetailActivity extends BaseActivity {
 	private void upateBottomBarInfo() {
 		float pay = 0.0f;
 		int count = 0;
-		for(Product pro : data){
-			pay += Float.parseFloat(pro.getMoney());
-			count += Integer.parseInt(pro.getCount());
+		if(data.size() > 0){
+			for(Product pro : data){
+				pay += Float.parseFloat(pro.getMoney());
+				count += Integer.parseInt(pro.getCount());
+			}
 		}
 		Log.d("zhang.h", "pay=" + pay+",count=" + count);
 		

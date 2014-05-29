@@ -6,30 +6,63 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnFocusChangeListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import cn.burgeon.core.App;
 import cn.burgeon.core.R;
+import cn.burgeon.core.adapter.SalesNewOrderAdapter;
 import cn.burgeon.core.adapter.SalesSettleAdapter;
 import cn.burgeon.core.bean.IntentData;
 import cn.burgeon.core.bean.Product;
 import cn.burgeon.core.bean.Settle;
 import cn.burgeon.core.ui.BaseActivity;
 import cn.burgeon.core.utils.PreferenceUtils;
+import cn.burgeon.core.widget.UndoBarController;
+import cn.burgeon.core.widget.UndoBarController.UndoListener;
+import cn.burgeon.core.widget.UndoBarStyle;
 
 public class SalesSettleActivity extends BaseActivity {
 
+	private final String TAG = "SalesSettleActivity";
 	ListView mListView;
 	Button settleBtn;
 	TextView payTV, counTV;
 	EditText orginET, disCounET, realityET;
 	ArrayList<Product> products;
 	String command;
+	
+	public EditText getOrginET() {
+		return orginET;
+	}
+
+	public void setOrginET(EditText orginET) {
+		this.orginET = orginET;
+	}
+
+	public EditText getDisCounET() {
+		return disCounET;
+	}
+
+	public void setDisCounET(EditText disCounET) {
+		this.disCounET = disCounET;
+	}
+
+	public EditText getRealityET() {
+		return realityET;
+	}
+
+	public void setRealityET(EditText realityET) {
+		this.realityET = realityET;
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +83,7 @@ public class SalesSettleActivity extends BaseActivity {
 	
 	float pay = 0;
 	int count = 0;
-	int discount = 0;
+	float discount = 0;
 
 	private void settle() {
 		IntentData iData = (IntentData) getIntent().getParcelableExtra(PAR_KEY);
@@ -61,13 +94,26 @@ public class SalesSettleActivity extends BaseActivity {
 			pay += Float.parseFloat(pro.getMoney());
 			count += Integer.parseInt(pro.getCount());
 		}
-		payTV.setText(String.format(getResources().getString(R.string.sales_settle_pay),String.valueOf(pay)));
+		payTV.setText(String.format(getResources().getString(R.string.sales_settle_pay),String.format("%.2f",pay)));
 		counTV.setText(String.format(getResources().getString(R.string.sales_settle_count),count));
 		
-		realityET.setText(String.valueOf(pay));
-		disCounET.setText(String.valueOf(discount));
+		disCounET.setOnFocusChangeListener(new OnFocusChangeListener() {
+			
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				if(!hasFocus){
+					if(!"".equals(disCounET.getText())){
+						discount = Float.parseFloat(disCounET.getText().toString())/100;
+						realityET.setText(String.format("%.2f", pay * discount));
+					}
+				}
+			}
+		});
+		realityET.setText(String.format("%.2f", pay));
 		List<Settle> list = new ArrayList<Settle>();
-		list.add(new Settle(getResources().getString(R.string.sales_settle_cash), String.valueOf(pay)));
+		list.add(new Settle(getResources().getString(R.string.sales_settle_cash), String.format("%.2f",pay)));
+		//list.add(new Settle(getResources().getString(R.string.sales_settle_auto), String.format("%.2f",0.00f)));
+		//list.add(new Settle(getResources().getString(R.string.sales_settle_cash), String.format("%.2f",0.00f)));
 		mListView.setAdapter(new SalesSettleAdapter(list, this));
 	}
 
@@ -93,13 +139,40 @@ public class SalesSettleActivity extends BaseActivity {
 		
 		@Override
 		public void onClick(View v) {
-			if("unknow".equals(command) || null == command)
-				save();
-			else
-				update();
-			forwardActivity(DailySalesActivity.class);
+			if("unknow".equals(command) || null == command){
+				showTips(1);
+			}
+			else{
+				showTips(2);
+			}
 		}
 	};
+	
+    //显示对话框
+    private void showTips(final int what){
+    	AlertDialog dialog = null;
+    	AlertDialog.Builder builder = new AlertDialog.Builder(this)
+    		.setTitle(getString(R.string.systemtips))
+    		.setMessage(R.string.sales_settle_dialogmsg)
+    		.setPositiveButton(getString(R.string.confirm),new DialogInterface.OnClickListener(){
+
+				@Override
+				public void onClick(DialogInterface arg0, int arg1) {
+					if(what == 1) save();
+					else if(what == 2) update();
+					UndoBarStyle MESSAGESTYLE = new UndoBarStyle(-1, -1, 3000);
+			        UndoBarController.show(SalesSettleActivity.this, "结账成功", null, MESSAGESTYLE);
+			        forwardActivity(SalesNewOrderActivity.class);
+				}})
+			.setNegativeButton(getString(R.string.cancel),new DialogInterface.OnClickListener(){
+
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.dismiss();
+				}});
+    	dialog = builder.create();
+    	dialog.show();
+    }
 	
 	public void save(){
 		db.beginTransaction();
@@ -110,12 +183,12 @@ public class SalesSettleActivity extends BaseActivity {
         			+ "'status','settleDate','settleMonth','settleUUID')"+
         				" values(?,?,?,?,?,?,?,?,?,?)",
 					new Object[]{new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(currentTime),
-								getResources().getString(R.string.sales_settle_novip),
+								getResources().getString(R.string.sales_settle_type),
 								count,
 								realityET.getText(),
-								"0001",
-								"test",
-								getResources().getString(R.string.sales_settle_noup),
+								App.getPreferenceUtils().getPreferenceStr(PreferenceUtils.user_key),
+								App.getPreferenceUtils().getPreferenceStr(PreferenceUtils.user_key),
+								getString(R.string.sales_settle_noup),
 								new SimpleDateFormat("yyyy-MM-dd").format(currentTime),
 								new SimpleDateFormat("yyyy-MM-dd").format(currentTime).substring(0, 7),
 								uuid});
@@ -135,7 +208,6 @@ public class SalesSettleActivity extends BaseActivity {
 	}
 	
 	public void update(){
-		startProgressDialog();
 		db.beginTransaction();
         try {
         	Date currentTime = new Date();
@@ -144,7 +216,7 @@ public class SalesSettleActivity extends BaseActivity {
         			+ "'status' = ?,'settleDate' = ?,'settleMonth' = ? "
         			+ " where settleUUID = ?",
 					new Object[]{new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(currentTime),
-								getResources().getString(R.string.sales_settle_novip),
+								getResources().getString(R.string.sales_settle_type),
 								count,
 								realityET.getText(),
 								getResources().getString(R.string.sales_settle_noup),
@@ -175,7 +247,6 @@ public class SalesSettleActivity extends BaseActivity {
         finally {  
             db.endTransaction();
         } 
-        stopProgressDialog();
 	}
 
 }

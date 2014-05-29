@@ -3,6 +3,8 @@ package cn.burgeon.core.ui.sales;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,6 +23,8 @@ import cn.burgeon.core.bean.Order;
 import cn.burgeon.core.ui.BaseActivity;
 import cn.burgeon.core.utils.PreferenceUtils;
 import cn.burgeon.core.utils.ScreenUtils;
+import cn.burgeon.core.widget.UndoBarController;
+import cn.burgeon.core.widget.UndoBarStyle;
 
 public class DailySalesActivity extends BaseActivity {
 	
@@ -38,13 +42,6 @@ public class DailySalesActivity extends BaseActivity {
 
         init();
         bindList();
-    }
-    
-    @Override
-    protected void onStop() {
-    	// TODO Auto-generated method stub
-    	super.onStop();
-    	finish();
     }
     
     private void bindList() {
@@ -89,8 +86,13 @@ public class DailySalesActivity extends BaseActivity {
 				forwardActivity(SalesNewOrderActivity.class);
 				break;
 			case R.id.sales_daily_btn_update:
-				if(currentSelectedOrder != null)
-					forwardActivity(SalesNewOrderActivity.class,"updateID",currentSelectedOrder.getUuid());
+				if(currentSelectedOrder != null){
+					if(getString(R.string.sales_settle_hasup).equals(currentSelectedOrder.getOrderState())){
+						showTips();
+					}else{
+						forwardActivity(SalesNewOrderActivity.class,"updateID",currentSelectedOrder.getUuid());
+					}
+				}
 				break;
 			case R.id.sales_daily_btn_search:
 				//queryForUpdate();
@@ -107,6 +109,20 @@ public class DailySalesActivity extends BaseActivity {
 			}
 		}
 	};
+	
+    private void showTips(){
+    	AlertDialog dialog = null;
+    	AlertDialog.Builder builder = new AlertDialog.Builder(this)
+    		.setTitle(getString(R.string.systemtips))
+    		.setMessage(R.string.no_update_uploaded_data)
+    		.setPositiveButton(getString(R.string.confirm),new DialogInterface.OnClickListener(){
+				@Override
+				public void onClick(DialogInterface dialog, int arg1) {
+					dialog.dismiss();
+				}});
+    	dialog = builder.create();
+    	dialog.show();
+    }
 	
     private void querySku() {
 		Cursor c = db.rawQuery("select * from tc_styleprice", null);
