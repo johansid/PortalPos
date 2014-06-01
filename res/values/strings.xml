@@ -264,6 +264,13 @@
     <string name="twoB">2B</string>
     <string name="tipsSaveSucess">保存成功</string>
     
+    <string name="tipsURLAvailable">恭喜，服务器可用！</string>
+    <string name="tipsURLUnAvailable">sorry，服务器连不上！</string>
+ 
+    <string name="startCheckServer">开始测试服务器</string>
+    <string name="tipsServerURLNotSet">服务器地址未配置，请到网络设置中配置服务器地址</string>
+    <string name="currentURLAddress">当前配置的服务器地址:</string>
+    
     <string name="add">新增</string>
     <string name="query">查询</string>
     <string name="del">删除</string>

@@ -402,7 +402,7 @@ public class SystemDataDownloadActivity extends BaseActivity{
 	private boolean networkReachable(){
 		ConnectivityManager connectivityManager = (ConnectivityManager) this.getSystemService(CONNECTIVITY_SERVICE);
 		NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-		if(networkInfo != null)  return true;
+		if(networkInfo != null && networkInfo.isConnected())  return true;
 		return false;	
 	}
 	

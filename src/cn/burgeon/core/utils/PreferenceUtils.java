@@ -10,6 +10,9 @@ public class PreferenceUtils {
     public static final String store_key = "storeKey";
     public static final String user_key = "userKey";
 
+    //系统配置：网络配置 关键字
+    public static final String URLAddressKey = "URLAddressKey";
+    
     //系统配置：门店信息  关键字
     	//门店编号
     public static final String storeNumberKey = "storeNumberKey";
