@@ -270,6 +270,7 @@
     <string name="startCheckServer">开始测试服务器</string>
     <string name="tipsServerURLNotSet">服务器地址未配置，请到网络设置中配置服务器地址</string>
     <string name="currentURLAddress">当前配置的服务器地址:</string>
+    <string name="tipsServerTesting">正在测试中！</string>
     
     <string name="add">新增</string>
     <string name="query">查询</string>

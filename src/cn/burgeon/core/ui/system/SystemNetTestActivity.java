@@ -45,7 +45,6 @@ public class SystemNetTestActivity extends BaseActivity{
 	
 	//URL地址
 	private String URLAddress;
-	private StringBuilder niuBString;
 	
 	//View
 	private ScrollView niuBSv;
@@ -55,6 +54,9 @@ public class SystemNetTestActivity extends BaseActivity{
 	
 	//开始按钮
 	private Button startButton;
+	
+	//正在测试标志
+	private boolean testing;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
@@ -86,7 +88,11 @@ public class SystemNetTestActivity extends BaseActivity{
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				new Thread(netRunnable).start();
+				if(!testing){
+					new Thread(netRunnable).start();
+				}else{
+					showTips(R.string.tipsServerTesting);
+				}
 			}
 		});
 		
@@ -106,7 +112,9 @@ public class SystemNetTestActivity extends BaseActivity{
 		@Override
 		public void run() {
 			// TODO Auto-generated method stub
+			testing = true;
 			checkServer();
+			testing = false;
 		}
 	
 	};
@@ -114,17 +122,12 @@ public class SystemNetTestActivity extends BaseActivity{
 	//检测服务器地址
 	private void checkServer(){
 				
-		//检查网络连接状态
 		if( !networkAvailable() ){
 			netHandler.sendEmptyMessage(networkUnAvailableMsg);
 			return;
 		}
 		
-		if( checkURL2( getURLAddress() ) ){
-			showAvailableNiuBEffect(URLAvailableMsg);
-		}else{
-			showAvailableNiuBEffect(URLUnAvailableMsg);
-		}
+		showNiuBEffect();
 	}
 	
 	//更新UI Hanlder
@@ -230,10 +233,15 @@ public class SystemNetTestActivity extends BaseActivity{
     	
     }
     
-	private void showAvailableNiuBEffect(final int whichTipsMsg){
-		niuBString = null;
+	private void showNiuBEffect(){
+
+		if( checkURL2( getURLAddress() ) ){
+			niuBColorHandler.sendEmptyMessage('G');
+		}else{
+			niuBColorHandler.sendEmptyMessage('R');
+		}
 		
-		svBgColorHandler.sendEmptyMessage(1000);
+		svBgColorHandler.sendEmptyMessage('B');
 		for(int i = 0;i < 200;i ++){
 			try {
 				Thread.sleep(40);
@@ -241,11 +249,20 @@ public class SystemNetTestActivity extends BaseActivity{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			niuBHandler.sendEmptyMessage(888);
+			niuBHandler.sendEmptyMessage('X');
 		}
-		svBgColorHandler.sendEmptyMessage(1001);
+		svBgColorHandler.sendEmptyMessage('W');
+
+		if( !networkAvailable() ){
+			netHandler.sendEmptyMessage(networkUnAvailableMsg);
+			return;
+		}
 		
-		netHandler.sendEmptyMessage(whichTipsMsg);
+		if( checkURL2( getURLAddress() ) ){
+			netHandler.sendEmptyMessage(URLAvailableMsg);
+		}else{
+			netHandler.sendEmptyMessage(URLUnAvailableMsg);
+		}
 	}
 	
 	public String getRandomString(int length) {
@@ -263,13 +280,25 @@ public class SystemNetTestActivity extends BaseActivity{
 		return val;
 	}
 
+	private Handler niuBColorHandler = new Handler(){
+		@Override
+		public void handleMessage(Message msg){
+			super.handleMessage(msg);
+			if(msg.what == 'G'){
+				niuBEffectText.setTextColor(android.graphics.Color.GREEN);				
+			}else if(msg.what == 'R'){
+				niuBEffectText.setTextColor(android.graphics.Color.RED);
+			}
+		}
+	};
+	
 	private Handler svBgColorHandler = new Handler(){
 		@Override
 		public void handleMessage(Message msg){
 			super.handleMessage(msg);
-			if(msg.what == 1000){
+			if(msg.what == 'B'){
 				niuBSv.setBackgroundColor(android.graphics.Color.BLACK);				
-			}else if(msg.what == 1001){
+			}else if(msg.what == 'W'){
 				niuBEffectText.setText("");;
 				niuBSv.setBackgroundColor(android.graphics.Color.WHITE);
 			}
