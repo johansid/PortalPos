@@ -236,7 +236,7 @@ public class SystemNetTestActivity extends BaseActivity{
 		svBgColorHandler.sendEmptyMessage(1000);
 		for(int i = 0;i < 200;i ++){
 			try {
-				Thread.sleep(100);
+				Thread.sleep(40);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -292,7 +292,7 @@ public class SystemNetTestActivity extends BaseActivity{
 	         ;;;;   public void handleMessage(Message msg){;		      ;;;;;;;;;;;;;;;;;          ;;;;;;;;;;;;;;;;;;;;;;;;;
 	        ;;;;                      ;;;;;                               ;;;;;;;;;;;;;;;;           ;;;;;;;;;;;;;;;;;;;;;;;;;;
 	                ;;;;;;super.handleMessage(msg);;;;;;;;;;;;;           ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-	   niuBEffectText.setText(niuBEffectText.getText() + "\n" +           getRandomString(new Random().nextInt(200)));;;;;;;;
+	   niuBEffectText.setText(niuBEffectText.getText() + "\n" +           getRandomString(new Random().nextInt(100)));;;;;;;;
 	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;           ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	                                  ;;;;;								  ;;;;;;;;;;;;;;;;;;;;;
 	                       	          ;;;;;							      ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
