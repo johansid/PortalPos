@@ -1,23 +1,28 @@
 
-														package cn.burgeon.core.ui.system;
-														import java.io.IOException; import
-														java.io.InputStream ; import java.
-														net.HttpURLConnection;import java.
-														net.MalformedURLException;  import
-				java.net.URL;import java.util.Random; import org.apache.http.HttpResponse; import org.apache.http.client.HttpClient; 
-				   import org.apache.http.client.methods.HttpGet;import org.apache.http.impl.client.DefaultHttpClient;import org   
-				   	 .apache.http.params.BasicHttpParams; import org.apache.http.params.HttpConnectionParams;import android.      
-				         app.AlertDialog;import android.net.ConnectivityManager ;import android.net.NetworkInfo ; import   
-				            android.os.Bundle;import android.os.Handler;import android.os.Message;import android.text 
-				               .TextUtils ; import android.util.Log ; import android.view.LayoutInflater ; import 
-				                  android.view.View ; import  cn.burgeon.core.App ; import  android.view.View.
-				                     OnClickListener;import android.view.ViewGroup;import android.widget.
-				                        Button ;  import  android.widget.ScrollView ; import android.   
-				                           widget.TextView; import cn.burgeon.core.R ; import cn.
-				                              burgeon.core.ui.BaseActivity;import cn.burgeon
-				                                         .core.utils.PreferenceUtils;
-
-
+                                                        package cn.burgeon.core.ui.system;
+                                                        import java.io.IOException; import
+                                                        java.io.InputStream ; import java.
+                                                        net.HttpURLConnection;import java.
+                                                        net.MalformedURLException;  import
+                java.net.URL;import java.util.Random; import org.apache.http.HttpResponse; import org.apache.http.client.HttpClient; 
+                   import org.apache.http.client.methods.HttpGet;import org.apache.http.impl.client.DefaultHttpClient;import org   
+                      .apache.http.params.BasicHttpParams; import org.apache.http.params.HttpConnectionParams;import android.      
+                         app.AlertDialog;import android.net.ConnectivityManager ;import android.net.NetworkInfo ; import   
+                            android.os.Bundle;import android.os.Handler;import android.os.Message;import android.text 
+                               .TextUtils ; import android.util.Log ; import android.view.LayoutInflater ; import 
+                                  android.view.View ; import  cn.burgeon.core.App ; import  android.view.View.
+                                     OnClickListener;import android.view.ViewGroup;import android.widget.
+                                        Button ;  import  android.widget.ScrollView ; import android.   
+                                           widget.TextView; import cn.burgeon.core.R ; import cn.
+                                              burgeon.core.ui.BaseActivity;import cn.burgeon
+                                                 .core.utils.PreferenceUtils;////////////
+                                                    //////All Rights Reserved By///////
+                                                       ////////////吴相兴/////////////                                              
+                                                          ////////QQ:651369316///
+                                                             /////////////////
+                                                                ///////////
+                                                                   /////
+                                                                    //                                              
 
 	
                                ;;;;;;;;;;;
