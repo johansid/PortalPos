@@ -1,63 +1,61 @@
-package cn.burgeon.core.ui.system;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Random;
+														package cn.burgeon.core.ui.system;
+														import java.io.IOException; import
+														java.io.InputStream ; import java.
+														net.HttpURLConnection;import java.
+														net.MalformedURLException;  import
+				java.net.URL;import java.util.Random; import org.apache.http.HttpResponse; import org.apache.http.client.HttpClient; 
+				   import org.apache.http.client.methods.HttpGet;import org.apache.http.impl.client.DefaultHttpClient;import org   
+				   	 .apache.http.params.BasicHttpParams; import org.apache.http.params.HttpConnectionParams;import android.      
+				         app.AlertDialog;import android.net.ConnectivityManager ;import android.net.NetworkInfo ; import   
+				            android.os.Bundle;import android.os.Handler;import android.os.Message;import android.text 
+				               .TextUtils ; import android.util.Log ; import android.view.LayoutInflater ; import 
+				                  android.view.View ; import  cn.burgeon.core.App ; import  android.view.View.
+				                     OnClickListener;import android.view.ViewGroup;import android.widget.
+				                        Button ;  import  android.widget.ScrollView ; import android.   
+				                           widget.TextView; import cn.burgeon.core.R ; import cn.
+				                              burgeon.core.ui.BaseActivity;import cn.burgeon
+				                                         .core.utils.PreferenceUtils;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
 
-import android.app.AlertDialog;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ScrollView;
-import android.widget.TextView;
-import cn.burgeon.core.App;
-import cn.burgeon.core.R;
-import cn.burgeon.core.ui.BaseActivity;
-import cn.burgeon.core.utils.PreferenceUtils;
 
-public class SystemNetTestActivity extends BaseActivity{
-	private final static String TAG = "SystemNetTestActivity";
 	
-	//各种msg
-	private final int URLAvailableMsg = 1;
-	private final int URLUnAvailableMsg = 2;
-	private final int networkUnAvailableMsg = 3;
-	private final int URLAddressNotSetMsg = 4;
+                               ;;;;;;;;;;;
+	        ;;;;;;;;;;;;;;;;  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+	     ;;;;;;;;;;;;;;;;   ;public class SystemNetTestActivity extends BaseActivity{;;;
+	  ;;;;;;;;;;;;;;;;   ;;;private final static String TAG = "SystemNetTestActivity";
+	;;;;;;;;;;;;;;;;  ;;;;;;;;;;;              ;;;;;;;;;;;;              ;;;;;;;;;;;    
+	   ;;;;;;;;;;;                              ;;;;;;;;;;;;             ;;;;;;;;;
+	   ;;;;;;;;;;;                               ;;;;;;;;;;;;            
+	   ;;;;;;;;;;;                                ;;;;;;;;;;;;
+	   ;;;;;;;;;;;              ;;;;;;;;           ;;;;;;;;;;;;      ;;;;;;;;;
+	   ;;;;;;;;;;;             ;;;;;;;;            ;;;;;;;;;;;;       ;;;;;;;;;
+	   ;;;;;;;;;;;            ;;;;;;;;             ;;;;;;;;;;;;        ;;;;;;;;;
+	   ;;;;;;;;;;;           ;;;;;;;;              ;;;;;;;;;;;;         ;;;;;;;;;
+	   ;;;;;;;;;;;          ;;;;;;;;              ;;;;;;;;;;;;          ;;;;;;;;;
+	   ;;;;;;;;;;;                               ;;;;;;;;;;;;           ;;;;;;;;;
+	   ;;;;;;;;;;;                             ;;;;;;;;;;;;           
+	   ;;;;;;;;;;;                 ;;;;;;;;;;;;;;;;;;;;;;;            
+	   ;;;;;;;;;;;                   ;;;;;;;;;;;;;;;;;;;;
+	                                   ;;;;;;;;;;;;;;;;
 	
-	//URL地址
-	private String URLAddress;
+	                               		
+	                                ;;;;;;;;;;;;;;
+                                    ;;;;;;;;;;;;;;
+	private final int URLAvailableMsg       = 1;private final int URLUnAvailableMsg     = 2;
+	private final int networkUnAvailableMsg = 3;private final int URLAddressNotSetMsg   = 4;
+                                    private String 
+                                    URLAddress;;;;
+	                                ;;;;;;;private 
+	                                ScrollView niuBSv;
+	          private TextView currentURLAddressTextView;;;;;;;;;;;;;;;;;
+	          private TextView URLAddressTextView;;;;;;;;;;;;;;;;;;;;;;;;
+	          private TextView niuBEffectText;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+	          private Button                                 startButton;
+	          private boolean                                testing;;;;;
 	
-	//View
-	private ScrollView niuBSv;
-	private TextView currentURLAddressTextView;
-	private TextView URLAddressTextView;
-	private TextView niuBEffectText;
-	
-	//开始按钮
-	private Button startButton;
-	
-	//正在测试标志
-	private boolean testing;
-	
+	          
+	          
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -167,7 +165,7 @@ public class SystemNetTestActivity extends BaseActivity{
         }catch (Exception e1) {    
             return false;
         } 	
-	}
+	}	
 	
 	//检测URL有效:方法2
 	private boolean checkURL2(String url){
@@ -232,7 +230,7 @@ public class SystemNetTestActivity extends BaseActivity{
     		.show();
     	
     }
-    
+     
 	private void showNiuBEffect(){
 
 		if( checkURL2( getURLAddress() ) ){
