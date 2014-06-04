@@ -2,6 +2,7 @@ package cn.burgeon.core.widget;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface.OnKeyListener;
 import android.view.LayoutInflater;
@@ -21,9 +22,8 @@ import cn.burgeon.core.R;
 
 public class CustomDialog {
 
-	private AlertDialog ad;
+	private Dialog ad;
 	private Context mContext;
-	private Window window;
 
 	private EditText startTime, endTime;
 	private Button okButton;
@@ -36,10 +36,10 @@ public class CustomDialog {
 	private CustomDialog(Context context) {
 		super();
 		this.mContext = context;
-		ad = new AlertDialog.Builder(context).create();
-		ad.show();
-		window = ad.getWindow();
-		View customView = LayoutInflater.from(context).inflate(R.layout.customdialog, null);
+        View customView = LayoutInflater.from(context).inflate(R.layout.customdialog, null);
+        ad = new Dialog(mContext);
+        ad.setContentView(customView);
+        ad.show();
 
 		startTime = (EditText) customView.findViewById(R.id.startTime);
 		startTime.setOnClickListener(new OnClickListener() {
@@ -71,8 +71,6 @@ public class CustomDialog {
 		cancelButton = (Button) customView.findViewById(R.id.cancelButton);
         stateTV = (TextView) customView.findViewById(R.id.stateTV);
         statusSpin = (Spinner) customView.findViewById(R.id.statusSpin);
-
-		window.setContentView(customView);
 	}
 
 	/**
@@ -178,7 +176,6 @@ public class CustomDialog {
 			CustomDialog dialog = new CustomDialog(params.context);
 			dialog.setOKButton(params.mOKButtonText, params.mOKButtonListener);
             dialog.setCancelButton(params.mCancelButtonText, params.mCancelButtonListener);
-            dialog.setCancelable(false);
             dialog.setCanceledOnTouchOutside(false);
             dialog.setState(params.stateText);
             dialog.setSpinner(params.spinnerVals);
