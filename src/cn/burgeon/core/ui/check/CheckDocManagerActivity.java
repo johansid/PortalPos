@@ -1,15 +1,15 @@
 package cn.burgeon.core.ui.check;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import cn.burgeon.core.App;
 import cn.burgeon.core.R;
 import cn.burgeon.core.adapter.CheckQueryLVAdapter;
@@ -47,25 +47,22 @@ public class CheckDocManagerActivity extends BaseActivity {
 		for(Order pro : data){
 			count += Integer.parseInt(pro.getOrderCount());
 		}
-		totalOutCountTV.setText(String.format(getResources().getString(R.string.sales_new_common_count), count));
 		recordCountTV.setText(String.format(getResources().getString(R.string.sales_new_common_record), data.size()));
 	}
 
 	private List<Order> fetchData() {
 		Order order = null;
 		List<Order> data = new ArrayList<Order>();
-		Cursor c = db.rawQuery("select * from c_check where isChecked = ?", new String[]{"0"});
-		Log.d("zhang.h", "cursor size===========" + c.getCount());
+		Cursor c = db.rawQuery("select * from c_check", null);
 		while (c.moveToNext()) {
 			order = new Order();
-			order.setId(c.getInt(c.getColumnIndex("_id")));
-			order.setUuid(c.getString(c.getColumnIndex("checkUUID")));
-			order.setOrderNo(c.getString(c.getColumnIndex("checkno")));
-			order.setOrderDate(c.getString(c.getColumnIndex("checkTime")));
-			order.setOrderType(c.getString(c.getColumnIndex("type")));
-			order.setOrderCount(c.getString(c.getColumnIndex("count")));
-			order.setOrderState(c.getString(c.getColumnIndex("status")));
-			order.setSaleAsistant(c.getString(c.getColumnIndex("orderEmployee")));
+            order.setOrderDate(c.getString(c.getColumnIndex("checkTime")));
+            order.setOrderNo(c.getString(c.getColumnIndex("checkno")));
+            order.setOrderCount(c.getString(c.getColumnIndex("count")));
+            order.setOrderType(c.getString(c.getColumnIndex("type")));
+            order.setSaleAsistant(c.getString(c.getColumnIndex("orderEmployee")));
+            order.setOrderState(c.getString(c.getColumnIndex("status")));
+            order.setIsChecked(c.getString(c.getColumnIndex("isChecked")));
 			data.add(order);
 		}
 		if (c != null && !c.isClosed())

@@ -24,7 +24,7 @@
     <string name="sysFunction">系统功能</string>
     <string name="allotManager">调拨管理</string>
     <string name="checkManager">盘点管理</string>
-    <string name="checkScan">盘点扫描</string>
+    <string name="checkScan">新盘</string>
     <string name="checkDocManager">盘点单管理</string>
     <string name="checkQuery">盘点查询</string>
     <string name="checktips">确认审核该盘点单据吗？审核后本单将不能续盘！</string>

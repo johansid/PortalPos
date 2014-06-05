@@ -29,9 +29,10 @@ public class DbHelper extends SQLiteOpenHelper {
                 "(_id INTEGER PRIMARY KEY AUTOINCREMENT, settleUUID VARCHAR,"+
 				"price VARCHAR, discount VARCHAR,count VARCHAR,money VARCHAR,settleDate VARCHAR,"
 				+ "pdtname VARCHAR,barcode VARCHAR,color VARCHAR,size VARCHAR,settleType VARCHAR)");
-		
+
+        // -----------------------------------------------------------------------------------盘点 begin
 		db.execSQL("CREATE TABLE IF NOT EXISTS c_check" +  
-                "(_id INTEGER PRIMARY KEY AUTOINCREMENT, checkno VARCHAR,shelfid varchar,shelf varchar,"+
+                "(_id INTEGER PRIMARY KEY AUTOINCREMENT, barcode VARCHAR, checkno VARCHAR, shelfid varchar,shelf varchar,"+
 				"checkTime VARCHAR, type VARCHAR,count VARCHAR,money VARCHAR,isChecked VARCHAR,"
 				+ "orderEmployee VARCHAR,employeeID VARCHAR,status VARCHAR,checkUUID VARCHAR)");
 		
@@ -39,6 +40,7 @@ public class DbHelper extends SQLiteOpenHelper {
                 "(_id INTEGER PRIMARY KEY AUTOINCREMENT, checkUUID VARCHAR,"+
 				"price VARCHAR, discount VARCHAR,count VARCHAR,money VARCHAR,checkDate VARCHAR,"
 				+ "pdtname VARCHAR,barcode VARCHAR,color VARCHAR,size VARCHAR)");
+        // -----------------------------------------------------------------------------------盘点 end
 
         // -----------------------------------------------------------------------------------调拨出库 begin
         db.execSQL("CREATE TABLE IF NOT EXISTS c_allot_out" +
