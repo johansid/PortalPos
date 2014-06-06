@@ -91,9 +91,16 @@
                 android:id="@+id/barcodeET"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="1351600237S" 
+                android:text="1351600237S"
+                android:layout_weight="0.9"
                 android:singleLine="true"
                 android:imeOptions="actionSearch"/>
+
+            <Button
+                android:id="@+id/okBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="OK" />
         </LinearLayout>
 
         <HorizontalScrollView

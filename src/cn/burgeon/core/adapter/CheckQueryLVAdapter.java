@@ -65,12 +65,12 @@ public class CheckQueryLVAdapter extends BaseAdapter {
         Order order = list.get(position);
         // 赋值
         holder.dateTV.setText(order.getOrderDate());
-        holder.noTV.setText("IV31633614051800015");
+        holder.noTV.setText(order.getOrderNo());
         holder.numTV.setText(order.getOrderCount());
-        holder.typeTV.setText("随机盘");
+        holder.typeTV.setText(order.getOrderType());
         holder.operatorTV.setText(order.getSaleAsistant());
-        holder.stateTV.setText("0".equals(order.getIsChecked())?"未完成":"已完成");
-        holder.uploadstateTV.setText("未上传");
+        holder.stateTV.setText(order.getOrderState());
+        holder.uploadstateTV.setText(order.getIsChecked());
         return convertView;
     }
 

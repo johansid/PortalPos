@@ -28,6 +28,7 @@ import cn.burgeon.core.bean.Product;
 import cn.burgeon.core.ui.BaseActivity;
 import cn.burgeon.core.utils.PreferenceUtils;
 import cn.burgeon.core.utils.ScreenUtils;
+import cn.burgeon.core.widget.CustomDialogForCheck;
 
 public class CheckScanActivity extends BaseActivity {
     ArrayList<Product> products = new ArrayList<Product>();
@@ -35,8 +36,10 @@ public class CheckScanActivity extends BaseActivity {
     private ListView checkscanLV;
     private TextView recodeNumTV, totalCountTV;
     private EditText barcodeET, shelfET;
-    private Button gatherBtn, reviewBtn;
+    private Button okBtn, gatherBtn, reviewBtn;
     private CheckScanLVAdapter mAdapter;
+
+    private CustomDialogForCheck customDialogForCheck;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +70,9 @@ public class CheckScanActivity extends BaseActivity {
         recodeNumTV = (TextView) findViewById(R.id.recodeNumTV);
         totalCountTV = (TextView) findViewById(R.id.totalCountTV);
 
+        okBtn = (Button) findViewById(R.id.okBtn);
+        okBtn.setOnClickListener(clickListener);
+
         gatherBtn = (Button) findViewById(R.id.gatherBtn);
         reviewBtn = (Button) findViewById(R.id.reviewBtn);
         gatherBtn.setOnClickListener(clickListener);
@@ -96,8 +102,6 @@ public class CheckScanActivity extends BaseActivity {
         Cursor c = db.rawQuery(sql, new String[]{barcodeText});
         if (c.moveToFirst()) {
             Product currProduct = parseSQLResult(c);
-            // 插入数据
-            updateCheckTable(currProduct);
             // 生成ProductList
             generateProductList(currProduct);
             // 刷新列表
@@ -106,42 +110,6 @@ public class CheckScanActivity extends BaseActivity {
         }
         if (c != null && !c.isClosed())
             c.close();
-    }
-
-    private void updateCheckTable(Product currProduct) {
-        db.beginTransaction();
-        try {
-            String uuid = UUID.randomUUID().toString();
-            Date currentTime = new Date();
-
-            // 是否有当前条码的商品
-            String sql = "select count from c_check where barcode = ?";
-            Cursor c = db.rawQuery(sql, new String[]{currProduct.getBarCode()});
-            if (c.moveToFirst()) {
-                int count = Integer.valueOf(c.getString(c.getColumnIndex("count")));
-                db.execSQL("update c_check set count = ? where barcode = ?", new String[]{String.valueOf(count + 1), currProduct.getBarCode()});
-            } else {
-                db.execSQL("insert into c_check('barcode', 'shelf','checkTime','checkno','count','type','orderEmployee',"
-                                + "'status','isChecked','checkUUID')" +
-                                " values(?,?,?,?,?,?,?,?,?)",
-                        new Object[]{
-                                currProduct.getBarCode(),
-                                shelfET.getText().toString(),
-                                new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(currentTime),
-                                "IV305152114060500044",
-                                currProduct.getCount(),
-                                "未知类型",
-                                "xiaosan",
-                                "未完成",
-                                "未上传",
-                                uuid}
-                );
-            }
-            db.setTransactionSuccessful();
-        } catch (Exception e) {
-        } finally {
-            db.endTransaction();
-        }
     }
 
     private void generateProductList(Product currProduct) {
@@ -207,11 +175,18 @@ public class CheckScanActivity extends BaseActivity {
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
+                case R.id.okBtn:
+                    if (barcodeET.getText() != null && barcodeET.getText().toString().length() > 0) {
+                        verifyBarCode(barcodeET.getText().toString());
+                    }
+                    break;
                 case R.id.gatherBtn:
-                    // reviewShelf("0");
                     break;
                 case R.id.reviewBtn:
-                    showTips();
+                    // 若有数据
+                    if (products.size() > 0) {
+                        showTips();
+                    }
                     break;
                 default:
                     break;
@@ -225,14 +200,39 @@ public class CheckScanActivity extends BaseActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.systemtips))
                 .setMessage(R.string.checktips)
-                .setPositiveButton(getString(R.string.confirm), new DialogInterface.OnClickListener() {
+                .setPositiveButton("是", new DialogInterface.OnClickListener() {
 
                     @Override
-                    public void onClick(DialogInterface arg0, int arg1) {
-                        reviewShelf("1");
+                    public void onClick(DialogInterface dialog, int which) {
+                        // 弹出对话框
+                        customDialogForCheck = new CustomDialogForCheck.Builder(CheckScanActivity.this).setPositiveButton("确定", new OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                // 批量更新数据库
+                                for (Product product : products) {
+                                    updateState(product);
+                                }
+
+                                // 关闭对话框
+                                if (customDialogForCheck.isShowing())
+                                    customDialogForCheck.dismiss();
+
+                                // 清除
+                                products.clear();
+
+                                // 退出页面
+                                finish();
+                            }
+                        }).setNegativeButton("取消", new OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (customDialogForCheck.isShowing())
+                                    customDialogForCheck.dismiss();
+                            }
+                        }).setCheckTypeSpinner(new String[]{"随机盘", "全盘"}).setCheckerSpinner(new String[]{"Rain"}).show();
                     }
                 })
-                .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                .setNegativeButton("否", new DialogInterface.OnClickListener() {
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -243,28 +243,26 @@ public class CheckScanActivity extends BaseActivity {
         dialog.show();
     }
 
-    private void reviewShelf(String isChecked) {//0.未审核 1.已审核
+    private void updateState(Product product) {
         db.beginTransaction();
         try {
             String uuid = UUID.randomUUID().toString();
             Date currentTime = new Date();
-            db.execSQL("insert into c_check('shelf','checkTime','type','count','employeeID','orderEmployee',"
-                            + "'status','checkUUID','isChecked')" +
-                            " values(?,?,?,?,?,?,?,?,?)",
-                    new Object[]{shelfET.getText().toString(),
+            db.execSQL("insert into c_check('barcode', 'shelf','checkTime','checkno','count','type','orderEmployee',"
+                            + "'status','isChecked','checkUUID')" +
+                            " values(?,?,?,?,?,?,?,?,?,?)",
+                    new Object[]{
+                            product.getBarCode(),
+                            shelfET.getText().toString(),
                             new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(currentTime),
-                            getResources().getString(R.string.sales_settle_type),
-                            products.size(),//数量count
-                            "0001",
-                            "test",
-                            getResources().getString(R.string.sales_settle_noup),
-                            uuid,
-                            isChecked}
+                            "IV305152114060500044",
+                            product.getCount(),
+                            customDialogForCheck.getCheckType(),
+                            customDialogForCheck.getChecker(),
+                            "已完成",
+                            "未上传",
+                            uuid}
             );
-            for (Product pro : products) {
-                db.execSQL("insert into c_check_detail('checkUUID','barcode','count','color','size','pdtname') values (?,?,?,?,?,?)",
-                        new Object[]{uuid, pro.getBarCode(), pro.getCount(), pro.getColor(), pro.getSize(), pro.getName()});
-            }
             db.setTransactionSuccessful();
         } catch (Exception e) {
         } finally {
@@ -272,7 +270,47 @@ public class CheckScanActivity extends BaseActivity {
         }
     }
 
-	/*@Override
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        // 若有未审核的数据，则存入数据库
+        if (products.size() > 0) {
+            for (Product product : products) {
+                // 插入数据
+                updateCheckTable(product);
+            }
+        }
+    }
+
+    private void updateCheckTable(Product currProduct) {
+        db.beginTransaction();
+        try {
+            String uuid = UUID.randomUUID().toString();
+            Date currentTime = new Date();
+            db.execSQL("insert into c_check('barcode', 'shelf','checkTime','checkno','count','type','orderEmployee',"
+                            + "'status','isChecked','checkUUID')" +
+                            " values(?,?,?,?,?,?,?,?,?,?)",
+                    new Object[]{
+                            currProduct.getBarCode(),
+                            shelfET.getText().toString(),
+                            new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(currentTime),
+                            "IV305152114060500044",
+                            currProduct.getCount(),
+                            "未知类型",
+                            "xiaosan",
+                            "未完成",
+                            "未上传",
+                            uuid}
+            );
+            db.setTransactionSuccessful();
+        } catch (Exception e) {
+        } finally {
+            db.endTransaction();
+        }
+    }
+
+    /*@Override
     public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.okBtn:
