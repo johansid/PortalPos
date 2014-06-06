@@ -7,11 +7,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import cn.burgeon.core.R;
-import cn.burgeon.core.bean.AllotReplenishment;
 import cn.burgeon.core.bean.Order;
 
 /**
@@ -83,5 +81,10 @@ public class CheckQueryLVAdapter extends BaseAdapter {
         TextView operatorTV;
         TextView stateTV;
         TextView uploadstateTV;
+    }
+
+    public void setList(List<Order> data) {
+        list = data;
+        notifyDataSetChanged();
     }
 }

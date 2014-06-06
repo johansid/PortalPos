@@ -186,26 +186,30 @@
             android:orientation="horizontal"
             android:gravity="center_horizontal">
 
+            <!--
             <Button
                 android:id="@+id/continueCheckBtn"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:text="@string/continuecheck"/>
-            
+            -->
+
             <Button
                 android:id="@+id/queryBtn"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:text="@string/query"/>
-            
+
+            <!--
             <Button
                 android:id="@+id/deleteBtn"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:text="@string/del"/>
+            -->
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

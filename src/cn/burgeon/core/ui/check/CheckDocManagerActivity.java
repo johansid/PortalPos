@@ -2,10 +2,15 @@ package cn.burgeon.core.ui.check;
 
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.HorizontalScrollView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +28,7 @@ public class CheckDocManagerActivity extends BaseActivity {
     private TextView totalOutCountTV, recordCountTV;
     CheckQueryLVAdapter mAdapter;
     ListView mList;
+    List<Order> data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +41,7 @@ public class CheckDocManagerActivity extends BaseActivity {
     }
 
     private void initLVData() {
-        List<Order> data = fetchData();
+        data = fetchData();
         mAdapter = new CheckQueryLVAdapter(this, data, R.layout.check_query_item);
         mList.setAdapter(mAdapter);
         if (data.size() > 0)
@@ -86,5 +92,57 @@ public class CheckDocManagerActivity extends BaseActivity {
         mList = (ListView) findViewById(R.id.docManagerLV);
         recordCountTV = (TextView) findViewById(R.id.recordCountTV);
         totalOutCountTV = (TextView) findViewById(R.id.totalOutCountTV);
+
+        itemOnLongClick();
     }
+
+    private void itemOnLongClick() {
+        mList.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
+            @Override
+            public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+                menu.add(0, 0, 0, "续盘");
+                menu.add(0, 1, 0, "删除");
+            }
+        });
+    }
+
+    // 长按菜单响应函数
+    public boolean onContextItemSelected(MenuItem item) {
+        // String no = ((TextView) menuInfo.targetView.findViewById(R.id.noTV)).getText().toString();
+        AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        Order currOrder = data.get(menuInfo.position);
+
+        switch (item.getItemId()) {
+            case 0:
+                // 续盘操作
+                if ("已完成".equals(currOrder.getOrderState())) {
+                    Toast.makeText(this, "单据已经审核，不能续盘！", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case 1:
+                // 更新数据库
+                delWithNo(currOrder.getOrderNo());
+
+                // 更改data
+                data.remove(currOrder);
+                upateBottomBarInfo(data);
+
+                // 刷新列表
+                mAdapter.setList(data);
+                break;
+        }
+        return super.onContextItemSelected(item);
+    }
+
+    private void delWithNo(String no) {
+        db.beginTransaction();
+        try {
+            db.execSQL("delete from c_check where checkno = ?", new String[]{no});
+            db.setTransactionSuccessful();
+        } catch (Exception e) {
+        } finally {
+            db.endTransaction();
+        }
+    }
+
 }
