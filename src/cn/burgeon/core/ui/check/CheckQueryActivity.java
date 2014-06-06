@@ -2,7 +2,10 @@ package cn.burgeon.core.ui.check;
 
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -17,13 +20,16 @@ import cn.burgeon.core.bean.Order;
 import cn.burgeon.core.ui.BaseActivity;
 import cn.burgeon.core.utils.PreferenceUtils;
 import cn.burgeon.core.utils.ScreenUtils;
+import cn.burgeon.core.widget.CustomDialogForCheckQuery;
 
 public class CheckQueryActivity extends BaseActivity {
 
     private TextView recordCountTV, totalOutCountTV;
     private ListView checkQueryLV;
+    private Button queryBtn;
     CheckQueryLVAdapter mAdapter;
     List<Order> data;
+    CustomDialogForCheckQuery customDialogForCheckQuery;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +93,46 @@ public class CheckQueryActivity extends BaseActivity {
         checkQueryLV = (ListView) findViewById(R.id.checkQueryLV);
         recordCountTV = (TextView) findViewById(R.id.recordCountTV);
         totalOutCountTV = (TextView) findViewById(R.id.totalOutCountTV);
+
+        queryBtn = (Button) findViewById(R.id.queryBtn);
+        queryBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 弹出对话框
+                customDialogForCheckQuery = new CustomDialogForCheckQuery.Builder(CheckQueryActivity.this).setPositiveButton("确定", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        queryCheck();
+                    }
+                }).setNegativeButton("取消", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (customDialogForCheckQuery.isShowing())
+                            customDialogForCheckQuery.dismiss();
+                    }
+                }).setCheckTypeSpinner(new String[]{"所有", "随机盘", "全盘"}).setStateSpinner(new String[]{"所有", "未上传", "已上传"}).show();
+            }
+        });
+    }
+
+    private void queryCheck() {
+        String sql = "select * from c_check where " +
+                "checkno = " + ((customDialogForCheckQuery.getCheckNo().length() > 0) ? ("'" + customDialogForCheckQuery.getCheckNo() + "'") : "''") + " and " +
+                "checkTime between " + "'" + customDialogForCheckQuery.getStartTime() + "'" + " and " + "'" + customDialogForCheckQuery.getEndTime() + "'";
+        if (!"所有".equals(customDialogForCheckQuery.getCheckType())) {
+            sql += " and type = " + "'" + customDialogForCheckQuery.getCheckType() + "'";
+        }
+        if (!"所有".equals(customDialogForCheckQuery.getState())) {
+            sql += " and isChecked = " + "'" + customDialogForCheckQuery.getState() + "'";
+        }
+        Log.i("zhang.h", sql);
+
+        Cursor c = db.rawQuery(sql, null);
+        while (c.moveToNext()) {
+
+        }
+        if (c != null && !c.isClosed())
+            c.close();
     }
 
 /*    private void initLVData() {
