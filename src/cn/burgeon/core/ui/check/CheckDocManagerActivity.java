@@ -126,9 +126,21 @@ public class CheckDocManagerActivity extends BaseActivity {
     }
 
     private void queryCheck() {
+        String startTime = customDialogForCheckQuery.getStartTime();
+        String startYear = startTime.substring(0, 4);
+        String startMonth = startTime.substring(4, 6);
+        String startDay = startTime.substring(6, 8);
+        String finalStartTime = startYear + "-" + startMonth + "-" + startDay + " 00:00:00";
+
+        String endTime = customDialogForCheckQuery.getEndTime();
+        String endYear = endTime.substring(0, 4);
+        String endMonth = endTime.substring(4, 6);
+        String endDay = endTime.substring(6, 8);
+        String finalEndTime = endYear + "-" + endMonth + "-" + endDay + " 23:59:59";
+
         String sql = "select * from c_check where " +
                 "checkno = " + ((customDialogForCheckQuery.getCheckNo().length() > 0) ? ("'" + customDialogForCheckQuery.getCheckNo() + "'") : "''") + " and " +
-                "checkTime between " + "'" + customDialogForCheckQuery.getStartTime() + "'" + " and " + "'" + customDialogForCheckQuery.getEndTime() + "'";
+                "checkTime between " + "'" + finalStartTime + "'" + " and " + "'" + finalEndTime + "'";
         if (!"所有".equals(customDialogForCheckQuery.getCheckType())) {
             sql += " and type = " + "'" + customDialogForCheckQuery.getCheckType() + "'";
         }
