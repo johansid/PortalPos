@@ -255,7 +255,7 @@ public class CheckScanActivity extends BaseActivity {
                             product.getBarCode(),
                             shelfET.getText().toString(),
                             new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(currentTime),
-                            uuid,
+                            getNo(),
                             product.getCount(),
                             customDialogForCheck.getCheckType(),
                             customDialogForCheck.getChecker(),
@@ -295,10 +295,10 @@ public class CheckScanActivity extends BaseActivity {
                             currProduct.getBarCode(),
                             shelfET.getText().toString(),
                             new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(currentTime),
-                            uuid,
+                            getNo(), // IV305152 + 日期 + 流水号
                             currProduct.getCount(),
                             "未知类型",
-                            "xiaosan",
+                            App.getPreferenceUtils().getPreferenceStr(PreferenceUtils.user_key),
                             "未完成",
                             "未上传",
                             uuid}
@@ -308,6 +308,30 @@ public class CheckScanActivity extends BaseActivity {
         } finally {
             db.endTransaction();
         }
+    }
+
+    private String getNo() {
+        StringBuffer sb = new StringBuffer();
+        sb.append("IV305152");
+        sb.append(new SimpleDateFormat("yyMMdd").format(new Date()));
+
+        // 保存checkNo至SP
+        int checkNo = App.getPreferenceUtils().getPreferenceInt("checkNo");
+        int i = 0;
+        if (checkNo > 0) {
+            i = checkNo + 1;
+        } else {
+            i = 1;
+        }
+        App.getPreferenceUtils().savePreferenceInt("checkNo", i);
+
+        StringBuffer finalCheckNo = new StringBuffer();
+        for (int j = 0; j < 5 - String.valueOf(i).length(); j++) {
+            finalCheckNo.append(0);
+        }
+        finalCheckNo.append(i);
+        sb.append(finalCheckNo.toString());
+        return sb.toString();
     }
 
     /*@Override

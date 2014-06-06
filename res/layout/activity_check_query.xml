@@ -139,7 +139,7 @@
                 <ListView
                     android:id="@+id/checkQueryLV"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="265dp" />
             </LinearLayout>
         </HorizontalScrollView>
     </LinearLayout>
