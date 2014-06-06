@@ -35,7 +35,7 @@ public class CustomDialogForCheckQuery {
         super();
         this.mContext = context;
         View customView = LayoutInflater.from(context).inflate(R.layout.custom_dialog_for_check_query, null);
-        ad = new Dialog(mContext);
+        ad = new Dialog(mContext, R.style.CheckDialog);
         ad.setContentView(customView);
         ad.show();
 

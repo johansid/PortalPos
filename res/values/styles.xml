@@ -83,7 +83,14 @@
     
     <style name="QueryDialog" parent="@android:Theme.Dialog">
         <item name="android:windowFrame">@null</item>
-        <item name="android:windowNoTitle">true</item> 
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+    <style name="CheckDialog" parent="@android:Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowNoTitle">true</item>
         <item name="android:windowIsFloating">true</item>
         <item name="android:windowContentOverlay">@null</item>
     </style>

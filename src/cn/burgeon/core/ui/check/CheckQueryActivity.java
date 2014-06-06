@@ -102,7 +102,11 @@ public class CheckQueryActivity extends BaseActivity {
                 customDialogForCheckQuery = new CustomDialogForCheckQuery.Builder(CheckQueryActivity.this).setPositiveButton("确定", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        queryCheck();
+                        if (data.size() > 0)
+                            queryCheck();
+
+                        if (customDialogForCheckQuery.isShowing())
+                            customDialogForCheckQuery.dismiss();
                     }
                 }).setNegativeButton("取消", new View.OnClickListener() {
                     @Override
@@ -128,9 +132,20 @@ public class CheckQueryActivity extends BaseActivity {
         Log.i("zhang.h", sql);
 
         Cursor c = db.rawQuery(sql, null);
+        List<Order> data = new ArrayList<Order>();
         while (c.moveToNext()) {
-
+            Order order = new Order();
+            order.setOrderDate(c.getString(c.getColumnIndex("checkTime")));
+            order.setOrderNo(c.getString(c.getColumnIndex("checkno")));
+            order.setOrderCount(c.getString(c.getColumnIndex("count")));
+            order.setOrderType(c.getString(c.getColumnIndex("type")));
+            order.setSaleAsistant(c.getString(c.getColumnIndex("orderEmployee")));
+            order.setOrderState(c.getString(c.getColumnIndex("status")));
+            order.setIsChecked(c.getString(c.getColumnIndex("isChecked")));
+            data.add(order);
         }
+        mAdapter.setList(data);
+        upateBottomBarInfo(data);
         if (c != null && !c.isClosed())
             c.close();
     }
