@@ -22,20 +22,35 @@
 	        android:textSize="15sp"
 	        android:textColor="#00ff00"/>
     </ScrollView>
-    
+ 
     <TextView
-        android:id="@+id/currentURLAddressTextView"
+        android:id="@+id/downloadURLAddressTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/URLAddressTextView"
-        android:layout_alignLeft="@+id/URLAddressTextView"
-        android:text="@string/currentURLAddress"/>
+        android:layout_above="@+id/downloadURLAddress"
+        android:layout_alignLeft="@+id/interactiveURLAddressTitle"
+        android:text="@string/downloadURLAddress"/>
     
     <TextView
-        android:id="@+id/URLAddressTextView"
+        android:id="@+id/downloadURLAddress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"/>
+        android:layout_above="@+id/interactiveURLAddressTitle"
+        android:layout_alignLeft="@+id/interactiveURLAddressTitle"/>    
+    
+    <TextView
+        android:id="@+id/interactiveURLAddressTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"        
+        android:layout_centerInParent="true"
+        android:text="@string/interactiveURLAddress"/>
+    
+    <TextView
+        android:id="@+id/interactiveURLAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/interactiveURLAddressTitle"
+        android:layout_alignLeft="@+id/interactiveURLAddressTitle"/>
     
     <Button
         android:id="@+id/startButton"

@@ -4,16 +4,25 @@
                                                         java.io.InputStream ; import java.
                                                         net.HttpURLConnection;import java.
                                                         net.MalformedURLException;  import
-                java.net.URL;import java.util.Random; import org.apache.http.HttpResponse; import org.apache.http.client.HttpClient; 
-                   import org.apache.http.client.methods.HttpGet;import org.apache.http.impl.client.DefaultHttpClient;import org   
-                      .apache.http.params.BasicHttpParams; import org.apache.http.params.HttpConnectionParams;import android.      
+                java.net.URL;import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+
+import org.apache.http.HttpResponse; import org.apache.http.client.HttpClient; 
+import org.apache.http.client.methods.HttpGet;import org.apache.http.impl.client.DefaultHttpClient;import org   
+                      .apache.http.params.BasicHttpParams; import org.apache.http.params.HttpConnectionParams;import org.json.JSONException;
+
+import com.android.volley.Response;
+
+import android.      
                          app.AlertDialog;import android.net.ConnectivityManager ;import android.net.NetworkInfo ; import   
                             android.os.Bundle;import android.os.Handler;import android.os.Message;import android.text 
                                .TextUtils ; import android.util.Log ; import android.view.LayoutInflater ; import 
                                   android.view.View ; import  cn.burgeon.core.App ; import  android.view.View.
                                      OnClickListener;import android.view.ViewGroup;import android.widget.
                                         Button ;  import  android.widget.ScrollView ; import android.   
-                                           widget.TextView; import cn.burgeon.core.R ; import cn.
+                                           widget.TextView; import android.widget.Toast;////////
+import cn.burgeon.core.R ;             import cn.
                                               burgeon.core.ui.BaseActivity;import cn.burgeon
                                                  .core.utils.PreferenceUtils;////////////
                                                     //////All Rights Reserved By///////
@@ -44,20 +53,24 @@
 	   ;;;;;;;;;;;                   ;;;;;;;;;;;;;;;;;;;;
 	                                   ;;;;;;;;;;;;;;;;
 	
-	                               		
-	                                ;;;;;;;;;;;;;;
-                                    ;;;;;;;;;;;;;;
-	private final int URLAvailableMsg       = 1;private final int URLUnAvailableMsg     = 2;
-	private final int networkUnAvailableMsg = 3;private final int URLAddressNotSetMsg   = 4;
-                                    private String 
-                                    URLAddress;;;;
-	                                ;;;;;;;private 
-	                                ScrollView niuBSv;
-	          private TextView currentURLAddressTextView;;;;;;;;;;;;;;;;;
-	          private TextView URLAddressTextView;;;;;;;;;;;;;;;;;;;;;;;;
-	          private TextView niuBEffectText;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-	          private Button                                 startButton;
-	          private boolean                                testing;;;;;
+	private final int downloadURLAvailableMsg      = 1;
+	private final int downloadURLUnAvailableMsg    = 2;
+	private final int interactiveURLAvailableMsg   = 3;
+	private final int interactiveURLUnAvailableMsg = 4;
+	private final int networkUnAvailableMsg = 5;
+	private final int URLAddressNotSetMsg   = 6;
+	private final int startTestDownloadServerMsg    = 7;
+	private final int startTestInteractiveServerMsg = 8;
+    private String downloadURLAddress;private String interactiveURLAddress;;;;;;;;;;;;;;;;;;
+    private ScrollView niuBSv;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;  
+    
+    private TextView downloadURLAddressTitleTv;;;;;;;;;;;;;;;;;;;
+    private TextView downloadURLAddressTv;;;;;;;;;;;;;;;;;;;;;;;;
+    private TextView interactiveURLAddressTitleTv;;;;;;;;;;;;;;;;
+    private TextView interactiveURLAddressTv;;;;;;;;;;;;;;;;;;;;;
+    private TextView niuBEffectText;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    private Button                                 startButton;;;
+    private boolean                                testing;;;;;;;
 	
 	          
 	          
@@ -72,21 +85,56 @@
 
 	//取得已经设置好的URLAddress
 	private void getSettedURLAddress(){
-		URLAddress = App.getPreferenceUtils().getPreferenceStr(PreferenceUtils.URLAddressKey);
+		downloadURLAddress = App.getPreferenceUtils().getPreferenceStr(PreferenceUtils.downloadURLAddressKey);
+		interactiveURLAddress = App.getPreferenceUtils().getPreferenceStr(PreferenceUtils.interactiveURLAddressKey);
 	}
 		
-	private String getURLAddress(){
-		return URLAddress;
+	private String getDownloadURLAddress(){
+		return downloadURLAddress;
+	}
+
+	private String getInteractiveURLAddress(){
+		return interactiveURLAddress;
 	}
 	
 	private void initViews(){
-		currentURLAddressTextView = (TextView) findViewById(R.id.currentURLAddressTextView);
-		URLAddressTextView = (TextView) findViewById(R.id.URLAddressTextView);
+		downloadURLAddressTitleTv = (TextView) findViewById(R.id.downloadURLAddressTitle);
+		downloadURLAddressTv = (TextView) findViewById(R.id.downloadURLAddress);
+		interactiveURLAddressTitleTv = (TextView) findViewById(R.id.interactiveURLAddressTitle);
+		interactiveURLAddressTv = (TextView) findViewById(R.id.interactiveURLAddress);
 		niuBEffectText = (TextView) findViewById(R.id.niuBEffectText);
 		niuBSv = (ScrollView) findViewById(R.id.niuBSv);
-		URLAddressTextView.setText( URLAddress);
+		
+		downloadURLAddressTv.setText( getDownloadURLAddress() );
+		interactiveURLAddressTv.setText( getInteractiveURLAddress() );
 		
 		startButton = (Button) findViewById(R.id.startButton);
+		
+		//服务器地址未设置
+		if( TextUtils.isEmpty( getDownloadURLAddress() )){
+			downloadURLAddressTv.setTextColor(android.graphics.Color.RED);
+			downloadURLAddressTv.setText(getString(R.string.downloadServerURLNotSet));
+		}
+		
+		if(TextUtils.isEmpty( getInteractiveURLAddress() )){
+			interactiveURLAddressTv.setTextColor(android.graphics.Color.RED);
+			interactiveURLAddressTv.setText(getString(R.string.interactiveServerURLNotSet));;
+		}
+		
+		if( TextUtils.isEmpty( getDownloadURLAddress() ) && TextUtils.isEmpty( getInteractiveURLAddress() )){
+			showTips(R.string.tipsServerURLNotSet);
+
+			startButton.setText(R.string.back);;
+			startButton.setOnClickListener(new OnClickListener(){
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					SystemNetTestActivity.this.finish();
+				}
+			});
+			return;
+		}
+		
 		startButton.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v) {
@@ -98,15 +146,6 @@
 				}
 			}
 		});
-		
-		//服务器地址未设置隐藏UI
-		if( TextUtils.isEmpty(URLAddress)){
-			showTips(R.string.tipsServerURLNotSet);
-			currentURLAddressTextView.setVisibility(View.INVISIBLE);
-			URLAddressTextView.setVisibility(View.INVISIBLE);
-			startButton.setVisibility(View.INVISIBLE);
-			return;
-		}
 	}
 	
 	//检测网络状态 Runnable
@@ -138,11 +177,23 @@
 		@Override
 		public void handleMessage(Message msg){
 			super.handleMessage(msg);
-			if(msg.what == URLUnAvailableMsg){
-				showTips(R.string.tipsURLUnAvailable);
+			if(msg.what == startTestDownloadServerMsg){
+				Toast.makeText(SystemNetTestActivity.this, R.string.tipsStartTestDownloadServer, Toast.LENGTH_SHORT).show();
 			}
-			if(msg.what == URLAvailableMsg){
-				showTips(R.string.tipsURLAvailable);
+			if(msg.what == startTestInteractiveServerMsg){
+				Toast.makeText(SystemNetTestActivity.this, R.string.tipsStartTestInteractiveServer, Toast.LENGTH_SHORT).show();
+			}
+			if(msg.what == downloadURLUnAvailableMsg){
+				showTips(R.string.tipsDownloadURLUnAvailable);
+			}
+			if(msg.what == downloadURLAvailableMsg){
+				showTips(R.string.tipsDownloadURLAvailable);
+			}
+			if(msg.what == interactiveURLAvailableMsg){
+				showTips(R.string.tipsInteractiveURLAvailable);
+			}
+			if(msg.what == interactiveURLUnAvailableMsg){
+				showTips(R.string.tipsInteractiveURLUnAvailable);
 			}
 			if(msg.what == networkUnAvailableMsg){
 				showTips(R.string.tipsNetworkUnReachable$_$);
@@ -174,21 +225,21 @@
 	
 	//检测URL有效:方法2
 	private boolean checkURL2(String url){
-		boolean value=false;
 		try {
 			HttpURLConnection conn=(HttpURLConnection)new URL( processURL(url) ).openConnection();
 			int code=conn.getResponseCode();
 			if(code!=200){
-				value=false;
+				return false;
 			}else{
-				value=true;
+				return true;
 			}
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
+			return false;
 		} catch (IOException e) {
 			e.printStackTrace();
+			return false;
 		}
-		return value;
 	}
 	
 	//检测URL有效:方法3
@@ -209,6 +260,20 @@
 		} catch (Exception e) {
 		    e.printStackTrace();  
 		} 
+		return result;
+	}
+
+	private boolean checkURL4(){
+		Map<String,String> params = new HashMap<String, String>();
+		boolean result = false;
+		sendRequest(params,new Response.Listener<String>() {
+			@Override
+			public void onResponse(String response) {
+				Log.d("onResponse", response);
+                // 取消进度条
+                stopProgressDialog();          			
+			}
+		});
 		return result;
 	}
 	
@@ -236,16 +301,66 @@
     	
     }
      
-	private void showNiuBEffect(){
-
-		if( checkURL2( getURLAddress() ) ){
-			niuBColorHandler.sendEmptyMessage('G');
-		}else{
-			niuBColorHandler.sendEmptyMessage('R');
+	private void showNiuBEffect(){		
+		if( initTestDownloadServer() ){
+			netHandler.sendEmptyMessage(startTestDownloadServerMsg);
+			niuBTest();
 		}
-		
+		if( initTestInteractiveServer() ){
+			netHandler.sendEmptyMessage(startTestInteractiveServerMsg);
+			niuBTest();
+		}
+		showResult();
+	}
+
+	private boolean initTestDownloadServer(){
+		if( !TextUtils.isEmpty( getDownloadURLAddress() ) ){ 
+			if( checkURL2( getDownloadURLAddress() ) ){
+				niuBColorHandler.sendEmptyMessage('G');
+			}else{
+				niuBColorHandler.sendEmptyMessage('R');
+			}
+			return true;
+		}
+		return false;
+	}
+	
+	private boolean initTestInteractiveServer(){
+		if( !TextUtils.isEmpty( getInteractiveURLAddress() ) ){ 
+			if( checkURL2( getInteractiveURLAddress() ) ){
+				niuBColorHandler.sendEmptyMessage('G');
+			}else{
+				niuBColorHandler.sendEmptyMessage('R');
+			}
+			return true;
+		}
+		return false;		
+	}
+	
+	private void showResult(){
+		if( !networkAvailable() ){
+			netHandler.sendEmptyMessage(networkUnAvailableMsg);
+			return;
+		}
+		if( !TextUtils.isEmpty( getDownloadURLAddress() ) ){
+			if( checkURL2( getDownloadURLAddress() ) ){
+				netHandler.sendEmptyMessage(downloadURLAvailableMsg);
+			}else{
+				netHandler.sendEmptyMessage(downloadURLUnAvailableMsg);
+			}
+		}
+		if( !TextUtils.isEmpty( getInteractiveURLAddress() ) ){
+			if( checkURL2( getInteractiveURLAddress() ) ){
+				netHandler.sendEmptyMessage(interactiveURLAvailableMsg);
+			}else{
+				netHandler.sendEmptyMessage(interactiveURLUnAvailableMsg);
+			}
+		}
+	}
+	
+	private void niuBTest(){
 		svBgColorHandler.sendEmptyMessage('B');
-		for(int i = 0;i < 200;i ++){
+		for(int i = 0;i < 100;i ++){
 			try {
 				Thread.sleep(40);
 			} catch (InterruptedException e) {
@@ -254,18 +369,7 @@
 			}
 			niuBHandler.sendEmptyMessage('X');
 		}
-		svBgColorHandler.sendEmptyMessage('W');
-
-		if( !networkAvailable() ){
-			netHandler.sendEmptyMessage(networkUnAvailableMsg);
-			return;
-		}
-		
-		if( checkURL2( getURLAddress() ) ){
-			netHandler.sendEmptyMessage(URLAvailableMsg);
-		}else{
-			netHandler.sendEmptyMessage(URLUnAvailableMsg);
-		}
+		svBgColorHandler.sendEmptyMessage('W');		
 	}
 	
 	public String getRandomString(int length) {
@@ -316,8 +420,6 @@
         niuBSv.scrollTo(0, offset);
 	}
 		
-
-	
                                                                           ;;;;private Handler niuBHandler = new Handler()
                                       {;;;;                               ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
               ;;;;                    ;;;;;                               ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

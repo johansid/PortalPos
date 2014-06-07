@@ -155,8 +155,12 @@
     <string name="systemConfigurationStoreInfo">门店信息</string>
     <string name="systemConfigurationParamConfig">参数配置</string>
     <string name="systemConfigurationPrintFormat">打印格式</string>
-    
-    <string name="netConfigURLAddress">URL地址</string>
+        
+    <string name="downloadURLAddress">当前配置下载服务器地址</string>
+    <string name="interactiveURLAddress">当前配置交互服务器地址</string>
+    <string name="pleaseInputServerURL">请输入服务器地址</string>
+    <string name="downloadServerURLNotSet">下载服务器地址未配置</string>
+    <string name="interactiveServerURLNotSet">交互服务器地址未配置</string>
     <string name="netConfigURLServerTest">服务器连接测试</string>
     <string name="netConfigSystemUpdateConfig">系统升级配置</string>
     <string name="netConfigDataDownload">资料下载</string>   
@@ -264,9 +268,13 @@
     <string name="twoB">2B</string>
     <string name="tipsSaveSucess">保存成功</string>
     
-    <string name="tipsURLAvailable">恭喜，服务器可用！</string>
-    <string name="tipsURLUnAvailable">sorry，服务器连不上！</string>
- 
+    <string name="tipsInteractiveURLAvailable">恭喜，交互服务器可用！</string>
+    <string name="tipsInteractiveURLUnAvailable">sorry，交互服务器连不上！</string>
+    <string name="tipsDownloadURLAvailable">恭喜，下载服务器可用！</string>
+    <string name="tipsDownloadURLUnAvailable">sorry，下载服务器连不上！</string>
+    <string name="tipsStartTestDownloadServer">开始测试下载服务器！</string>
+    <string name="tipsStartTestInteractiveServer">开始测试交互服务器！</string>
+    
     <string name="startCheckServer">开始测试服务器</string>
     <string name="tipsServerURLNotSet">服务器地址未配置，请到网络设置中配置服务器地址</string>
     <string name="currentURLAddress">当前配置的服务器地址:</string>
