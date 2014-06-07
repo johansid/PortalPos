@@ -66,7 +66,7 @@ public class SystemDataDownloadActivity extends BaseActivity{
 		productData_TdefSize_URL
 	};
 	
-	//会员类型下载地址
+	//会员类型下载地址								
 	private final String vipTypeURL        =    "http://g.burgeon.cn:2080/portalpospda/DownloadFiles/tc_vip.zip";
 	private final String[]vipTypeURLs      =    {vipTypeURL};
 	
@@ -757,8 +757,8 @@ public class SystemDataDownloadActivity extends BaseActivity{
 		if(filePath.equals(vipTypeUnZipFiles[0])){
 			if(LocalDebug) Log.d(TAG,"插vipType表");
 			try{
-				db.execSQL("insert into tc_vip(discount,rate) values (?,?)", 
-						new Object[]{temp[0],temp[1].substring(2)});
+				db.execSQL("insert into tc_vip(_id,name,discount,rate) values (?,?,?,?)", 
+						new Object[]{temp[0],temp[1].substring(2),temp[2].substring(2),temp[3].substring(2)});
 			}catch(Exception e){
 				if(LocalDebug) Log.d(TAG,"插VipType表失败！");
 			}
