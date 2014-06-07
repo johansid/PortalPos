@@ -1,39 +1,45 @@
 
-                                                        package cn.burgeon.core.ui.system;
-                                                        import java.io.IOException; import
-                                                        java.io.InputStream ; import java.
-                                                        net.HttpURLConnection;import java.
-                                                        net.MalformedURLException;  import
-                java.net.URL;import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+package cn.burgeon.core.ui.system;
 
-import org.apache.http.HttpResponse; import org.apache.http.client.HttpClient; 
-import org.apache.http.client.methods.HttpGet;import org.apache.http.impl.client.DefaultHttpClient;import org   
-                      .apache.http.params.BasicHttpParams; import org.apache.http.params.HttpConnectionParams;import org.json.JSONException;
+import java.io.IOException; 
+import java.io.InputStream ;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;  
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map; 
+import java.util.Random; 
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;  
+import org.apache.http.client.methods.HttpGet ; 
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
 
 import com.android.volley.Response;
+import android.app.AlertDialog;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.text.TextUtils ; 
+import android.util.Log ; 
+import android.view.LayoutInflater ; 
+import android.view.View ; 
+import android.view.View.OnClickListener;
+import android.view.ViewGroup; 
+import android.widget.Button ;  
+import android.widget.ScrollView  ; 
+import android.widget.TextView; 
+import android.widget.Toast;
 
-import android.      
-                         app.AlertDialog;import android.net.ConnectivityManager ;import android.net.NetworkInfo ; import   
-                            android.os.Bundle;import android.os.Handler;import android.os.Message;import android.text 
-                               .TextUtils ; import android.util.Log ; import android.view.LayoutInflater ; import 
-                                  android.view.View ; import  cn.burgeon.core.App ; import  android.view.View.
-                                     OnClickListener;import android.view.ViewGroup;import android.widget.
-                                        Button ;  import  android.widget.ScrollView ; import android.   
-                                           widget.TextView; import android.widget.Toast;////////
-import cn.burgeon.core.R ;             import cn.
-                                              burgeon.core.ui.BaseActivity;import cn.burgeon
-                                                 .core.utils.PreferenceUtils;////////////
-                                                    //////All Rights Reserved By///////
-                                                       ////////////吴相兴/////////////                                              
-                                                          ////////QQ:651369316///
-                                                             /////////////////
-                                                                ///////////
-                                                                   /////
-                                                                    //                                              
-
-	
+import cn.burgeon.core.App ; 
+import cn.burgeon.core.R ;
+import cn.burgeon.core.ui.BaseActivity  ; 
+import cn.burgeon.core.utils.PreferenceUtils;
+                                                                                                                 	
                                ;;;;;;;;;;;
 	        ;;;;;;;;;;;;;;;;  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	     ;;;;;;;;;;;;;;;;   ;public class SystemNetTestActivity extends BaseActivity{;;;
@@ -61,23 +67,26 @@ import cn.burgeon.core.R ;             import cn.
 	private final int URLAddressNotSetMsg   = 6;
 	private final int startTestDownloadServerMsg    = 7;
 	private final int startTestInteractiveServerMsg = 8;
-    private String downloadURLAddress;private String interactiveURLAddress;;;;;;;;;;;;;;;;;;
-    private ScrollView niuBSv;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;  
+        
+    private TextView downloadURLAddressTitleTv;
+    private TextView downloadURLAddressTv;
+    private TextView interactiveURLAddressTitleTv;
+    private TextView interactiveURLAddressTv;
+    private TextView niuBEffectText;
+    private Button startButton;
     
-    private TextView downloadURLAddressTitleTv;;;;;;;;;;;;;;;;;;;
-    private TextView downloadURLAddressTv;;;;;;;;;;;;;;;;;;;;;;;;
-    private TextView interactiveURLAddressTitleTv;;;;;;;;;;;;;;;;
-    private TextView interactiveURLAddressTv;;;;;;;;;;;;;;;;;;;;;
-    private TextView niuBEffectText;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-    private Button                                 startButton;;;
-    private boolean                                testing;;;;;;;
-	
-	          
+    private boolean testing;
+    private boolean interactiveServerAvailable = false;
+	private String downloadURLAddress;
+    private String interactiveURLAddress;
+    private ScrollView niuBSv;
+    App mApp;
 	          
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setupFullscreen();
+		mApp = (App) getApplication();
 		setContentView(R.layout.activity_system_net_test);
 		getSettedURLAddress();
 		initViews();
@@ -212,39 +221,10 @@ import cn.burgeon.core.R ;             import cn.
 		return processedUrl;
 	}
 	
+	
 	//检测URL有效:方法1
-	private boolean checkURL3(String url){ 
-        try {  
-            URL urll = new URL(processURL(url));  
-            InputStream in = urll.openStream();  
-            return true;
-        }catch (Exception e1) {    
-            return false;
-        } 	
-	}	
-	
-	//检测URL有效:方法2
-	private boolean checkURL2(String url){
-		try {
-			HttpURLConnection conn=(HttpURLConnection)new URL( processURL(url) ).openConnection();
-			int code=conn.getResponseCode();
-			if(code!=200){
-				return false;
-			}else{
-				return true;
-			}
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-			return false;
-		} catch (IOException e) {
-			e.printStackTrace();
-			return false;
-		}
-	}
-	
-	//检测URL有效:方法3
 	private boolean checkURL(String url){
-		HttpGet getMethod = new HttpGet( processURL(url) ); 
+		HttpGet getMethod = new HttpGet( url ); 
 		BasicHttpParams httpParams = new BasicHttpParams();
 		HttpConnectionParams.setConnectionTimeout(httpParams, 2*1000);
 		HttpConnectionParams.setSoTimeout(httpParams, 2*1000);
@@ -263,18 +243,48 @@ import cn.burgeon.core.R ;             import cn.
 		return result;
 	}
 
-	private boolean checkURL4(){
+	//检测URL有效:方法2
+	private boolean checkURL2(String url){
+		try {
+			HttpURLConnection conn=(HttpURLConnection)new URL( url ).openConnection();
+			int code=conn.getResponseCode();
+			if(code!=200){
+				return false;
+			}else{
+				return true;
+			}
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+			return false;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	//检测URL有效:方法3
+	private boolean checkURL3(String url){ 
+        try {  
+            URL urll = new URL(url);  
+            InputStream in = urll.openStream();  
+            return true;
+        }catch (Exception e1) {    
+            return false;
+        } 	
+	}
+	
+	//测试交互服务器
+	private void checkURL4(){
+		interactiveServerAvailable = false;
 		Map<String,String> params = new HashMap<String, String>();
-		boolean result = false;
 		sendRequest(params,new Response.Listener<String>() {
 			@Override
 			public void onResponse(String response) {
 				Log.d("onResponse", response);
-                // 取消进度条
-                stopProgressDialog();          			
+				stopProgressDialog();
+				interactiveServerAvailable = true;        			
 			}
 		});
-		return result;
 	}
 	
 	//检测网络状态
@@ -297,18 +307,17 @@ import cn.burgeon.core.R ;             import cn.
     		.setTitle(getString(R.string.tipsDataDownload))
     		.setView(tipsLayout)
     		.setPositiveButton(getString(R.string.confirm),null)
-    		.show();
-    	
+    		.show();   	
     }
      
 	private void showNiuBEffect(){		
 		if( initTestDownloadServer() ){
 			netHandler.sendEmptyMessage(startTestDownloadServerMsg);
-			niuBTest();
+			niuBDownloadTest();
 		}
 		if( initTestInteractiveServer() ){
 			netHandler.sendEmptyMessage(startTestInteractiveServerMsg);
-			niuBTest();
+			niuBInteractiveTest();
 		}
 		showResult();
 	}
@@ -326,12 +335,7 @@ import cn.burgeon.core.R ;             import cn.
 	}
 	
 	private boolean initTestInteractiveServer(){
-		if( !TextUtils.isEmpty( getInteractiveURLAddress() ) ){ 
-			if( checkURL2( getInteractiveURLAddress() ) ){
-				niuBColorHandler.sendEmptyMessage('G');
-			}else{
-				niuBColorHandler.sendEmptyMessage('R');
-			}
+		if( !TextUtils.isEmpty( getInteractiveURLAddress() ) ){						
 			return true;
 		}
 		return false;		
@@ -350,7 +354,7 @@ import cn.burgeon.core.R ;             import cn.
 			}
 		}
 		if( !TextUtils.isEmpty( getInteractiveURLAddress() ) ){
-			if( checkURL2( getInteractiveURLAddress() ) ){
+			if( this.interactiveServerAvailable ){
 				netHandler.sendEmptyMessage(interactiveURLAvailableMsg);
 			}else{
 				netHandler.sendEmptyMessage(interactiveURLUnAvailableMsg);
@@ -358,16 +362,44 @@ import cn.burgeon.core.R ;             import cn.
 		}
 	}
 	
-	private void niuBTest(){
+	private void niuBDownloadTest(){
 		svBgColorHandler.sendEmptyMessage('B');
-		for(int i = 0;i < 100;i ++){
+		for(int i = 0;i < 80;i ++){
 			try {
-				Thread.sleep(40);
+				Thread.sleep(30);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			niuBHandler.sendEmptyMessage('X');
+		}
+		svBgColorHandler.sendEmptyMessage('W');		
+	}
+
+	private void niuBInteractiveTest(){
+		svBgColorHandler.sendEmptyMessage('B');
+		this.checkURL4();
+		int line = 0;
+		for(;;){
+			if( this.interactiveServerAvailable ){
+				niuBColorHandler.sendEmptyMessage('G');
+			}else{
+				niuBColorHandler.sendEmptyMessage('R');
+			}				
+			try {
+				Thread.sleep(30);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			niuBHandler.sendEmptyMessage('X');
+			line ++;
+			if( ( this.interactiveServerAvailable && line > 100 )|| line == 300){
+				if(line == 300){
+					stopProgressDialog();
+				}
+				break;
+			}			
 		}
 		svBgColorHandler.sendEmptyMessage('W');		
 	}
