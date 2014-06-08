@@ -1,30 +1,45 @@
 
-                                                        package cn.burgeon.core.ui.system;
-                                                        import java.io.IOException; import
-                                                        java.io.InputStream ; import java.
-                                                        net.HttpURLConnection;import java.
-                                                        net.MalformedURLException;  import
-                java.net.URL;import java.util.Random; import org.apache.http.HttpResponse; import org.apache.http.client.HttpClient; 
-                   import org.apache.http.client.methods.HttpGet;import org.apache.http.impl.client.DefaultHttpClient;import org   
-                      .apache.http.params.BasicHttpParams; import org.apache.http.params.HttpConnectionParams;import android.      
-                         app.AlertDialog;import android.net.ConnectivityManager ;import android.net.NetworkInfo ; import   
-                            android.os.Bundle;import android.os.Handler;import android.os.Message;import android.text 
-                               .TextUtils ; import android.util.Log ; import android.view.LayoutInflater ; import 
-                                  android.view.View ; import  cn.burgeon.core.App ; import  android.view.View.
-                                     OnClickListener;import android.view.ViewGroup;import android.widget.
-                                        Button ;  import  android.widget.ScrollView ; import android.   
-                                           widget.TextView; import cn.burgeon.core.R ; import cn.
-                                              burgeon.core.ui.BaseActivity;import cn.burgeon
-                                                 .core.utils.PreferenceUtils;////////////
-                                                    //////All Rights Reserved By///////
-                                                       ////////////吴相兴/////////////                                              
-                                                          ////////QQ:651369316///
-                                                             /////////////////
-                                                                ///////////
-                                                                   /////
-                                                                    //                                              
+package cn.burgeon.core.ui.system;
 
-	
+import java.io.IOException; 
+import java.io.InputStream ;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;  
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map; 
+import java.util.Random; 
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;  
+import org.apache.http.client.methods.HttpGet ; 
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+
+import com.android.volley.Response;
+import android.app.AlertDialog;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.text.TextUtils ; 
+import android.util.Log ; 
+import android.view.LayoutInflater ; 
+import android.view.View ; 
+import android.view.View.OnClickListener;
+import android.view.ViewGroup; 
+import android.widget.Button ;  
+import android.widget.ScrollView  ; 
+import android.widget.TextView; 
+import android.widget.Toast;
+
+import cn.burgeon.core.App ; 
+import cn.burgeon.core.R ;
+import cn.burgeon.core.ui.BaseActivity  ; 
+import cn.burgeon.core.utils.PreferenceUtils;
+                                                                                                                 	
                                ;;;;;;;;;;;
 	        ;;;;;;;;;;;;;;;;  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	     ;;;;;;;;;;;;;;;;   ;public class SystemNetTestActivity extends BaseActivity{;;;
@@ -44,27 +59,34 @@
 	   ;;;;;;;;;;;                   ;;;;;;;;;;;;;;;;;;;;
 	                                   ;;;;;;;;;;;;;;;;
 	
-	                               		
-	                                ;;;;;;;;;;;;;;
-                                    ;;;;;;;;;;;;;;
-	private final int URLAvailableMsg       = 1;private final int URLUnAvailableMsg     = 2;
-	private final int networkUnAvailableMsg = 3;private final int URLAddressNotSetMsg   = 4;
-                                    private String 
-                                    URLAddress;;;;
-	                                ;;;;;;;private 
-	                                ScrollView niuBSv;
-	          private TextView currentURLAddressTextView;;;;;;;;;;;;;;;;;
-	          private TextView URLAddressTextView;;;;;;;;;;;;;;;;;;;;;;;;
-	          private TextView niuBEffectText;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-	          private Button                                 startButton;
-	          private boolean                                testing;;;;;
-	
-	          
+	private final int downloadURLAvailableMsg      = 1;
+	private final int downloadURLUnAvailableMsg    = 2;
+	private final int interactiveURLAvailableMsg   = 3;
+	private final int interactiveURLUnAvailableMsg = 4;
+	private final int networkUnAvailableMsg = 5;
+	private final int URLAddressNotSetMsg   = 6;
+	private final int startTestDownloadServerMsg    = 7;
+	private final int startTestInteractiveServerMsg = 8;
+        
+    private TextView downloadURLAddressTitleTv;
+    private TextView downloadURLAddressTv;
+    private TextView interactiveURLAddressTitleTv;
+    private TextView interactiveURLAddressTv;
+    private TextView niuBEffectText;
+    private Button startButton;
+    
+    private boolean testing;
+    private boolean interactiveServerAvailable = false;
+	private String downloadURLAddress;
+    private String interactiveURLAddress;
+    private ScrollView niuBSv;
+    App mApp;
 	          
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setupFullscreen();
+		mApp = (App) getApplication();
 		setContentView(R.layout.activity_system_net_test);
 		getSettedURLAddress();
 		initViews();
@@ -72,21 +94,56 @@
 
 	//取得已经设置好的URLAddress
 	private void getSettedURLAddress(){
-		URLAddress = App.getPreferenceUtils().getPreferenceStr(PreferenceUtils.URLAddressKey);
+		downloadURLAddress = App.getPreferenceUtils().getPreferenceStr(PreferenceUtils.downloadURLAddressKey);
+		interactiveURLAddress = App.getPreferenceUtils().getPreferenceStr(PreferenceUtils.interactiveURLAddressKey);
 	}
 		
-	private String getURLAddress(){
-		return URLAddress;
+	private String getDownloadURLAddress(){
+		return downloadURLAddress;
+	}
+
+	private String getInteractiveURLAddress(){
+		return interactiveURLAddress;
 	}
 	
 	private void initViews(){
-		currentURLAddressTextView = (TextView) findViewById(R.id.currentURLAddressTextView);
-		URLAddressTextView = (TextView) findViewById(R.id.URLAddressTextView);
+		downloadURLAddressTitleTv = (TextView) findViewById(R.id.downloadURLAddressTitle);
+		downloadURLAddressTv = (TextView) findViewById(R.id.downloadURLAddress);
+		interactiveURLAddressTitleTv = (TextView) findViewById(R.id.interactiveURLAddressTitle);
+		interactiveURLAddressTv = (TextView) findViewById(R.id.interactiveURLAddress);
 		niuBEffectText = (TextView) findViewById(R.id.niuBEffectText);
 		niuBSv = (ScrollView) findViewById(R.id.niuBSv);
-		URLAddressTextView.setText( URLAddress);
+		
+		downloadURLAddressTv.setText( getDownloadURLAddress() );
+		interactiveURLAddressTv.setText( getInteractiveURLAddress() );
 		
 		startButton = (Button) findViewById(R.id.startButton);
+		
+		//服务器地址未设置
+		if( TextUtils.isEmpty( getDownloadURLAddress() )){
+			downloadURLAddressTv.setTextColor(android.graphics.Color.RED);
+			downloadURLAddressTv.setText(getString(R.string.downloadServerURLNotSet));
+		}
+		
+		if(TextUtils.isEmpty( getInteractiveURLAddress() )){
+			interactiveURLAddressTv.setTextColor(android.graphics.Color.RED);
+			interactiveURLAddressTv.setText(getString(R.string.interactiveServerURLNotSet));;
+		}
+		
+		if( TextUtils.isEmpty( getDownloadURLAddress() ) && TextUtils.isEmpty( getInteractiveURLAddress() )){
+			showTips(R.string.tipsServerURLNotSet);
+
+			startButton.setText(R.string.back);;
+			startButton.setOnClickListener(new OnClickListener(){
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					SystemNetTestActivity.this.finish();
+				}
+			});
+			return;
+		}
+		
 		startButton.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v) {
@@ -98,15 +155,6 @@
 				}
 			}
 		});
-		
-		//服务器地址未设置隐藏UI
-		if( TextUtils.isEmpty(URLAddress)){
-			showTips(R.string.tipsServerURLNotSet);
-			currentURLAddressTextView.setVisibility(View.INVISIBLE);
-			URLAddressTextView.setVisibility(View.INVISIBLE);
-			startButton.setVisibility(View.INVISIBLE);
-			return;
-		}
 	}
 	
 	//检测网络状态 Runnable
@@ -138,11 +186,23 @@
 		@Override
 		public void handleMessage(Message msg){
 			super.handleMessage(msg);
-			if(msg.what == URLUnAvailableMsg){
-				showTips(R.string.tipsURLUnAvailable);
+			if(msg.what == startTestDownloadServerMsg){
+				Toast.makeText(SystemNetTestActivity.this, R.string.tipsStartTestDownloadServer, Toast.LENGTH_SHORT).show();
 			}
-			if(msg.what == URLAvailableMsg){
-				showTips(R.string.tipsURLAvailable);
+			if(msg.what == startTestInteractiveServerMsg){
+				Toast.makeText(SystemNetTestActivity.this, R.string.tipsStartTestInteractiveServer, Toast.LENGTH_SHORT).show();
+			}
+			if(msg.what == downloadURLUnAvailableMsg){
+				showTips(R.string.tipsDownloadURLUnAvailable);
+			}
+			if(msg.what == downloadURLAvailableMsg){
+				showTips(R.string.tipsDownloadURLAvailable);
+			}
+			if(msg.what == interactiveURLAvailableMsg){
+				showTips(R.string.tipsInteractiveURLAvailable);
+			}
+			if(msg.what == interactiveURLUnAvailableMsg){
+				showTips(R.string.tipsInteractiveURLUnAvailable);
 			}
 			if(msg.what == networkUnAvailableMsg){
 				showTips(R.string.tipsNetworkUnReachable$_$);
@@ -161,39 +221,10 @@
 		return processedUrl;
 	}
 	
+	
 	//检测URL有效:方法1
-	private boolean checkURL3(String url){ 
-        try {  
-            URL urll = new URL(processURL(url));  
-            InputStream in = urll.openStream();  
-            return true;
-        }catch (Exception e1) {    
-            return false;
-        } 	
-	}	
-	
-	//检测URL有效:方法2
-	private boolean checkURL2(String url){
-		boolean value=false;
-		try {
-			HttpURLConnection conn=(HttpURLConnection)new URL( processURL(url) ).openConnection();
-			int code=conn.getResponseCode();
-			if(code!=200){
-				value=false;
-			}else{
-				value=true;
-			}
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return value;
-	}
-	
-	//检测URL有效:方法3
 	private boolean checkURL(String url){
-		HttpGet getMethod = new HttpGet( processURL(url) ); 
+		HttpGet getMethod = new HttpGet( url ); 
 		BasicHttpParams httpParams = new BasicHttpParams();
 		HttpConnectionParams.setConnectionTimeout(httpParams, 2*1000);
 		HttpConnectionParams.setSoTimeout(httpParams, 2*1000);
@@ -210,6 +241,50 @@
 		    e.printStackTrace();  
 		} 
 		return result;
+	}
+
+	//检测URL有效:方法2
+	private boolean checkURL2(String url){
+		try {
+			HttpURLConnection conn=(HttpURLConnection)new URL( url ).openConnection();
+			int code=conn.getResponseCode();
+			if(code!=200){
+				return false;
+			}else{
+				return true;
+			}
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+			return false;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	//检测URL有效:方法3
+	private boolean checkURL3(String url){ 
+        try {  
+            URL urll = new URL(url);  
+            InputStream in = urll.openStream();  
+            return true;
+        }catch (Exception e1) {    
+            return false;
+        } 	
+	}
+	
+	//测试交互服务器
+	private void checkURL4(){
+		interactiveServerAvailable = false;
+		Map<String,String> params = new HashMap<String, String>();
+		sendRequest(params,new Response.Listener<String>() {
+			@Override
+			public void onResponse(String response) {
+				Log.d("onResponse", response);
+				stopProgressDialog();
+				interactiveServerAvailable = true;        			
+			}
+		});
 	}
 	
 	//检测网络状态
@@ -232,40 +307,101 @@
     		.setTitle(getString(R.string.tipsDataDownload))
     		.setView(tipsLayout)
     		.setPositiveButton(getString(R.string.confirm),null)
-    		.show();
-    	
+    		.show();   	
     }
      
-	private void showNiuBEffect(){
-
-		if( checkURL2( getURLAddress() ) ){
-			niuBColorHandler.sendEmptyMessage('G');
-		}else{
-			niuBColorHandler.sendEmptyMessage('R');
+	private void showNiuBEffect(){		
+		if( initTestDownloadServer() ){
+			netHandler.sendEmptyMessage(startTestDownloadServerMsg);
+			niuBDownloadTest();
 		}
-		
+		if( initTestInteractiveServer() ){
+			netHandler.sendEmptyMessage(startTestInteractiveServerMsg);
+			niuBInteractiveTest();
+		}
+		showResult();
+	}
+
+	private boolean initTestDownloadServer(){
+		if( !TextUtils.isEmpty( getDownloadURLAddress() ) ){ 
+			if( checkURL2( getDownloadURLAddress() ) ){
+				niuBColorHandler.sendEmptyMessage('G');
+			}else{
+				niuBColorHandler.sendEmptyMessage('R');
+			}
+			return true;
+		}
+		return false;
+	}
+	
+	private boolean initTestInteractiveServer(){
+		if( !TextUtils.isEmpty( getInteractiveURLAddress() ) ){						
+			return true;
+		}
+		return false;		
+	}
+	
+	private void showResult(){
+		if( !networkAvailable() ){
+			netHandler.sendEmptyMessage(networkUnAvailableMsg);
+			return;
+		}
+		if( !TextUtils.isEmpty( getDownloadURLAddress() ) ){
+			if( checkURL2( getDownloadURLAddress() ) ){
+				netHandler.sendEmptyMessage(downloadURLAvailableMsg);
+			}else{
+				netHandler.sendEmptyMessage(downloadURLUnAvailableMsg);
+			}
+		}
+		if( !TextUtils.isEmpty( getInteractiveURLAddress() ) ){
+			if( this.interactiveServerAvailable ){
+				netHandler.sendEmptyMessage(interactiveURLAvailableMsg);
+			}else{
+				netHandler.sendEmptyMessage(interactiveURLUnAvailableMsg);
+			}
+		}
+	}
+	
+	private void niuBDownloadTest(){
 		svBgColorHandler.sendEmptyMessage('B');
-		for(int i = 0;i < 200;i ++){
+		for(int i = 0;i < 80;i ++){
 			try {
-				Thread.sleep(40);
+				Thread.sleep(30);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			niuBHandler.sendEmptyMessage('X');
 		}
-		svBgColorHandler.sendEmptyMessage('W');
+		svBgColorHandler.sendEmptyMessage('W');		
+	}
 
-		if( !networkAvailable() ){
-			netHandler.sendEmptyMessage(networkUnAvailableMsg);
-			return;
+	private void niuBInteractiveTest(){
+		svBgColorHandler.sendEmptyMessage('B');
+		this.checkURL4();
+		int line = 0;
+		for(;;){
+			if( this.interactiveServerAvailable ){
+				niuBColorHandler.sendEmptyMessage('G');
+			}else{
+				niuBColorHandler.sendEmptyMessage('R');
+			}				
+			try {
+				Thread.sleep(30);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			niuBHandler.sendEmptyMessage('X');
+			line ++;
+			if( ( this.interactiveServerAvailable && line > 100 )|| line == 300){
+				if(line == 300){
+					stopProgressDialog();
+				}
+				break;
+			}			
 		}
-		
-		if( checkURL2( getURLAddress() ) ){
-			netHandler.sendEmptyMessage(URLAvailableMsg);
-		}else{
-			netHandler.sendEmptyMessage(URLUnAvailableMsg);
-		}
+		svBgColorHandler.sendEmptyMessage('W');		
 	}
 	
 	public String getRandomString(int length) {
@@ -316,8 +452,6 @@
         niuBSv.scrollTo(0, offset);
 	}
 		
-
-	
                                                                           ;;;;private Handler niuBHandler = new Handler()
                                       {;;;;                               ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
               ;;;;                    ;;;;;                               ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

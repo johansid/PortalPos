@@ -16,7 +16,7 @@ public class App extends Application {
     private static int DISK_IMAGECACHE_SIZE = 1024 * 1024 * 10;
     private static CompressFormat DISK_IMAGECACHE_COMPRESS_FORMAT = CompressFormat.PNG;
     private static int DISK_IMAGECACHE_QUALITY = 100; // PNG is lossless so quality is ignored but must be provided
-    private static final String HOSTURL = "http://g.burgeon.cn:90/servlets/binserv/Rest";
+    private static String HOSTURL = "http://g.burgeon.cn:90/servlets/binserv/Rest";
     private static final String SIPKEY = "nea@burgeon.com.cn";
     private static final String SIPPSWD = "pbdev";
     private SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
@@ -92,9 +92,9 @@ public class App extends Application {
         ImageCacheManager.getInstance().init(this, this.getPackageCodePath(), DISK_IMAGECACHE_SIZE, DISK_IMAGECACHE_COMPRESS_FORMAT,
                 DISK_IMAGECACHE_QUALITY, CacheType.MEMORY);
     }
-
+   
     public static String getHosturl() {
-        return HOSTURL;
+    	return App.getPreferenceUtils().getPreferenceStr(PreferenceUtils.interactiveURLAddressKey);
     }
 
     public static String getSipkey() {

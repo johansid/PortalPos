@@ -18,9 +18,15 @@ import android.widget.TextView;
 public class SystemConfigurationNetConfigFragment extends Fragment {
     private static final String TAG = "SystemConfigurationNetConfigFragment";
     
-    private EditText URLAddressEditText;
-    private String URLAddress;
-    private String URLAddressLastInput;
+    //交互服务器
+    private EditText interactiveURLAddressEditText;
+    private String interactiveURLAddress;
+    private String interactiveURLAddressLastInput;
+    //下载服务器
+    private EditText downloadURLAddressEditText;
+    private String downloadURLAddress;
+    private String downloadURLAddressLastInput;
+    //各种button
     private Button mServerTest;
     private Button mSystemUpdate;
     private Button mDataDownload;
@@ -41,12 +47,15 @@ public class SystemConfigurationNetConfigFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.system_configuration_net_config_fragment, container, false);
         
-        URLAddressEditText = (EditText) view.findViewById(R.id.URLAddressEditText);
+        interactiveURLAddressEditText = (EditText) view.findViewById(R.id.interactiveURLAddressEditText);
+        downloadURLAddressEditText = (EditText) view.findViewById(R.id.downloadURLAddressEditText);
         mServerTest = (Button) view.findViewById(R.id.serverTestButton);
         mSystemUpdate = (Button) view.findViewById(R.id.systemUpdateConfigButton);
         mDataDownload = (Button) view.findViewById(R.id.dataDownloadButton);
         mChangePassword = (Button) view.findViewById(R.id.changePasswordButton);
         mSaveButton = (Button) view.findViewById(R.id.saveButton);
+        
+        displaySettedServerAddress();
         
         mServerTest.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -91,6 +100,17 @@ public class SystemConfigurationNetConfigFragment extends Fragment {
         return view;
     }
 
+    private void displaySettedServerAddress(){
+    	String interactiveServer = App.getPreferenceUtils().getPreferenceStr(PreferenceUtils.interactiveURLAddressKey);
+    	String downloadServer = App.getPreferenceUtils().getPreferenceStr(PreferenceUtils.downloadURLAddressKey);
+    	if( !TextUtils.isEmpty(interactiveServer)){
+    		interactiveURLAddressEditText.setText(interactiveServer);
+    	}
+    	if( !TextUtils.isEmpty(downloadServer)){
+    		downloadURLAddressEditText.setText(downloadServer);
+    	}
+    }
+    
     private void checkToSave(){
 
     	getInputData();
@@ -111,7 +131,8 @@ public class SystemConfigurationNetConfigFragment extends Fragment {
   
 
     private boolean sameData(){    	
-    	if(saveOnce() && URLAddress.equals(URLAddressLastInput)){
+    	if(saveOnce() && interactiveURLAddress.equals(interactiveURLAddressLastInput)
+    			&& downloadURLAddress.equals(downloadURLAddressLastInput)){
     		return true;
     	}
     	return false;
@@ -119,21 +140,26 @@ public class SystemConfigurationNetConfigFragment extends Fragment {
 
 
     private void saveToMemory(){
-    	if( !TextUtils.isEmpty(URLAddress)){
-    		App.getPreferenceUtils().savePreferenceStr(PreferenceUtils.URLAddressKey, URLAddress);
+    	if( !TextUtils.isEmpty(interactiveURLAddress)){
+    		App.getPreferenceUtils().savePreferenceStr(PreferenceUtils.interactiveURLAddressKey, interactiveURLAddress);
+    	}
+    	if( !TextUtils.isEmpty(downloadURLAddress)){
+    		App.getPreferenceUtils().savePreferenceStr(PreferenceUtils.downloadURLAddressKey, downloadURLAddress);
     	}
     	showTips(R.string.tipsSaveSucess);
     }
     
 
     private void getInputData(){
-    	URLAddress = URLAddressEditText.getText().toString();
-    	URLAddress = URLAddress != null ? URLAddress.trim() : "";
+    	interactiveURLAddress = interactiveURLAddressEditText.getText().toString();
+    	interactiveURLAddress = interactiveURLAddress != null ? interactiveURLAddress.trim() : "";
+    	downloadURLAddress = downloadURLAddressEditText.getText().toString();
+    	downloadURLAddress = downloadURLAddress != null ? downloadURLAddress.trim() : "";
     }
 
 
     private boolean noInput(){
-    	if(TextUtils.isEmpty(URLAddress)){
+    	if(TextUtils.isEmpty(interactiveURLAddress) && TextUtils.isEmpty(downloadURLAddress)){
     		return true;
     	}
     	return false;
@@ -141,12 +167,13 @@ public class SystemConfigurationNetConfigFragment extends Fragment {
 
 
     private boolean saveOnce(){
-    	return !TextUtils.isEmpty(URLAddress);
+    	return !TextUtils.isEmpty(interactiveURLAddress) || !TextUtils.isEmpty(downloadURLAddress);
     }
     
 
     private void saveLastInput(){
-    	URLAddressLastInput = URLAddress;
+    	interactiveURLAddressLastInput = interactiveURLAddress;
+    	downloadURLAddressLastInput = downloadURLAddress;
     }
     
 
