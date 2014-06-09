@@ -18,6 +18,7 @@ import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 
 import com.android.volley.Response;
+
 import android.app.AlertDialog;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -34,7 +35,6 @@ import android.widget.Button ;
 import android.widget.ScrollView  ; 
 import android.widget.TextView; 
 import android.widget.Toast;
-
 import cn.burgeon.core.App ; 
 import cn.burgeon.core.R ;
 import cn.burgeon.core.ui.BaseActivity  ; 
@@ -92,6 +92,15 @@ import cn.burgeon.core.utils.PreferenceUtils;
 		initViews();
 	}
 
+	@Override
+	public void onBackPressed() {
+		if(	testing ){
+			showTips(R.string.tipsServerTesting);
+			return;			
+		}
+		super.onBackPressed();
+	}
+	
 	//取得已经设置好的URLAddress
 	private void getSettedURLAddress(){
 		downloadURLAddress = App.getPreferenceUtils().getPreferenceStr(PreferenceUtils.downloadURLAddressKey);

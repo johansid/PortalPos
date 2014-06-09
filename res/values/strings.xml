@@ -188,6 +188,7 @@
     <string name="dataDownloadSystemParam">系统参数</string>
     <string name="dataDownloadDownload">下载</string>
  
+ 	<string name="downloding">下载中</string>   
     <string name="tipsDataDownload">温馨提示</string>
     <string name="tipsIAmAlreadyDownloadingFuckYou">我已经在下载了！！！</string>
     <string name="tipsCanYouChooseOne$_$">亲，请至少选择一项！</string>

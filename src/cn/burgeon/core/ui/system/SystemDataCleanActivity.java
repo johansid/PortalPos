@@ -55,12 +55,14 @@ public class SystemDataCleanActivity extends BaseActivity{
 	private final String productDataDownload_tc_styleprice_FileName  = "tc_styleprice.zip";
 	private final String productDataDownload_TdefClr_FileName        = "TdefClr.zip";
 	private final String productDataDownload_TdefSize_FileName       = "TdefSize.zip";
+	private final String productDataDownload_tc_payway_FileName      = "tc_payway.zip";
 	private final String[]productDataDownloadFileNames = {
 			productDataDownload_tc_sku_FileName,
 			productDataDownload_tc_style_FileName,
 			productDataDownload_tc_styleprice_FileName,
 			productDataDownload_TdefClr_FileName,
-			productDataDownload_TdefSize_FileName			
+			productDataDownload_TdefSize_FileName,
+			productDataDownload_tc_payway_FileName
 	};
 	
 	//会员类型

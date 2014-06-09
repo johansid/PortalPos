@@ -57,13 +57,15 @@ public class SystemDataDownloadActivity extends BaseActivity{
 	private final String productData_tc_style_URL       =    "http://g.burgeon.cn:2080/portalpospda/DownloadFiles/tc_style.zip";
 	private final String productData_tc_styleprice_URL  =    "http://g.burgeon.cn:2080/portalpospda/DownloadFiles/tc_styleprice.zip";
 	private final String productData_TdefClr_URL        =    "http://g.burgeon.cn:2080/portalpospda/DownloadFiles/TdefClr.zip";
-	private final String productData_TdefSize_URL       =    "http://g.burgeon.cn:2080/portalpospda/DownloadFiles/TdefSize.zip";	
+	private final String productData_TdefSize_URL       =    "http://g.burgeon.cn:2080/portalpospda/DownloadFiles/TdefSize.zip";
+	private final String productData_tc_payway_URL      =    "http://g.burgeon.cn:2080/portalpospda/DownloadFiles/tc_payway.zip";
 	private final String[]productDataURLs = {
 		productData_tc_sku_URL,
 		productData_tc_style_URL,
 		productData_tc_styleprice_URL,
 		productData_TdefClr_URL,
-		productData_TdefSize_URL
+		productData_TdefSize_URL,
+		productData_tc_payway_URL
 	};
 	
 	//会员类型下载地址								
@@ -88,12 +90,14 @@ public class SystemDataDownloadActivity extends BaseActivity{
 	private final String productDataDownload_tc_styleprice_FileName  = "tc_styleprice.zip";
 	private final String productDataDownload_TdefClr_FileName        = "TdefClr.zip";
 	private final String productDataDownload_TdefSize_FileName       = "TdefSize.zip";
+	private final String productDataDownload_tc_payway_FileName      = "tc_payway.zip";
 	private final String[]productDataDownloadFileNames = {
 			productDataDownload_tc_sku_FileName,
 			productDataDownload_tc_style_FileName,
 			productDataDownload_tc_styleprice_FileName,
 			productDataDownload_TdefClr_FileName,
-			productDataDownload_TdefSize_FileName			
+			productDataDownload_TdefSize_FileName,
+			productDataDownload_tc_payway_FileName
 	};
 	
 	//会员类型
@@ -753,6 +757,16 @@ public class SystemDataDownloadActivity extends BaseActivity{
 				if(LocalDebug) Log.d(TAG,"插TdefClr表失败！");
 			}			
 		}
+
+		if(filePath.equals(productDataUnZipFiles[5])){
+			if(LocalDebug) Log.d(TAG,"插tc_payway表");
+			try{
+				db.execSQL("insert into tc_payway(_id,name) values (?,?)", 
+						new Object[]{temp[0],temp[1].substring(2)});
+			}catch(Exception e){
+				if(LocalDebug) Log.d(TAG,"插TdefClr表失败！");
+			}			
+		}
 		
 		if(filePath.equals(vipTypeUnZipFiles[0])){
 			if(LocalDebug) Log.d(TAG,"插vipType表");
@@ -1293,6 +1307,10 @@ public class SystemDataDownloadActivity extends BaseActivity{
 	}
 	@Override
 	public void onBackPressed() {
+		if(	userDataDownloading || productDataDownloading || vipTypeDownloading || itemStrategyDownloading ||systemParamDownloading){
+			showTips(R.string.downloding);
+			return;			
+		}
 		super.onBackPressed();
 	}
 }
