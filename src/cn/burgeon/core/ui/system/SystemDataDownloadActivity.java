@@ -764,7 +764,7 @@ public class SystemDataDownloadActivity extends BaseActivity{
 				db.execSQL("insert into tc_payway(_id,name) values (?,?)", 
 						new Object[]{temp[0],temp[1].substring(2)});
 			}catch(Exception e){
-				if(LocalDebug) Log.d(TAG,"插TdefClr表失败！");
+				if(LocalDebug) Log.d(TAG,"插tc_payway表失败！");
 			}			
 		}
 		
