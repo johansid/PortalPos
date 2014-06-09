@@ -8,6 +8,7 @@ import java.util.UUID;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
@@ -23,7 +24,7 @@ import cn.burgeon.core.adapter.SalesNewOrderAdapter;
 import cn.burgeon.core.adapter.SalesSettleAdapter;
 import cn.burgeon.core.bean.IntentData;
 import cn.burgeon.core.bean.Product;
-import cn.burgeon.core.bean.Settle;
+import cn.burgeon.core.bean.PayWay;
 import cn.burgeon.core.ui.BaseActivity;
 import cn.burgeon.core.utils.PreferenceUtils;
 import cn.burgeon.core.widget.UndoBarController;
@@ -110,11 +111,21 @@ public class SalesSettleActivity extends BaseActivity {
 			}
 		});
 		realityET.setText(String.format("%.2f", pay));
-		List<Settle> list = new ArrayList<Settle>();
-		list.add(new Settle(getResources().getString(R.string.sales_settle_cash), String.format("%.2f",pay)));
+		List<PayWay> list = new ArrayList<PayWay>();
+		list.add(new PayWay(27, getResources().getString(R.string.sales_settle_cash), String.format("%.2f",pay)));
 		//list.add(new Settle(getResources().getString(R.string.sales_settle_auto), String.format("%.2f",0.00f)));
 		//list.add(new Settle(getResources().getString(R.string.sales_settle_cash), String.format("%.2f",0.00f)));
 		mListView.setAdapter(new SalesSettleAdapter(list, this));
+	}
+	
+	private List<PayWay> getPayWay(){
+		PayWay pway = null;
+		List<PayWay> list = new ArrayList<PayWay>();
+		Cursor c = db.rawQuery("select * from tc_payway", null);
+		while(c.moveToNext()){
+			//pway = new PayWay(c.getInt(c.getColumnIndex("_id")),c.getInt(c.getColumnIndex("payway")));
+		}
+		return list;
 	}
 
 	private void init() {
@@ -180,8 +191,8 @@ public class SalesSettleActivity extends BaseActivity {
         	String uuid = UUID.randomUUID().toString();
         	Date currentTime = new Date();
         	db.execSQL("insert into c_settle('settleTime','type','count','money','employeeID','orderEmployee',"
-        			+ "'status','settleDate','settleMonth','settleUUID')"+
-        				" values(?,?,?,?,?,?,?,?,?,?)",
+        			+ "'status','settleDate','settleMonth','orderno','settleUUID')"+
+        				" values(?,?,?,?,?,?,?,?,?,?,?)",
 					new Object[]{new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(currentTime),
 								getResources().getString(R.string.sales_settle_type),
 								count,
@@ -191,6 +202,7 @@ public class SalesSettleActivity extends BaseActivity {
 								getString(R.string.sales_settle_noup),
 								new SimpleDateFormat("yyyy-MM-dd").format(currentTime),
 								new SimpleDateFormat("yyyy-MM-dd").format(currentTime).substring(0, 7),
+								getNo(),//销售单号
 								uuid});
         	for(Product pro : products){
         		db.execSQL("insert into c_settle_detail('barcode','price','discount'"
@@ -248,5 +260,29 @@ public class SalesSettleActivity extends BaseActivity {
             db.endTransaction();
         } 
 	}
+	
+    private String getNo() {
+        StringBuffer sb = new StringBuffer();
+        sb.append("SA305152");
+        sb.append(new SimpleDateFormat("yyMMdd").format(new Date()));
+
+        // 保存checkNo至SP
+        int checkNo = App.getPreferenceUtils().getPreferenceInt("salesNo");
+        int i = 0;
+        if (checkNo > 0) {
+            i = checkNo + 1;
+        } else {
+            i = 1;
+        }
+        App.getPreferenceUtils().savePreferenceInt("salesNo", i);
+
+        StringBuffer finalCheckNo = new StringBuffer();
+        for (int j = 0; j < 5 - String.valueOf(i).length(); j++) {
+            finalCheckNo.append(0);
+        }
+        finalCheckNo.append(i);
+        sb.append(finalCheckNo.toString());
+        return sb.toString();
+    }
 
 }

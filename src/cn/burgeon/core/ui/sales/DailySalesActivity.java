@@ -41,7 +41,12 @@ public class DailySalesActivity extends BaseActivity {
         setContentView(R.layout.activity_sales_manager_dailysales);
 
         init();
-        bindList();
+    }
+    
+    @Override
+    protected void onRestart() {
+    	super.onRestart();
+    	bindList();
     }
     
     private void bindList() {

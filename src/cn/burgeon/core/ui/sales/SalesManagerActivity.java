@@ -1,14 +1,15 @@
 package cn.burgeon.core.ui.sales;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
+import android.annotation.SuppressLint;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,10 +29,9 @@ import cn.burgeon.core.ui.BaseActivity;
 import cn.burgeon.core.utils.PreferenceUtils;
 import cn.burgeon.core.widget.UndoBarController;
 import cn.burgeon.core.widget.UndoBarStyle;
-
 import com.android.volley.Response;
 
-public class SalesManagerActivity extends BaseActivity {
+@SuppressLint("SimpleDateFormat") public class SalesManagerActivity extends BaseActivity {
 	
 	private final String TAG = "SalesManagerActivity";
     private GridView salesGV;
@@ -157,10 +157,9 @@ public class SalesManagerActivity extends BaseActivity {
 	private void updateOrderStatus(RequestResult result, Order order) {
 		db.beginTransaction();
         try {
-        	db.execSQL("update c_settle set status = ?,orderno = ? where settleUUID = ?",
+        	db.execSQL("update c_settle set status = ? where settleUUID = ?",
 					new Object[]{
 								getResources().getString(R.string.sales_settle_hasup),
-								result.getMessage().substring(0, 15),
 								order.getUuid()});
             db.setTransactionSuccessful();
         } catch(Exception e){}
@@ -212,5 +211,5 @@ public class SalesManagerActivity extends BaseActivity {
 			c.close();
 		return details;
     }
-
+	
 }

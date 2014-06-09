@@ -12,15 +12,15 @@ import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
 import cn.burgeon.core.R;
-import cn.burgeon.core.bean.Settle;
+import cn.burgeon.core.bean.PayWay;
 import cn.burgeon.core.ui.sales.SalesSettleActivity;
 
 public class SalesSettleAdapter extends BaseAdapter {
 
-	private List<Settle> list;
+	private List<PayWay> list;
 	private Context context;
 
-	public SalesSettleAdapter(List<Settle> list, Context context) {
+	public SalesSettleAdapter(List<PayWay> list, Context context) {
 		super();
 		this.list = list;
 		this.context = context;
@@ -58,7 +58,7 @@ public class SalesSettleAdapter extends BaseAdapter {
 			holder = (ViewHolder) convertView.getTag();
 		}
 		
-		Settle settle = list.get(position);
+		PayWay settle = list.get(position);
 		holder.textView1.setText(settle.getPayWay());
 		holder.textView2.setText(settle.getPayMoney());
 		holder.textView2.setOnFocusChangeListener(new OnFocusChangeListener() {
