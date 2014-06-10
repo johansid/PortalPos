@@ -2,7 +2,9 @@
 <resources>
     <string-array name="newOrderArr">
         <item>正常</item>
-        <item>折扣</item>
+        <item>全额</item>
+        <item>赠送</item>
+        <item>退货</item>
     </string-array>
 
     <string-array name="vipType">

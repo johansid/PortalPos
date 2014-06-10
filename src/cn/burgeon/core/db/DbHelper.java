@@ -17,7 +17,7 @@ public class DbHelper extends SQLiteOpenHelper {
 		db.execSQL("CREATE TABLE IF NOT EXISTS c_vip" +  
                 "(_id INTEGER PRIMARY KEY AUTOINCREMENT, cardno VARCHAR,status varchar,"+
 				"name VARCHAR, sex VARCHAR,idno VARCHAR,mobile VARCHAR,birthday VARCHAR,"+
-                "employee VARCHAR,email VARCHAR,createTime VARCHAR,type VARCHAR)");
+                "employee VARCHAR,email VARCHAR,createTime VARCHAR,type VARCHAR,discount varchar)");
 		
 		db.execSQL("CREATE TABLE IF NOT EXISTS c_settle" +  
                 "(_id INTEGER PRIMARY KEY AUTOINCREMENT, orderno VARCHAR,"+
@@ -93,7 +93,7 @@ public class DbHelper extends SQLiteOpenHelper {
 		
 		db.execSQL("CREATE TABLE IF NOT EXISTS tc_vip(_id INTEGER PRIMARY KEY,name varchar,discount varchar,rate varchar)");
 		
-		db.execSQL("CREATE TABLE IF NOT EXISTS c_payway_detail(id varchar,name varchar,money varchar)");
+		db.execSQL("CREATE TABLE IF NOT EXISTS c_payway_detail(id varchar,name varchar,money varchar,settleUUID VARCHAR)");
 		
 		db.execSQL("CREATE TABLE IF NOT EXISTS tc_payway(_id INTEGER PRIMARY KEY,name varchar)");
 		

@@ -116,6 +116,7 @@
     <string name="sales_settle_paymoney">付款金额</string>
     <string name="sales_settle_cash">现金</string>
     <string name="sales_settle_auto">自动费用</string>
+    <string name="sales_settle_bank">银行卡</string>
     <string name="sales_settle_other">其他付款方式</string>
     <string name="sales_settle_type">正常零售</string>
     <string name="sales_settle_noup">未上传</string>

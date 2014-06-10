@@ -9,11 +9,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
@@ -21,9 +24,11 @@ import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
 import cn.burgeon.core.App;
 import cn.burgeon.core.R;
 import cn.burgeon.core.adapter.MemberSearchAdapter;
+import cn.burgeon.core.bean.IntentData;
 import cn.burgeon.core.bean.Member;
 import cn.burgeon.core.ui.BaseActivity;
 import cn.burgeon.core.ui.sales.SalesNewOrderActivity;
@@ -69,7 +74,9 @@ public class MemberSearchActivity extends BaseActivity {
         params.height = (int) ScreenUtils.getAllotInLVHeight(this);
         
         cardNoET = (EditText) findViewById(R.id.memberSearchCardNoET);
+        cardNoET.setOnEditorActionListener(editorActionListener);
         mobileET = (EditText) findViewById(R.id.memberSearchPhoneET);
+        mobileET.setOnEditorActionListener(editorActionListener);
 		addBtn = (Button) findViewById(R.id.memberNewBtn);
 		addBtn.setOnClickListener(onClickListener);
 		queryBtn = (Button) findViewById(R.id.memberSearchBtn);
@@ -81,6 +88,22 @@ public class MemberSearchActivity extends BaseActivity {
 		//mListView.setAdapter(mAdapter);
 		//mListView.setOnItemSelectedListener(OnItemSelectedListener);
 	}
+	
+	OnEditorActionListener editorActionListener = new OnEditorActionListener() {
+		
+		@Override
+		public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+			switch (actionId) {
+			case EditorInfo.IME_ACTION_SEARCH:
+				postRequest();
+				break;
+
+			default:
+				break;
+			}
+			return true;
+		}
+	};
 
 	private void postRequest() {
 		viaLocal();
@@ -90,8 +113,15 @@ public class MemberSearchActivity extends BaseActivity {
 	public List<Member> query(){
 		List<Member> data = new ArrayList<Member>();
 		Member member = null;
-		Cursor c = db.rawQuery("select * from c_vip where cardno = ? or mobile = ?",
-				new String[]{cardNoET.getText().toString(),mobileET.getText().toString()});
+		Cursor c = null;
+		if(cardNoET.getText().length() > 0 && mobileET.getText().length() > 0)
+			c = db.rawQuery("select * from c_vip where cardno = ? or mobile = ?",
+					new String[]{cardNoET.getText().toString(),mobileET.getText().toString()});
+		else if(cardNoET.getText().length() > 0 && mobileET.getText().length() == 0)
+			c = db.rawQuery("select * from c_vip where cardno = ?",new String[]{cardNoET.getText().toString()});
+		else if(cardNoET.getText().length() == 0 && mobileET.getText().length() > 0)
+			c = db.rawQuery("select * from c_vip where mobile = ?",new String[]{mobileET.getText().toString()});
+		Log.d("MemeberSearch", "size=" + c.getCount());
 		while(c.moveToNext()){
 			member = new Member();
 			//member.setId(c.getInt(c.getColumnIndex("_ID")));
@@ -105,10 +135,11 @@ public class MemberSearchActivity extends BaseActivity {
 			member.setCreateCardDate(c.getString(c.getColumnIndex("createTime")));
 			member.setType(c.getString(c.getColumnIndex("type")));
 			member.setSex(Integer.toString(c.getInt(c.getColumnIndex("sex"))));
+			member.setDiscount(c.getString(c.getColumnIndex("discount")));
 			data.add(member);
 		}
 		if(member != null)
-			intentValue = member.getCardNum()+ "\\100";
+			selectedMember = member;
 		if(c != null && !c.isClosed())
 			c.close();
 		return data;
@@ -196,7 +227,11 @@ public class MemberSearchActivity extends BaseActivity {
 				postRequest();
 				break;
 			case R.id.memberSearchConfirmBtn:
-                forwardActivity(SalesNewOrderActivity.class, "searchedMember",intentValue);
+				Intent intent = new Intent(MemberSearchActivity.this,SalesNewOrderActivity.class);
+				Bundle bundle = new Bundle();
+				bundle.putParcelable("searchedMember", selectedMember);
+				intent.putExtras(bundle);
+                startActivity(intent);
 				break;
 			default:
 				break;

@@ -134,14 +134,15 @@
                 android:id="@+id/newSalesOrderDateET"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="2.0"
+                android:layout_weight="1.8"
                 android:focusable="false"
                 android:focusableInTouchMode="false"/>
 
             <Spinner
+                android:id="@+id/salesType"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.8"
+                android:layout_weight="1.0"
                 android:entries="@array/newOrderArr" />
         </LinearLayout>
 

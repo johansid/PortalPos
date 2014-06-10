@@ -1,9 +1,11 @@
 package cn.burgeon.core.ui.member;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -17,21 +19,27 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Parcelable;
 import android.text.Editable;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioGroup;
+import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import cn.burgeon.core.App;
 import cn.burgeon.core.R;
+import cn.burgeon.core.bean.Member;
 import cn.burgeon.core.ui.BaseActivity;
 import cn.burgeon.core.ui.sales.SalesNewOrderActivity;
 import cn.burgeon.core.utils.PreferenceUtils;
 import cn.burgeon.core.widget.UndoBarController;
+import cn.burgeon.core.widget.UndoBarController.UndoListener;
 import cn.burgeon.core.widget.UndoBarStyle;
 
 import com.android.volley.Response;
@@ -101,9 +109,48 @@ public class MemberRegistActivity extends BaseActivity {
 		radioGroup = (RadioGroup) findViewById(R.id.memberRegistRG);
 		emailET = (EditText) findViewById(R.id.memberRegistEmailET);
 		employeeSP = (Spinner) findViewById(R.id.memberRegistSalesAssistantSP);
+		
+		SimpleAdapter adapter = new SimpleAdapter(MemberRegistActivity.this, 
+				fetchData(), 
+				android.R.layout.simple_spinner_item, 
+				new String[]{"key"}, new int[]{android.R.id.text1});
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		typeSp = (Spinner) findViewById(R.id.memberRegistVipTypeSP);
+		typeSp.setAdapter(adapter);
 		saveBtn.setOnClickListener(mOnclickListener);
 		veryfiyBtn.setOnClickListener(mOnclickListener);
+	}
+	
+	
+	private List<HashMap<String, String>> fetchData() {
+		HashMap<String, String> item = null;
+		List<HashMap<String,String>> data = new ArrayList<HashMap<String,String>>();
+		Cursor c = db.rawQuery("select name, discount from tc_vip", null);
+		while(c.moveToNext()){
+			item = new HashMap<String, String>();
+			item.put("key", c.getString(c.getColumnIndex("name")));
+			item.put("value", c.getString(c.getColumnIndex("discount")));
+			data.add(item);
+		}
+		if(c != null && !c.isClosed()) c.close();
+		Log.d(TAG, "list size:" + data.size());
+		return data;
+	}
+
+
+	class VipType{
+		String name;
+		String discount;
+		public VipType(String name, String discount) {
+			super();
+			this.name = name;
+			this.discount = discount;
+		}
+		
+		@Override
+		public String toString() {
+			return name;
+		}
 	}
 	
 	OnClickListener mOnclickListener = new OnClickListener() {
@@ -119,9 +166,6 @@ public class MemberRegistActivity extends BaseActivity {
 		        	UndoBarController.show(MemberRegistActivity.this, "更新会员成功", null, MESSAGESTYLE);
 				}else{
 					save();
-		        	if("search".equals(from)){
-		        		forwardActivity(SalesNewOrderActivity.class, "searchedMember",cardNOET.getText()+"\\"+100);
-		        	}
 				}
 				
 	        	break;
@@ -190,8 +234,8 @@ public class MemberRegistActivity extends BaseActivity {
 		if(validate()){
 			db.beginTransaction();
 	        try {
-	        	db.execSQL("insert into c_vip('cardno','name','idno','mobile','sex','email','birthday','createTime','employee','type','status')"+
-	        				" values(?,?,?,?,?,?,?,?,?,?,?)",
+	        	db.execSQL("insert into c_vip('cardno','name','idno','mobile','sex','email','birthday','createTime','employee','type','status','discount')"+
+	        				" values(?,?,?,?,?,?,?,?,?,?,?,?)",
 						new Object[]{cardNOET.getText().toString().trim(),
 									nameET.getText().toString().trim(),
 									identityET.getText().toString().trim(),
@@ -201,15 +245,33 @@ public class MemberRegistActivity extends BaseActivity {
 									birthdayET.getText().toString().trim(),
 									new SimpleDateFormat("yyyyMMdd").format(new Date()),
 									App.getPreferenceUtils().getPreferenceStr(PreferenceUtils.store_key),
-									typeSp.getSelectedItem().toString(),
-									getString(R.string.sales_settle_noup)
+									((HashMap<String, String>)typeSp.getAdapter().getItem(typeSp.getSelectedItemPosition())).get("key"),
+									getString(R.string.sales_settle_noup),
+									((HashMap<String, String>)typeSp.getAdapter().getItem(typeSp.getSelectedItemPosition())).get("value")
 									});
 	            db.setTransactionSuccessful();
 	        } finally {  
 	            db.endTransaction();
 	        }
 			UndoBarStyle MESSAGESTYLE = new UndoBarStyle(-1, -1, 3000);
-	    	UndoBarController.show(MemberRegistActivity.this, "注册会员成功", null, MESSAGESTYLE);
+	    	UndoBarController.show(MemberRegistActivity.this, "注册会员成功", new UndoListener() {
+				@Override
+				public void onUndo(Parcelable token) {
+					if("search".equals(from)){
+						Member member = new Member();
+						member.setCardNum(cardNOET.getText().toString());
+						member.setDiscount("90");
+						Intent intent = new Intent(MemberRegistActivity.this,SalesNewOrderActivity.class);
+						Bundle bundle = new Bundle();
+						bundle.putParcelable("searchedMember", member);
+						intent.putExtras(bundle);
+		                startActivity(intent);
+		        		//forwardActivity(SalesNewOrderActivity.class, "searchedMember",cardNOET.getText()+"\\"+100);
+		        	}else{
+		        		forwardActivity(MemberListActivity.class);
+		        	}
+				}
+			}, MESSAGESTYLE);
 		}
 	}
 	
@@ -218,7 +280,7 @@ public class MemberRegistActivity extends BaseActivity {
 			db.beginTransaction();
 	        try {
 	        	db.execSQL("update c_vip set 'cardno'=?,'name'=?,'idno'=?,'mobile'=?,'sex'=?,"
-	        			+ "'email'=?,'birthday'=?,'createTime'=?,'employee'=?,'type'=?"+
+	        			+ "'email'=?,'birthday'=?,'createTime'=?,'employee'=?,'type'=?,'discount'=?"+
 	        				" where _id = ?",
 						new Object[]{cardNOET.getText().toString().trim(),
 									nameET.getText().toString().trim(),
@@ -229,7 +291,8 @@ public class MemberRegistActivity extends BaseActivity {
 									birthdayET.getText().toString().trim(),
 									new SimpleDateFormat("yyyyMMdd").format(new Date()),
 									App.getPreferenceUtils().getPreferenceStr(PreferenceUtils.user_key),
-									typeSp.getSelectedItem().toString(),
+									((HashMap<String, String>)typeSp.getAdapter().getItem(typeSp.getSelectedItemPosition())).get("key"),
+									((HashMap<String, String>)typeSp.getAdapter().getItem(typeSp.getSelectedItemPosition())).get("value"),
 									_id
 									});
 	            db.setTransactionSuccessful();

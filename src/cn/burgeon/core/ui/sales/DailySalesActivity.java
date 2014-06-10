@@ -23,8 +23,7 @@ import cn.burgeon.core.bean.Order;
 import cn.burgeon.core.ui.BaseActivity;
 import cn.burgeon.core.utils.PreferenceUtils;
 import cn.burgeon.core.utils.ScreenUtils;
-import cn.burgeon.core.widget.UndoBarController;
-import cn.burgeon.core.widget.UndoBarStyle;
+import cn.burgeon.core.widget.SalesSearchDialog;
 
 public class DailySalesActivity extends BaseActivity {
 	
@@ -33,6 +32,7 @@ public class DailySalesActivity extends BaseActivity {
 	ListView mList;
 	SalesDailyAdapter mAdapter;
 	Button btnAdd, btnUpdate, btnSearch, btnDelete;
+	SalesSearchDialog dialog;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +44,8 @@ public class DailySalesActivity extends BaseActivity {
     }
     
     @Override
-    protected void onRestart() {
-    	super.onRestart();
+    protected void onStart() {
+    	super.onStart();
     	bindList();
     }
     
@@ -100,9 +100,18 @@ public class DailySalesActivity extends BaseActivity {
 				}
 				break;
 			case R.id.sales_daily_btn_search:
-				//queryForUpdate();
-				//QueryDialog dialog = new QueryDialog(DailySalesActivity.this, R.style.QueryDialog);
-				//dialog.show();
+				dialog = new SalesSearchDialog.Builder(DailySalesActivity.this).setPositiveButton("确定", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Log.d(TAG, "cardno:" + dialog.getOrderNO());
+                        Log.d(TAG, "state:" + dialog.getState());
+                    }
+                }).setNegativeButton("取消", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                }).setState("卧槽:").setSpinner(new String[]{"AAA", "BBB", "CCC", "DDD"}).show();
 				break;
 			case R.id.sales_daily_btn_delete:
 				delete();

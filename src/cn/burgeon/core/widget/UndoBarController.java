@@ -50,6 +50,9 @@ public class UndoBarController extends LinearLayout {
     private final Runnable mHideRunnable = new Runnable() {
         @Override
         public void run() {
+        	if (mUndoListener != null) {
+                mUndoListener.onUndo(mUndoToken);
+            }
             hideUndoBar(false);
         }
     };

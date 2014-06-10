@@ -59,7 +59,9 @@
             <EditText
                 android:id="@+id/memberSearchCardNoET"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content" 
+                android:singleLine="true"
+                android:imeOptions="actionSearch"/>
         </LinearLayout>
 
         <LinearLayout
@@ -80,14 +82,17 @@
             <EditText
                 android:id="@+id/memberSearchPhoneET"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content" 
+                android:singleLine="true"
+                android:imeOptions="actionSearch"/>
         </LinearLayout>
         
 
         <HorizontalScrollView
             android:id="@+id/hsv"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:scrollbars="none" >
 
             <LinearLayout
@@ -162,7 +167,7 @@
                 <ListView
                     android:id="@+id/memberSearchLV"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="210dp" />
             </LinearLayout>
         </HorizontalScrollView>
     </LinearLayout>
@@ -191,7 +196,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/query" />
+                android:text="@string/query" 
+                android:visibility="gone"/>
 
             <Button
                 android:id="@+id/memberSearchConfirmBtn"

@@ -138,10 +138,10 @@ public class SalesWareSummerActivity extends BaseActivity {
             	if(currentSelectedOrder != null){
             		Intent intent = new Intent(SalesWareSummerActivity.this,SalesWareSummerDetailActivity.class);
             		Bundle bundle = new Bundle();
-            		bundle.putString("barcode", currentSelectedOrder.getBarCode());
+            		bundle.putString("barCode", currentSelectedOrder.getBarCode());
             		bundle.putString("startDate", starDateET.getText().toString());
             		bundle.putString("endDate", endDateET.getText().toString());
-            		intent.putExtras(intent);
+            		intent.putExtras(bundle);
             		startActivity(intent);
             	}
             	break;

@@ -26,17 +26,21 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import cn.burgeon.core.App;
 import cn.burgeon.core.R;
 import cn.burgeon.core.adapter.SalesNewOrderAdapter;
 import cn.burgeon.core.bean.IntentData;
+import cn.burgeon.core.bean.Member;
 import cn.burgeon.core.bean.Product;
 import cn.burgeon.core.ui.BaseActivity;
 import cn.burgeon.core.ui.member.MemberSearchActivity;
@@ -54,11 +58,14 @@ public class SalesNewOrderActivity extends BaseActivity {
 	EditText cardNoET, styleBarcodeET,newSalesOrderDateET;
 	TextView commonRecordnum,commonCount,commonMoney;
 	ListView mListView;
+	Spinner salesTypeSP;
 	SalesNewOrderAdapter mAdapter;
 	ArrayList<Product> data = new ArrayList<Product>();
 	String updateID = "unknow";
 	boolean flag = false;
 	static ArrayList<Product> temp = new ArrayList<Product>();
+	private static final int SALESSETTLE = 101;
+	Member searchedMember;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,23 +75,24 @@ public class SalesNewOrderActivity extends BaseActivity {
 
         init();
         Log.d(TAG, "=========onCreate==========");
-        dealForward();
+        dealForward(getIntent());
         
         bm = new BarcodeManager(this);
 		bm.addListener(barcodeListener);
     }
 
-	private void dealForward() {
-		Bundle bundle = getIntent().getExtras();
+	private void dealForward(Intent intent) {
+		Bundle bundle = intent.getExtras();
         if(bundle != null){
-        	String searchedMember = getIntent().getExtras().getString("searchedMember");
+        	searchedMember = bundle.getParcelable("searchedMember");
+        	Log.d(TAG, "searchedMember = " + searchedMember ==null?"null" : searchedMember + "");
         	if(searchedMember != null){
-        		cardNoET.setText(searchedMember); 
+        		cardNoET.setText(searchedMember.getCardNum() + "\\" + searchedMember.getDiscount().substring(2));
         		data.addAll(temp);
         		mAdapter.notifyDataSetChanged();
         		upateBottomBarInfo();
         	}
-        	updateID = getIntent().getExtras().getString("updateID");
+        	updateID = bundle.getString("updateID");
         	Log.d("xxxx", "updateID = " + updateID ==null?"null" : updateID + "");
         	if(!"unknow".equals(updateID) && (updateID != null) && !flag){
         		queryForUpdate();
@@ -132,8 +140,19 @@ public class SalesNewOrderActivity extends BaseActivity {
     protected void onNewIntent(Intent intent) {
     	super.onNewIntent(intent);
     	Log.d(TAG, "=========onNewIntent==========");
-        dealForward();
+        dealForward(intent);
     }
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);  
+		if(requestCode == SALESSETTLE && resultCode == RESULT_OK){
+			this.data.clear();
+			temp.clear();
+			mAdapter.notifyDataSetChanged();
+			upateBottomBarInfo();
+		}
+	}
     
     
 /*    @Override
@@ -163,6 +182,19 @@ public class SalesNewOrderActivity extends BaseActivity {
         ViewGroup.LayoutParams params = hsv.getLayoutParams();
         params.height = (int) ScreenUtils.getAllotInDetailLVHeight(this)-100;
         
+        salesTypeSP = (Spinner) findViewById(R.id.salesType);
+/*        salesTypeSP.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> arg0, View arg1,
+					int arg2, long arg3) {
+				if(styleBarcodeET.getText().length() > 0)
+				verifyBarCode(styleBarcodeET.getText().toString());
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {}
+		});*/
         commonRecordnum = (TextView) findViewById(R.id.sales_common_recordnum);
         commonCount = (TextView) findViewById(R.id.sales_common_count);
         commonMoney = (TextView) findViewById(R.id.sales_common_money);
@@ -204,7 +236,7 @@ public class SalesNewOrderActivity extends BaseActivity {
                 IntentData intentData = new IntentData();
                 intentData.setProducts(data);
             	intentData.setCommand(updateID);
-                forwardActivity(SalesSettleActivity.class, intentData);
+                forwardActivity(SalesSettleActivity.class, intentData,SALESSETTLE);
 				break;
 /*			case R.id.verifyBarCodeBtn:
 				verifyBarCode();
@@ -294,9 +326,43 @@ public class SalesNewOrderActivity extends BaseActivity {
 		pro.setPrice(c.getString(c.getColumnIndex("fprice")));
 		pro.setColor(c.getString(c.getColumnIndex("clrname")));
 		pro.setSize(c.getString(c.getColumnIndex("sizename")));
-		pro.setDiscount("0");
-		pro.setCount("1");
-		pro.setMoney(String.valueOf((Integer.parseInt(pro.getCount()) * Float.parseFloat(pro.getPrice()))));
+		pro.setDiscount("100");//
+		pro.setCount("1");//
+		int count = Integer.parseInt(pro.getCount());
+		float price = Float.parseFloat(pro.getPrice());
+		//商品折扣
+		float proDiscount = Float.parseFloat(pro.getDiscount()) / 100;
+		//会员折扣
+		float vipDiscount = 0.0f;
+		if(cardNoET.getText().length() > 0)
+			vipDiscount = Float.parseFloat(searchedMember.getDiscount());
+//		Log.d(TAG, "proDiscount=" + proDiscount + "      vipDiscount=" + vipDiscount);
+//		Log.d(TAG, "salesTypeSP=" + salesTypeSP.getSelectedItemPosition());
+//		Log.d(TAG, "price=" + pro.getPrice());
+		switch (salesTypeSP.getSelectedItemPosition()) {
+		case 0://正常
+			if(cardNoET.getText().length() > 0)
+				pro.setMoney(String.format("%.2f",price * proDiscount * vipDiscount));
+			else
+				pro.setMoney(String.format("%.2f",price * proDiscount));
+			break;
+		case 1://全额
+			if(cardNoET.getText().length() > 0)
+				pro.setMoney(String.format("%.2f",price * proDiscount * vipDiscount));
+			else
+				pro.setMoney(String.format("%.2f",price * proDiscount));
+			break;
+		case 2://赠送
+			pro.setMoney("0.00");
+			break;
+		case 3://退货
+			pro.setCount("-1");
+			pro.setMoney(pro.getPrice());
+			break;
+		default:
+			break;
+		}
+		
 		items.add(pro);
 		return items;
 	}

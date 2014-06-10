@@ -12,10 +12,12 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import cn.burgeon.core.App;
@@ -40,6 +42,7 @@ public class SalesSettleActivity extends BaseActivity {
 	EditText orginET, disCounET, realityET;
 	ArrayList<Product> products;
 	String command;
+	LinearLayout mPaywayLayout;
 	
 	public EditText getOrginET() {
 		return orginET;
@@ -92,7 +95,7 @@ public class SalesSettleActivity extends BaseActivity {
 		command = iData.getCommand();
 		Log.d("zhang.h", "command=" + command);
 		for(Product pro : products){
-			pay += Float.parseFloat(pro.getMoney());
+			pay += Float.parseFloat(pro.getMoney()) * Integer.parseInt(pro.getCount());
 			count += Integer.parseInt(pro.getCount());
 		}
 		payTV.setText(String.format(getResources().getString(R.string.sales_settle_pay),String.format("%.2f",pay)));
@@ -113,10 +116,45 @@ public class SalesSettleActivity extends BaseActivity {
 		realityET.setText(String.format("%.2f", pay));
 		List<PayWay> list = new ArrayList<PayWay>();
 		list.add(new PayWay(27, getResources().getString(R.string.sales_settle_cash), String.format("%.2f",pay)));
-		//list.add(new Settle(getResources().getString(R.string.sales_settle_auto), String.format("%.2f",0.00f)));
-		//list.add(new Settle(getResources().getString(R.string.sales_settle_cash), String.format("%.2f",0.00f)));
-		mListView.setAdapter(new SalesSettleAdapter(list, this));
+		list.add(new PayWay(26,getResources().getString(R.string.sales_settle_auto), String.format("%.2f",0.00f)));
+		list.add(new PayWay(28,getResources().getString(R.string.sales_settle_bank), String.format("%.2f",0.00f)));
+		
+		for(PayWay payway : list){
+			LinearLayout item = (LinearLayout)LayoutInflater.from(SalesSettleActivity.this).inflate(R.layout.sales_settle_list_item, null);
+			item.setTag(payway);
+			((TextView)item.getChildAt(0)).setText(payway.getPayWay());
+			EditText editText = (EditText)item.getChildAt(2);
+			editText.setTag(payway.getId());
+			editText.setOnFocusChangeListener(focusChangeListener);
+			editText.setText(payway.getPayMoney());
+			mPaywayLayout.addView(item);
+		}
+		//mListView.setAdapter(new SalesSettleAdapter(list, this));
 	}
+	
+	View.OnFocusChangeListener focusChangeListener = new View.OnFocusChangeListener() {
+		
+		@Override
+		public void onFocusChange(View view, boolean hasFocus) {
+			((EditText)view).setSelection(((EditText)view).getText().length());
+			if(hasFocus){
+				Log.d(TAG, "view tag = " + view.getTag());
+				float total = 0.0f;
+				float other = 0.0f;
+				for(int i = 0; i < mPaywayLayout.getChildCount(); i++){
+					LinearLayout item = (LinearLayout) mPaywayLayout.getChildAt(i);
+					EditText editText = (EditText) item.getChildAt(2);
+					if(view.getTag() != editText.getTag()){
+						if(editText.getText().length() > 0)
+							other += Float.parseFloat(editText.getText().toString());
+					}
+				}
+				if(realityET.getText().length() > 0)
+					total = Float.parseFloat(realityET.getText().toString());
+				((EditText)view).setText(String.format("%.2f", total - other));
+			}
+		}
+	};
 	
 	private List<PayWay> getPayWay(){
 		PayWay pway = null;
@@ -136,6 +174,7 @@ public class SalesSettleActivity extends BaseActivity {
         TextView currTimeTV = (TextView) findViewById(R.id.currTimeTV);
         currTimeTV.setText(getCurrDate());
         
+        mPaywayLayout = (LinearLayout) findViewById(R.id.wrapPayway);
 		settleBtn = (Button) findViewById(R.id.settleJiezhangBtn);
 		settleBtn.setOnClickListener(onClickListener);
 		payTV = (TextView) findViewById(R.id.salesSettlePay);
@@ -143,7 +182,7 @@ public class SalesSettleActivity extends BaseActivity {
 		orginET = (EditText) findViewById(R.id.salesSettleOrginET);
 		disCounET = (EditText) findViewById(R.id.salesSettleDiscountET);
 		realityET = (EditText) findViewById(R.id.salesSettleRealityET);
-		mListView = (ListView) findViewById(R.id.settleLV);
+		//mListView = (ListView) findViewById(R.id.settleLV);
 	}
 	
 	View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -172,8 +211,15 @@ public class SalesSettleActivity extends BaseActivity {
 					if(what == 1) save();
 					else if(what == 2) update();
 					UndoBarStyle MESSAGESTYLE = new UndoBarStyle(-1, -1, 3000);
-			        UndoBarController.show(SalesSettleActivity.this, "结账成功", null, MESSAGESTYLE);
-			        forwardActivity(SalesNewOrderActivity.class);
+			        UndoBarController.show(SalesSettleActivity.this, "结账成功", new UndoListener() {
+						
+						@Override
+						public void onUndo(Parcelable token) {
+							setResult(RESULT_OK);
+							finish();
+						}
+					}, MESSAGESTYLE);
+			        
 				}})
 			.setNegativeButton(getString(R.string.cancel),new DialogInterface.OnClickListener(){
 
@@ -211,6 +257,26 @@ public class SalesSettleActivity extends BaseActivity {
     					new Object[]{pro.getBarCode(),pro.getPrice(), pro.getDiscount(),
         						pro.getCount(), pro.getMoney(), uuid, pro.getName(),
         						pro.getColor(),pro.getSize(),new SimpleDateFormat("yyyy-MM-dd").format(currentTime)});
+        	}
+        	for(int i = 0; i < mPaywayLayout.getChildCount(); i++){
+        		LinearLayout item = (LinearLayout) mPaywayLayout.getChildAt(i);
+        		PayWay payway = (PayWay) item.getTag();
+        		EditText editText = (EditText) item.getChildAt(2);
+        		if(editText.getText().length() > 0){
+        			if(editText.getText().toString().indexOf(".") > 0){
+        				float moneyp = Float.parseFloat(editText.getText().toString());
+        				if(moneyp > 0){
+        					db.execSQL("insert into c_payway_detail('id','name','money','settleUUID')"
+        							+" values(?,?,?,?)",new Object[]{payway.getId(),payway.getPayWay(),editText.getText().toString(),uuid});
+        				}
+        			}else{
+        				int moneyt = Integer.parseInt(editText.getText().toString());
+        				if(moneyt > 0){
+        					db.execSQL("insert into c_payway_detail('id','name','money','settleUUID')"
+        							+" values(?,?,?,?)",new Object[]{payway.getId(),payway.getPayWay(),editText.getText().toString(),uuid});
+        				}
+        			}
+        		}
         	}
             db.setTransactionSuccessful();
         } catch(Exception e){}
@@ -254,7 +320,6 @@ public class SalesSettleActivity extends BaseActivity {
         		}
         	}
             db.setTransactionSuccessful();
-            Thread.sleep(500);
         } catch(Exception e){}
         finally {  
             db.endTransaction();

@@ -76,6 +76,12 @@ public class BaseActivity extends Activity {
         intent.setClass(this, cls);
         startActivity(intent);
     }
+    
+    public void forwardActivity(Class<?> cls, int requestCode) {
+        Intent intent = new Intent();
+        intent.setClass(this, cls);
+        startActivityForResult(intent, requestCode);
+    }
 
     // 跳转(可传递对象数据)
     public void forwardActivity(Class<?> cls, IntentData intentData) {
@@ -88,6 +94,18 @@ public class BaseActivity extends Activity {
         intent.putExtras(mBundle);
 
         startActivity(intent);
+    }
+    
+    public void forwardActivity(Class<?> cls, IntentData intentData, int requestCode) {
+        Intent intent = new Intent();
+        intent.setClass(this, cls);
+
+        // 传递对象数据
+        Bundle mBundle = new Bundle();
+        mBundle.putParcelable(PAR_KEY, intentData);
+        intent.putExtras(mBundle);
+
+        startActivityForResult(intent,requestCode);
     }
     
     public void forwardActivity(Class<?> cls,String key,String value) {

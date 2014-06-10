@@ -4,8 +4,10 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal" >
 
+    <!-- android:id="@+id/settle_item_payway" 
+    android:id="@+id/settle_item_paymeony"-->
     <TextView
-        android:id="@+id/settle_item_payway"
+        
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -19,7 +21,7 @@
         android:background="@android:color/black" />
 
     <EditText
-        android:id="@+id/settle_item_paymeony"
+        
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
