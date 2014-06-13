@@ -221,25 +221,18 @@ public class MemberListActivity extends BaseActivity {
     
 	public void search(){
 		String startTime = dialog.getStartTime();
-        String startYear = startTime.substring(0, 4);
-        String startMonth = startTime.substring(4, 6);
-        String startDay = startTime.substring(6, 8);
-        String finalStartTime = startYear + "-" + startMonth + "-" + startDay + " 00:00:00";
-
         String endTime = dialog.getEndTime();
-        String endYear = endTime.substring(0, 4);
-        String endMonth = endTime.substring(4, 6);
-        String endDay = endTime.substring(6, 8);
-        String finalEndTime = endYear + "-" + endMonth + "-" + endDay + " 23:59:59";
 
 		List<Member> data = new ArrayList<Member>();
 		Member member = null;
 		String sql = "select * from c_vip where createTime "
-				+ "between " + "'" + finalStartTime + "'" + " and " + "'" + finalEndTime + "'";
+				+ "between " + "'" + startTime + "'" + " and " + "'" + endTime + "'";
 		if (dialog.getCardNo().length() > 0)
 			sql += " and cardno = '" + dialog.getCardNo().toString() + "'";
 		if (dialog.getMobileNo().length() > 0)
 			sql += " and mobile = '" + dialog.getMobileNo().toString() + "'";
+		
+		Log.d("MemberSearch", "sql = " + sql);
 		Cursor c = db.rawQuery(sql, null);
 		while(c.moveToNext()){
 			member = new Member();

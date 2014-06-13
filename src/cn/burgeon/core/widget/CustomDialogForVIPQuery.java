@@ -33,7 +33,7 @@ public class CustomDialogForVIPQuery {
     private CustomDialogForVIPQuery(Context context) {
         super();
         this.mContext = context;
-        View customView = LayoutInflater.from(context).inflate(R.layout.custom_dialog_for_sales_query, null);
+        View customView = LayoutInflater.from(context).inflate(R.layout.custom_dialog_for_vip_query, null);
         ad = new Dialog(mContext, R.style.CheckDialog);
         ad.setContentView(customView);
         ad.show();
