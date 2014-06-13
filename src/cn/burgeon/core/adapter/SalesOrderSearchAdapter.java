@@ -2,15 +2,14 @@ package cn.burgeon.core.adapter;
 
 import java.util.List;
 
-import cn.burgeon.core.R;
-import cn.burgeon.core.bean.Order;
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+import cn.burgeon.core.R;
+import cn.burgeon.core.bean.Order;
 
 public class SalesOrderSearchAdapter extends BaseAdapter {
 
@@ -82,5 +81,10 @@ public class SalesOrderSearchAdapter extends BaseAdapter {
 		TextView textView5;
 		TextView textView6;
 	}
+	
+    public void setList(List<Order> data) {
+        list = data;
+        notifyDataSetChanged();
+    }
 
 }

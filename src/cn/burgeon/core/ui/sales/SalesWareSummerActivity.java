@@ -97,8 +97,9 @@ public class SalesWareSummerActivity extends BaseActivity {
 		Order order = null;
 		List<Order> data = new ArrayList<Order>();
 		Cursor c = db.rawQuery("select barcode, pdtname,sum(count) as totalCount,sum(money) as totalMoney "
-				+ "from c_settle_detail  where settleDate between '"+starDateET.getText().toString()+"' and '"+endDateET.getText().toString()+"' group by barcode",
-				null);
+				+ "from c_settle_detail  where settleDate "
+				+ "between '"+starDateET.getText().toString()+"' and '"+endDateET.getText().toString()
+				+ "' group by barcode", null);
 		Log.d("zhang.h", "cursor size===========" + c.getCount());
 		while(c.moveToNext()){
 			order = new Order();

@@ -23,7 +23,6 @@ import android.widget.TextView;
 import cn.burgeon.core.App;
 import cn.burgeon.core.R;
 import cn.burgeon.core.adapter.SalesNewOrderAdapter;
-import cn.burgeon.core.adapter.SalesSettleAdapter;
 import cn.burgeon.core.bean.IntentData;
 import cn.burgeon.core.bean.Product;
 import cn.burgeon.core.bean.PayWay;
@@ -114,12 +113,26 @@ public class SalesSettleActivity extends BaseActivity {
 			}
 		});
 		realityET.setText(String.format("%.2f", pay));
-		List<PayWay> list = new ArrayList<PayWay>();
-		list.add(new PayWay(27, getResources().getString(R.string.sales_settle_cash), String.format("%.2f",pay)));
-		list.add(new PayWay(26,getResources().getString(R.string.sales_settle_auto), String.format("%.2f",0.00f)));
-		list.add(new PayWay(28,getResources().getString(R.string.sales_settle_bank), String.format("%.2f",0.00f)));
-		
-		for(PayWay payway : list){
+		ArrayList<PayWay> pays = new ArrayList<PayWay>();
+		if("unknow".equals(command) || null == command){
+			pays.add(new PayWay(27, getResources().getString(R.string.sales_settle_cash), String.format("%.2f",pay)));
+			pays.add(new PayWay(26,getResources().getString(R.string.sales_settle_auto), String.format("%.2f",0.00f)));
+			pays.add(new PayWay(28,getResources().getString(R.string.sales_settle_bank), String.format("%.2f",0.00f)));
+		}else{
+			Cursor c = db.rawQuery("select * from c_payway_detail where settleUUID = ?", new String[]{command});
+			while(c.moveToNext()){
+				if(27 == c.getInt(c.getColumnIndex("paywayID"))){
+					pays.add(new PayWay(27, getResources().getString(R.string.sales_settle_cash), String.format("%.2f",Float.parseFloat(c.getString(c.getColumnIndex("money"))))));
+				}else if(26 == c.getInt(c.getColumnIndex("paywayID"))){
+					pays.add(new PayWay(26, getResources().getString(R.string.sales_settle_auto), String.format("%.2f",Float.parseFloat(c.getString(c.getColumnIndex("money"))))));
+				}else if(28 == c.getInt(c.getColumnIndex("paywayID"))){
+					pays.add(new PayWay(28, getResources().getString(R.string.sales_settle_bank), String.format("%.2f",Float.parseFloat(c.getString(c.getColumnIndex("money"))))));
+				}
+			}
+			if(c != null && !c.isClosed())
+				c.close();
+		}
+		for(PayWay payway : pays){
 			LinearLayout item = (LinearLayout)LayoutInflater.from(SalesSettleActivity.this).inflate(R.layout.sales_settle_list_item, null);
 			item.setTag(payway);
 			((TextView)item.getChildAt(0)).setText(payway.getPayWay());
@@ -129,7 +142,6 @@ public class SalesSettleActivity extends BaseActivity {
 			editText.setText(payway.getPayMoney());
 			mPaywayLayout.addView(item);
 		}
-		//mListView.setAdapter(new SalesSettleAdapter(list, this));
 	}
 	
 	View.OnFocusChangeListener focusChangeListener = new View.OnFocusChangeListener() {
@@ -266,14 +278,14 @@ public class SalesSettleActivity extends BaseActivity {
         			if(editText.getText().toString().indexOf(".") > 0){
         				float moneyp = Float.parseFloat(editText.getText().toString());
         				if(moneyp > 0){
-        					db.execSQL("insert into c_payway_detail('id','name','money','settleUUID')"
+        					db.execSQL("insert into c_payway_detail('paywayID','name','money','settleUUID')"
         							+" values(?,?,?,?)",new Object[]{payway.getId(),payway.getPayWay(),editText.getText().toString(),uuid});
         				}
         			}else{
         				int moneyt = Integer.parseInt(editText.getText().toString());
         				if(moneyt > 0){
-        					db.execSQL("insert into c_payway_detail('id','name','money','settleUUID')"
-        							+" values(?,?,?,?)",new Object[]{payway.getId(),payway.getPayWay(),editText.getText().toString(),uuid});
+        					db.execSQL("insert into c_payway_detail('paywayID','name','money','settleUUID')"
+        							+" values(?,?,?,?)",new Object[]{payway.getId(),payway.getPayWay(),editText.getText().toString()+".00",uuid});
         				}
         			}
         		}
@@ -287,6 +299,7 @@ public class SalesSettleActivity extends BaseActivity {
 	
 	public void update(){
 		db.beginTransaction();
+		Cursor c = null;
         try {
         	Date currentTime = new Date();
         	db.execSQL("update c_settle set 'settleTime' = ?,'type' = ?,'count' = ?,"
@@ -319,10 +332,42 @@ public class SalesSettleActivity extends BaseActivity {
             						pro.getColor(),pro.getSize(),new SimpleDateFormat("yyyy-MM-dd").format(currentTime)});
         		}
         	}
+        	c = db.rawQuery("select * from c_payway_detail where settleUUID = ?", new String[]{command});
+        	for(int i = 0; i < mPaywayLayout.getChildCount(); i++){
+        		LinearLayout item = (LinearLayout) mPaywayLayout.getChildAt(i);
+        		PayWay payway = (PayWay) item.getTag();
+        		EditText editText = (EditText) item.getChildAt(2);
+        		if(editText.getText().length() > 0){
+        			while(c.moveToNext()){
+        				if(payway.getId() == c.getInt(c.getColumnIndex("paywayID"))){
+        					db.execSQL("update c_payway_detail set money = ? "
+                					+ "where _id = ? and settleUUID = ?", 
+                					new Object[]{editText.getText().toString(),c.getInt(c.getColumnIndex("_id")),command});
+        				}else{
+        					if(editText.getText().toString().indexOf(".") > 0){
+                				float moneyp = Float.parseFloat(editText.getText().toString());
+                				if(moneyp > 0){
+                					db.execSQL("insert into c_payway_detail('paywayID','name','money','settleUUID')"
+                							+" values(?,?,?,?)",new Object[]{payway.getId(),payway.getPayWay(),editText.getText().toString(),command});
+                				}
+                			}else{
+                				int moneyt = Integer.parseInt(editText.getText().toString());
+                				if(moneyt > 0){
+                					db.execSQL("insert into c_payway_detail('paywayID','name','money','settleUUID')"
+                							+" values(?,?,?,?)",new Object[]{payway.getId(),payway.getPayWay(),editText.getText().toString(),command});
+                				}
+                			}
+        				}
+        			}
+        			
+        		}
+        	}
             db.setTransactionSuccessful();
         } catch(Exception e){}
         finally {  
             db.endTransaction();
+            if(c != null && !c.isClosed())
+            	c.close();
         } 
 	}
 	

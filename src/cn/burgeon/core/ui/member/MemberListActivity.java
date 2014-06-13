@@ -1,5 +1,14 @@
 package cn.burgeon.core.ui.member;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,18 +23,6 @@ import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import com.android.volley.Response;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import cn.burgeon.core.App;
 import cn.burgeon.core.R;
 import cn.burgeon.core.adapter.MemberListAdapter;
@@ -33,6 +30,9 @@ import cn.burgeon.core.bean.Member;
 import cn.burgeon.core.ui.BaseActivity;
 import cn.burgeon.core.utils.PreferenceUtils;
 import cn.burgeon.core.utils.ScreenUtils;
+import cn.burgeon.core.widget.CustomDialogForVIPQuery;
+
+import com.android.volley.Response;
 
 public class MemberListActivity extends BaseActivity {
 	
@@ -40,6 +40,7 @@ public class MemberListActivity extends BaseActivity {
 	Button addBtn,queryBtn,updateBtn,delBtn;
 	MemberListAdapter mAdapter;
 	TextView commonRecordnum;
+	CustomDialogForVIPQuery dialog;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -182,6 +183,22 @@ public class MemberListActivity extends BaseActivity {
 					startActivity(intent);
 				}
 				break;
+			case R.id.memberListQuery:
+				dialog = new CustomDialogForVIPQuery.Builder(MemberListActivity.this).setPositiveButton("确定", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        search();
+                        if (dialog.isShowing())
+                        	dialog.dismiss();
+                    }
+                }).setNegativeButton("取消", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (dialog.isShowing())
+                        	dialog.dismiss();
+                    }
+                }).show();
+				break;
 			default:
 				break;
 			}
@@ -201,6 +218,49 @@ public class MemberListActivity extends BaseActivity {
     	dialog = builder.create();
     	dialog.show();
     }
+    
+	public void search(){
+		String startTime = dialog.getStartTime();
+        String startYear = startTime.substring(0, 4);
+        String startMonth = startTime.substring(4, 6);
+        String startDay = startTime.substring(6, 8);
+        String finalStartTime = startYear + "-" + startMonth + "-" + startDay + " 00:00:00";
+
+        String endTime = dialog.getEndTime();
+        String endYear = endTime.substring(0, 4);
+        String endMonth = endTime.substring(4, 6);
+        String endDay = endTime.substring(6, 8);
+        String finalEndTime = endYear + "-" + endMonth + "-" + endDay + " 23:59:59";
+
+		List<Member> data = new ArrayList<Member>();
+		Member member = null;
+		String sql = "select * from c_vip where createTime "
+				+ "between " + "'" + finalStartTime + "'" + " and " + "'" + finalEndTime + "'";
+		if (dialog.getCardNo().length() > 0)
+			sql += " and cardno = '" + dialog.getCardNo().toString() + "'";
+		if (dialog.getMobileNo().length() > 0)
+			sql += " and mobile = '" + dialog.getMobileNo().toString() + "'";
+		Cursor c = db.rawQuery(sql, null);
+		while(c.moveToNext()){
+			member = new Member();
+			member.setId(c.getInt(c.getColumnIndex("_id")));
+			member.setCardNum(c.getString(c.getColumnIndex("cardno")));
+			member.setName(c.getString(c.getColumnIndex("name")));
+			member.setiDentityCardNum(c.getString(c.getColumnIndex("idno")));
+			member.setPhoneNum(c.getString(c.getColumnIndex("mobile")));
+			member.setBirthday(c.getString(c.getColumnIndex("birthday")));
+			member.setEmployee(c.getString(c.getColumnIndex("employee")));
+			member.setEmail(c.getString(c.getColumnIndex("email")));
+			member.setCreateCardDate(c.getString(c.getColumnIndex("createTime")));
+			member.setType(c.getString(c.getColumnIndex("type")));
+			member.setSex(c.getString(c.getColumnIndex("sex")));
+			member.setStatus(c.getString(c.getColumnIndex("status")));
+			data.add(member);
+		}
+		if(c != null && !c.isClosed()) 
+			c.close();
+		mAdapter.setList(data);
+	}
 	
 	int _id;
 	Member selectedMember;

@@ -2,15 +2,14 @@ package cn.burgeon.core.adapter;
 
 import java.util.List;
 
-import cn.burgeon.core.R;
-import cn.burgeon.core.bean.Member;
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+import cn.burgeon.core.R;
+import cn.burgeon.core.bean.Member;
 
 public class MemberListAdapter extends BaseAdapter {
 
@@ -84,5 +83,10 @@ public class MemberListAdapter extends BaseAdapter {
 		TextView textView6;
 		TextView textView7;
 	}
+	
+    public void setList(List<Member> data) {
+        list = data;
+        notifyDataSetChanged();
+    }
 
 }

@@ -21,9 +21,11 @@ import cn.burgeon.core.R;
 import cn.burgeon.core.adapter.SalesDailyAdapter;
 import cn.burgeon.core.bean.Order;
 import cn.burgeon.core.ui.BaseActivity;
+import cn.burgeon.core.ui.check.CheckQueryActivity;
 import cn.burgeon.core.utils.PreferenceUtils;
 import cn.burgeon.core.utils.ScreenUtils;
-import cn.burgeon.core.widget.SalesSearchDialog;
+import cn.burgeon.core.widget.CustomDialogForCheckQuery;
+import cn.burgeon.core.widget.CustomDialogForSalesQuery;
 
 public class DailySalesActivity extends BaseActivity {
 	
@@ -32,7 +34,7 @@ public class DailySalesActivity extends BaseActivity {
 	ListView mList;
 	SalesDailyAdapter mAdapter;
 	Button btnAdd, btnUpdate, btnSearch, btnDelete;
-	SalesSearchDialog dialog;
+	CustomDialogForSalesQuery dialog;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,18 +102,20 @@ public class DailySalesActivity extends BaseActivity {
 				}
 				break;
 			case R.id.sales_daily_btn_search:
-				dialog = new SalesSearchDialog.Builder(DailySalesActivity.this).setPositiveButton("确定", new View.OnClickListener() {
+				dialog = new CustomDialogForSalesQuery.Builder(DailySalesActivity.this).setPositiveButton("确定", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Log.d(TAG, "cardno:" + dialog.getOrderNO());
-                        Log.d(TAG, "state:" + dialog.getState());
+                        search();
+                        if (dialog.isShowing())
+                        	dialog.dismiss();
                     }
                 }).setNegativeButton("取消", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        dialog.dismiss();
+                        if (dialog.isShowing())
+                        	dialog.dismiss();
                     }
-                }).setState("卧槽:").setSpinner(new String[]{"AAA", "BBB", "CCC", "DDD"}).show();
+                }).setStateSpinner(new String[]{"所有", "未上传", "已上传"}).show();
 				break;
 			case R.id.sales_daily_btn_delete:
 				delete();
@@ -123,6 +127,52 @@ public class DailySalesActivity extends BaseActivity {
 			}
 		}
 	};
+	
+	private void search(){
+		String startTime = dialog.getStartTime();
+        String startYear = startTime.substring(0, 4);
+        String startMonth = startTime.substring(4, 6);
+        String startDay = startTime.substring(6, 8);
+        String finalStartTime = startYear + "-" + startMonth + "-" + startDay + " 00:00:00";
+
+        String endTime = dialog.getEndTime();
+        String endYear = endTime.substring(0, 4);
+        String endMonth = endTime.substring(4, 6);
+        String endDay = endTime.substring(6, 8);
+        String finalEndTime = endYear + "-" + endMonth + "-" + endDay + " 23:59:59";
+
+        String sql = "select * from c_settle where " +
+                "settleTime between " + "'" + finalStartTime + "'" + " and " + "'" + finalEndTime + "'";
+        if (dialog.getOrderNo().length() > 0){
+        	sql += " and orderno = '" + dialog.getOrderNo() + "'";
+        }
+        if (!"所有".equals(dialog.getState())) {//上传、未上传
+            sql += " and status = " + "'" + dialog.getState() + "'";
+        }
+        
+        Log.d("DailySalesActivity", "sql = " + sql);//SA30515214061100001
+        
+        Cursor c = db.rawQuery(sql, null);
+        Order order = null;
+        List<Order> data = new ArrayList<Order>();
+    	while(c.moveToNext()){
+			order = new Order();
+			order.setId(c.getInt(c.getColumnIndex("_id")));
+			order.setUuid(c.getString(c.getColumnIndex("settleUUID")));
+			order.setOrderNo(c.getString(c.getColumnIndex("orderno")));
+			order.setOrderDate(c.getString(c.getColumnIndex("settleTime")));
+			order.setOrderType(c.getString(c.getColumnIndex("type")));
+			order.setOrderCount(c.getString(c.getColumnIndex("count")));
+			order.setOrderMoney(c.getString(c.getColumnIndex("money")));
+			order.setOrderState(c.getString(c.getColumnIndex("status")));
+			order.setSaleAsistant(c.getString(c.getColumnIndex("orderEmployee")));
+			data.add(order);
+		}
+		if(c != null && !c.isClosed())
+			c.close();
+        mAdapter.setList(data);
+        recodeNumTV.setText(String.format(getResources().getString(R.string.sales_new_common_record),data.size())); 
+	}
 	
     private void showTips(){
     	AlertDialog dialog = null;

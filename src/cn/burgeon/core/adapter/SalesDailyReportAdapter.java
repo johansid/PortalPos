@@ -69,5 +69,10 @@ public class SalesDailyReportAdapter extends BaseAdapter {
 		TextView textView2;
 		TextView textView3;
 	}
+	
+    public void setList(List<Order> data) {
+        list = data;
+        notifyDataSetChanged();
+    }
 
 }

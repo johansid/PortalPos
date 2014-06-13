@@ -93,7 +93,7 @@ public class DbHelper extends SQLiteOpenHelper {
 		
 		db.execSQL("CREATE TABLE IF NOT EXISTS tc_vip(_id INTEGER PRIMARY KEY,name varchar,discount varchar,rate varchar)");
 		
-		db.execSQL("CREATE TABLE IF NOT EXISTS c_payway_detail(id varchar,name varchar,money varchar,settleUUID VARCHAR)");
+		db.execSQL("CREATE TABLE IF NOT EXISTS c_payway_detail(_id INTEGER PRIMARY KEY,paywayID INTEGER,name varchar,money varchar,settleUUID VARCHAR)");
 		
 		db.execSQL("CREATE TABLE IF NOT EXISTS tc_payway(_id INTEGER PRIMARY KEY,name varchar)");
 		

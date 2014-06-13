@@ -1,14 +1,14 @@
 package cn.burgeon.core.ui.sales;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import android.annotation.SuppressLint;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -23,12 +23,14 @@ import cn.burgeon.core.Constant;
 import cn.burgeon.core.R;
 import cn.burgeon.core.adapter.SalesManagerAdapter;
 import cn.burgeon.core.bean.Order;
+import cn.burgeon.core.bean.PayWay;
 import cn.burgeon.core.bean.Product;
 import cn.burgeon.core.bean.RequestResult;
 import cn.burgeon.core.ui.BaseActivity;
 import cn.burgeon.core.utils.PreferenceUtils;
 import cn.burgeon.core.widget.UndoBarController;
 import cn.burgeon.core.widget.UndoBarStyle;
+
 import com.android.volley.Response;
 
 @SuppressLint("SimpleDateFormat") public class SalesManagerActivity extends BaseActivity {
@@ -95,6 +97,7 @@ import com.android.volley.Response;
 			//masterobj
 			JSONObject masterObj = new JSONObject();
 			masterObj.put("id", -1);
+			masterObj.put("REFNO", order.getOrderNo());
 			masterObj.put("SALESREP_ID__NAME", order.getSaleAsistant());
 			masterObj.put("DOCTYPE", order.getOrderType());
 			masterObj.put("C_STORE_ID__NAME", App.getPreferenceUtils().getPreferenceStr(PreferenceUtils.store_key));
@@ -128,20 +131,42 @@ import com.android.volley.Response;
 			refobj.put("addList",addList);
 			refobjs.put(refobj);
 			
+			//refobjs2-支付方式
+			JSONObject refobj2 = new JSONObject();
+			refobj2.put("table", 14434);
+			JSONArray addList2 = new JSONArray();
+			
+			//获取明细表数据集
+			/*List<PayWay> detailsItems = getPayWayDetailsData(order.getUuid());
+			if(detailsItems != null && detailsItems.size() > 0){
+				for(PayWay payway : detailsItems){
+					JSONObject payitem = new JSONObject();
+					payitem.put("PAYAMOUNT", payway.getPayMoney());
+					payitem.put("C_PAYWAY_ID__NAME", payway.getPayWay());
+					addList2.put(payitem);
+				}
+			}*/
+			JSONObject item2 = new JSONObject();
+			item2.put("PAYAMOUNT", 369.60);
+			item2.put("C_PAYWAY_ID__NAME", "现金");
+			addList2.put(item2);
+			refobj2.put("addList",addList2);
+			refobjs.put(refobj2);
+			
 			detailObjs.put("refobjs", refobjs);
-			detailObjs.put("reftables", new JSONArray().put(710));
+			detailObjs.put("reftables", new JSONArray().put(710).put(774));
 			paramsInTransactions.put("detailobjs", detailObjs);
 			
 			transactions.put("params", paramsInTransactions);
 			array.put(transactions);
-			//Log.d(TAG, array.toString());
+			Log.d(TAG, array.toString());
 			params.put("transactions", array.toString());
 			sendRequest(params,new Response.Listener<String>() {
 				@Override
 				public void onResponse(String response) {
 					Log.d(TAG, response);
 					RequestResult result = parseResult(response);
-					//请求成功，更新记录状态和销售单号
+					//请求成功，更新记录状态
 					if("0".equals(result.getCode())){
 						updateOrderStatus(result,order);
 					}
@@ -206,6 +231,21 @@ import com.android.volley.Response;
 			product.setBarCode(c.getString(c.getColumnIndex("barcode")));
 			product.setCount(c.getString(c.getColumnIndex("count")));
 			details.add(product);
+		}
+		if(c != null && !c.isClosed())
+			c.close();
+		return details;
+    }
+	
+	private List<PayWay> getPayWayDetailsData(String primaryKey) {
+		List<PayWay> details = new ArrayList<PayWay>();
+		Cursor c = db.rawQuery("select name, money from c_payway_detail where settleUUID = ?", new String[]{primaryKey});
+		PayWay payway = null;
+		while(c.moveToNext()){
+			payway = new PayWay();
+			payway.setPayWay(c.getString(c.getColumnIndex("name")));
+			payway.setPayMoney(c.getString(c.getColumnIndex("money")));
+			details.add(payway);
 		}
 		if(c != null && !c.isClosed())
 			c.close();

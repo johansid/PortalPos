@@ -145,7 +145,6 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:text="@string/sales_settle_payway"
-                android:textSize="15sp" 
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <View
@@ -160,7 +159,6 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/sales_settle_paymoney"
-                android:textSize="15sp" 
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
         </LinearLayout>
