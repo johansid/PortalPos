@@ -3,102 +3,121 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#EFEFEFEF" >
+    android:background="#ffffff">
   
-    <TextView
-        android:id="@+id/downloadURLAddressTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/downloadURLAddress"
-        android:layout_marginLeft="6dp"
-        android:textSize="14sp" />
-
-    <EditText
-        android:id="@+id/downloadURLAddressEditText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:minEms="16"
-        android:hint="@string/pleaseInputServerURL"
-        android:padding="2dip"
-        android:layout_marginLeft="6dp"
-        android:scrollHorizontally="true"
-        android:inputType="textUri"
-        android:layout_below="@+id/downloadURLAddressTextView"
-        android:singleLine="true"
-        android:textSize="14sp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="50dp"
+        android:orientation="vertical">
+            
+	    <TextView
+	        android:id="@+id/downloadURLAddressTextView"
+	        android:layout_width="wrap_content"
+	        android:layout_height="0dp"
+	        android:layout_weight="3"
+	        android:layout_marginLeft="20dp"
+	        android:text="@string/downloadURLAddress"
+	        android:textSize="14sp" />
+	
+	    <EditText
+	        android:id="@+id/downloadURLAddressEditText"
+	        android:layout_width="wrap_content"
+	        android:layout_height="0dp"
+	        android:layout_weight="1"
+	        android:layout_marginBottom="40dp"
+	        android:minEms="16"
+	        android:layout_marginLeft="20dp"
+	        android:hint="@string/pleaseInputServerURL"
+	        android:scrollHorizontally="true"
+	        android:inputType="textUri"
+	        android:singleLine="true"
+	        android:textSize="14sp" />
+	    
+	    <TextView
+	        android:id="@+id/interactiveURLAddressTextView"
+	        android:layout_width="wrap_content"
+	        android:layout_height="0dp"
+	        android:layout_weight="3"
+	        android:layout_marginTop="40dp"
+	        android:layout_marginLeft="20dp"
+	        android:text="@string/interactiveURLAddress"
+	        android:textSize="14sp" />
+	
+	    <EditText
+	        android:id="@+id/interactiveURLAddressEditText"
+	        android:layout_width="wrap_content"
+	        android:layout_height="0dp"
+	        android:layout_weight="1"
+	        android:hint="@string/pleaseInputServerURL"
+	        android:minEms="16"
+	        android:layout_marginLeft="20dp"
+	        android:inputType="textUri"
+	        android:scrollHorizontally="true"
+	        android:singleLine="true"
+	        android:textSize="14sp" />
+    </LinearLayout>
     
-    <TextView
-        android:id="@+id/interactiveURLAddressTextView"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/interactiveURLAddress"
-        android:layout_below="@+id/downloadURLAddressEditText"
-        android:layout_marginLeft="6dp"
-        android:textSize="14sp" />
-
-    <EditText
-        android:id="@+id/interactiveURLAddressEditText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="@string/pleaseInputServerURL"
-        android:minEms="16"
-        android:padding="2dip"
-        android:inputType="textUri"
-        android:layout_marginLeft="6dp"
-        android:scrollHorizontally="true"
-        android:layout_below="@+id/interactiveURLAddressTextView"
-        android:singleLine="true"
-        android:textSize="14sp" />
-    
-    <Button
-        android:id="@+id/serverTestButton"
-        android:layout_width="130dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/interactiveURLAddressEditText"
-        android:layout_marginLeft="20dp"
-        android:text="@string/netConfigURLServerTest"
-        android:textSize="14sp" />
-
-    <Button
-        android:id="@+id/systemUpdateConfigButton"
-        android:layout_width="130dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="20dp"
-        android:layout_below="@+id/interactiveURLAddressEditText"
-        android:text="@string/netConfigSystemUpdateConfig"
-        android:textSize="14sp" />
-
-    <Button
-        android:id="@+id/dataDownloadButton"
-        android:layout_width="130dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/serverTestButton"
-        android:layout_marginLeft="20dp"
-        android:text="@string/netConfigDataDownload"
-        android:textSize="14sp" />
-
-    <Button
-        android:id="@+id/changePasswordButton"
-        android:layout_width="130dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="20dp"
-        android:layout_below="@+id/serverTestButton"
-        android:text="@string/netConfigChangePassword"
-        android:textSize="14sp" />
-
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="100dp"
+        android:orientation="vertical">
+	    <LinearLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="0dp"
+	        android:layout_weight="1"
+	        android:orientation="horizontal">
+		    <Button
+		        android:id="@+id/serverTestButton"
+		        android:layout_width="0dp"
+		        android:layout_weight="1"
+		        android:layout_height="wrap_content"
+		        android:layout_marginLeft="20dp"
+		        android:text="@string/netConfigURLServerTest"
+		        android:textSize="14sp" />
+		    	
+		    <Button
+		        android:id="@+id/systemUpdateConfigButton"
+		        android:layout_width="0dp"
+		        android:layout_weight="1"
+		        android:layout_height="wrap_content"
+		        android:layout_marginRight="20dp"
+		        android:text="@string/netConfigSystemUpdateConfig"
+		        android:textSize="14sp" />
+		</LinearLayout>
+	    <LinearLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="0dp"
+	        android:layout_weight="1"
+	        android:orientation="horizontal">				
+		    <Button
+		        android:id="@+id/dataDownloadButton"
+		        android:layout_width="0dp"
+		        android:layout_weight="1"
+		        android:layout_height="wrap_content"
+		        android:layout_marginLeft="20dp"
+		        android:text="@string/netConfigDataDownload"
+		        android:textSize="14sp" />
+		
+		    <Button
+		        android:id="@+id/changePasswordButton"
+		        android:layout_width="0dp"
+		        android:layout_weight="1"
+		        android:layout_height="wrap_content"
+		        android:layout_marginRight="20dp"
+		        android:text="@string/netConfigChangePassword"
+		        android:textSize="14sp" />
+		</LinearLayout>
+	</LinearLayout>
+	    
     <Button
         android:id="@+id/saveButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:text="@string/btn_save"
-        />
-
-
+        android:text="@string/btn_save"/>
 
 </RelativeLayout>

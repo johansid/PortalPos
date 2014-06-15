@@ -73,11 +73,12 @@
 
             <ImageView
                 android:id="@+id/titleBottomLine"
-                android:layout_width="60dip"
+                android:layout_width="120dip"
                 android:layout_height="2dip"
-                android:layout_marginLeft="9dip"
+                android:paddingLeft="25dp"
+                android:paddingRight="25dp"
                 android:scaleType="matrix"
-                android:src="#FFFFFFFF"/>
+                android:src="#00ffff"/>
         </LinearLayout>
         
     </LinearLayout>
@@ -85,9 +86,8 @@
     <android.support.v4.view.ViewPager
         android:id="@+id/viewPager"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:layout_weight="1.0"
         android:background="#000000"
         android:flipInterval="30"
         android:persistentDrawingCache="animation"/>
