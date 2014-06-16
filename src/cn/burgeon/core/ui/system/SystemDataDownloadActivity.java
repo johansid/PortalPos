@@ -1113,13 +1113,11 @@ public class SystemDataDownloadActivity extends BaseActivity{
  
     //得到给定网址资源的大小
     private int countDownloadFileSize(final String urlstr){
-	     InputStream inputStream = null;
 	     int fileSize = 0;
 	     
 		 try {
 			URL url = new URL(urlstr);
 			HttpURLConnection urlConn = (HttpURLConnection) url.openConnection();
-			inputStream = urlConn.getInputStream();
 			fileSize = urlConn.getContentLength();
 			if(LocalDebug) Log.d(TAG,"_This Download File Size__" + fileSize);
 		 } catch (MalformedURLException e) {
