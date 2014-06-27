@@ -60,11 +60,13 @@ public class AllotReplenishmentLVAdapter extends BaseAdapter {
         }
 
         // 赋值
-        holder.docnoTV.setText(list.get(position).getDOCNO());
-        holder.billdateIV.setText(list.get(position).getDOCDATE());
-        holder.cdestidIV.setText(list.get(position).getOUT_STORE());
-        holder.statuserTV.setText(list.get(position).getAPPLY_PEOPLE());
-        holder.descTV.setText(list.get(position).getREMARK());
+        AllotReplenishment allotReplenishment = list.get(position);
+        holder.docnoTV.setText(allotReplenishment.getDOCNO());
+        holder.uploadStateTV.setText(allotReplenishment.getUPLOAD_STATUS());
+        holder.billdateIV.setText(allotReplenishment.getDOCDATE());
+        holder.cdestidIV.setText(allotReplenishment.getOUT_STORE());
+        holder.statuserTV.setText(allotReplenishment.getAPPLY_PEOPLE());
+        holder.descTV.setText(allotReplenishment.getREMARK());
         return convertView;
     }
 
@@ -76,4 +78,9 @@ public class AllotReplenishmentLVAdapter extends BaseAdapter {
         TextView statuserTV;
         TextView descTV;
     }
+
+	public void setList(ArrayList<AllotReplenishment> lists) {
+        list = lists;
+        notifyDataSetChanged();
+	}
 }

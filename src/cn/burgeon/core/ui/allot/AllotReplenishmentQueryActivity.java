@@ -1,14 +1,17 @@
 package cn.burgeon.core.ui.allot;
 
+import java.util.ArrayList;
+
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.HorizontalScrollView;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import java.util.ArrayList;
-
 import cn.burgeon.core.App;
 import cn.burgeon.core.R;
 import cn.burgeon.core.adapter.AllotReplenishmentLVAdapter;
@@ -22,6 +25,9 @@ public class AllotReplenishmentQueryActivity extends BaseActivity {
     private ListView allotreplenishmentLV;
     private TextView recodeNumTV;
 
+    private ArrayList<AllotReplenishment> lists;
+    private AllotReplenishmentLVAdapter mAdapter;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,15 +52,22 @@ public class AllotReplenishmentQueryActivity extends BaseActivity {
 
         allotreplenishmentLV = (ListView) findViewById(R.id.allotreplenishmentLV);
         recodeNumTV = (TextView) findViewById(R.id.recodeNumTV);
+        
+        itemOnLongClick();
     }
 
     private void initLVData() {
-        ArrayList<AllotReplenishment> lists = fetchData();
-        AllotReplenishmentLVAdapter mAdapter = new AllotReplenishmentLVAdapter(AllotReplenishmentQueryActivity.this, lists, R.layout.allot_replenishment_item);
+        lists = fetchData();
+        mAdapter = new AllotReplenishmentLVAdapter(AllotReplenishmentQueryActivity.this, lists, R.layout.allot_replenishment_item);
         allotreplenishmentLV.setAdapter(mAdapter);
 
-        recodeNumTV.setText(String.format(getResources().getString(R.string.replenishment_record), lists.size()));
+        if (lists.size() > 0)
+            upateBottomBarInfo(lists);
     }
+    
+    private void upateBottomBarInfo(ArrayList<AllotReplenishment> lists) {
+    	recodeNumTV.setText(String.format(getResources().getString(R.string.replenishment_record), lists.size()));
+	}
 
     private ArrayList<AllotReplenishment> fetchData() {
         AllotReplenishment allotReplenishment = null;
@@ -76,6 +89,48 @@ public class AllotReplenishmentQueryActivity extends BaseActivity {
         return allotReplenishments;
     }
 
+    private void itemOnLongClick() {
+    	allotreplenishmentLV.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
+            @Override
+            public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+                menu.add(0, 0, 0, "删除");
+            }
+        });
+    }
+    
+    // 长按菜单响应函数
+    public boolean onContextItemSelected(MenuItem item) {
+        // String no = ((TextView) menuInfo.targetView.findViewById(R.id.noTV)).getText().toString();
+        AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        AllotReplenishment allotReplenishment = lists.get(menuInfo.position);
+
+        switch (item.getItemId()) {
+            case 0:
+                // 更新数据库
+                delWithNo(allotReplenishment.getDOCNO());
+
+                // 更改data
+                lists.remove(allotReplenishment);
+                upateBottomBarInfo(lists);
+
+                // 刷新列表
+                mAdapter.setList(lists);
+                break;
+        }
+        return super.onContextItemSelected(item);
+    }
+    
+    private void delWithNo(String no) {
+        db.beginTransaction();
+        try {
+            db.execSQL("delete from c_replenishment where dj_no = ?", new String[]{no});
+            db.setTransactionSuccessful();
+        } catch (Exception e) {
+        } finally {
+            db.endTransaction();
+        }
+    }
+    
     /*
     private void initLVData() {
         Map<String, String> params = new HashMap<String, String>();
