@@ -115,7 +115,7 @@ import com.android.volley.Response;
 			JSONArray addList = new JSONArray();
 			
 			//获取明细表数据集
-		/*	List<Product> detailsItems = getDetailsData(order.getUuid());
+			List<Product> detailsItems = getDetailsData(order.getUuid());
 			if(detailsItems != null && detailsItems.size() > 0){
 				for(Product product : detailsItems){
 					JSONObject item = new JSONObject();
@@ -123,11 +123,11 @@ import com.android.volley.Response;
 					item.put("M_PRODUCT_ID__NAME", product.getBarCode());
 					addList.put(item);
 				}
-			}*/
-			JSONObject item = new JSONObject();
-			item.put("QTY", 2);
-			item.put("M_PRODUCT_ID__NAME", "108234A091-18");
-			addList.put(item);
+			}
+			//JSONObject item = new JSONObject();
+			//item.put("QTY", 2);
+			//item.put("M_PRODUCT_ID__NAME", "108234A091-18");
+			//addList.put(item);
 			refobj.put("addList",addList);
 			refobjs.put(refobj);
 			
@@ -137,24 +137,25 @@ import com.android.volley.Response;
 			JSONArray addList2 = new JSONArray();
 			
 			//获取明细表数据集
-			/*List<PayWay> detailsItems = getPayWayDetailsData(order.getUuid());
+			/*List<PayWay> paydetailsItems = getPayWayDetailsData(order.getUuid());
 			if(detailsItems != null && detailsItems.size() > 0){
-				for(PayWay payway : detailsItems){
+				for(PayWay payway : paydetailsItems){
 					JSONObject payitem = new JSONObject();
 					payitem.put("PAYAMOUNT", payway.getPayMoney());
 					payitem.put("C_PAYWAY_ID__NAME", payway.getPayWay());
 					addList2.put(payitem);
 				}
 			}*/
-			JSONObject item2 = new JSONObject();
-			item2.put("PAYAMOUNT", 369.60);
-			item2.put("C_PAYWAY_ID__NAME", "现金");
-			addList2.put(item2);
-			refobj2.put("addList",addList2);
-			refobjs.put(refobj2);
+			//JSONObject item2 = new JSONObject();
+			//item2.put("PAYAMOUNT", 369.60);
+			//item2.put("C_PAYWAY_ID__NAME", "现金");
+			//addList2.put(item2);
+			
+			//refobj2.put("addList",addList2);
+			//refobjs.put(refobj2);
 			
 			detailObjs.put("refobjs", refobjs);
-			detailObjs.put("reftables", new JSONArray().put(710).put(774));
+			detailObjs.put("reftables", new JSONArray().put(710)/*.put(774)*/);
 			paramsInTransactions.put("detailobjs", detailObjs);
 			
 			transactions.put("params", paramsInTransactions);

@@ -1,5 +1,9 @@
 package cn.burgeon.core.ui;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -7,6 +11,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.res.Resources.NotFoundException;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -118,8 +123,63 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 //intentData.setStore(storeSpinner.getSelectedItem().toString());
                 //intentData.setUser(userET.getText().toString());
                 forwardActivity(SystemActivity.class);
-
-            	/*
+                
+               /* new Thread(new Runnable() {
+					@Override
+					public void run() {
+						try {
+							InputStream is = getResources().openRawResource(R.raw.tc_style);;
+							BufferedReader br = new BufferedReader(new InputStreamReader(is,"gbk"));
+							String line = null;
+							while((line = br.readLine()) != null){
+								String[] temp = line.split(",");
+								db.execSQL("insert into tc_style(style,style_name,attrib1,attrib2,attrib3,attrib4,attrib5,attrib6,attrib7,attrib8,attrib9,attrib10) "
+										+ "values (?,?,?,?,?,?,?,?,?,?,?,?)", 
+										new Object[]{temp[0],temp[1].substring(2),temp[2].substring(2),
+										temp[3].substring(2),temp[4].substring(2),temp[5].substring(2)
+										,temp[6].substring(2),temp[7].substring(2),temp[8].substring(2)
+										,temp[9].substring(2),temp[10].substring(2),temp[11].substring(2)});	
+							}
+						} catch (Exception e) {
+						}
+					}
+				}).start();;
+				
+				new Thread(new Runnable() {
+					@Override
+					public void run() {
+						try {
+							InputStream is = getResources().openRawResource(R.raw.tc_styleprice);;
+							BufferedReader br = new BufferedReader(new InputStreamReader(is,"gbk"));
+							String line = null;
+							while((line = br.readLine()) != null){
+								String[] temp = line.split(",");
+								db.execSQL("insert into tc_styleprice(style,store,fprice) values (?,?,?)", 
+										new Object[]{temp[0],temp[1].substring(2),temp[2].substring(2)});	
+							}
+						} catch (Exception e) {
+						}
+					}
+				}).start();;
+				
+				new Thread(new Runnable() {
+					@Override
+					public void run() {
+						try {
+							InputStream is = getResources().openRawResource(R.raw.tdefclr);;
+							BufferedReader br = new BufferedReader(new InputStreamReader(is,"gbk"));
+							String line = null;
+							while((line = br.readLine()) != null){
+								String[] temp = line.split(",");
+								db.execSQL("insert into tdefclr(clr,clrname) values (?,?)", 
+										new Object[]{temp[0],temp[1].substring(2)});	
+							}
+						} catch (Exception e) {
+						}
+					}
+				}).start();;*/
+                
+                /*
                 try {
                     Map<String, String> params = new HashMap<String, String>();
                     JSONArray array = new JSONArray();
