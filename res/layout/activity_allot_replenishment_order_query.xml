@@ -57,7 +57,7 @@
                     android:background="@drawable/corners_bg">
 
                     <TextView
-                        android:layout_width="80dp"
+                        android:layout_width="120dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="@string/docno"
@@ -127,7 +127,7 @@
                 <ListView
                     android:id="@+id/allotreplenishmentorderLV"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="400dp" />
             </LinearLayout>
         </HorizontalScrollView>
     </LinearLayout>
@@ -159,13 +159,6 @@
                 android:layout_width="@dimen/allot_in_btn"
                 android:layout_height="wrap_content"
                 android:text="@string/query" />
-
-            <Button
-                android:id="@+id/delBtn"
-                android:layout_width="@dimen/allot_in_btn"
-                android:layout_height="wrap_content"
-                android:text="@string/del"
-                android:layout_marginLeft="10dp" />
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

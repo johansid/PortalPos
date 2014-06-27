@@ -1,5 +1,11 @@
 package cn.burgeon.core.ui.allot;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
+import java.util.UUID;
+
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -12,17 +18,9 @@ import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
-
 import cn.burgeon.core.App;
 import cn.burgeon.core.R;
 import cn.burgeon.core.adapter.AllotReplenishmentOrderApplyLVAdapter;
-import cn.burgeon.core.bean.AllotReplenishmentOrder;
 import cn.burgeon.core.bean.Product;
 import cn.burgeon.core.ui.BaseActivity;
 import cn.burgeon.core.utils.PreferenceUtils;
@@ -32,6 +30,7 @@ public class AllotReplenishmentOrderApplyActivity extends BaseActivity implement
 
 	private ListView allotreplenishmentorderapplyLV;
 	private TextView recodeNumTV, totalCountTV;
+	private EditText descET, shipperET;
 	private EditText barcodeET;
 	private Button uploadBtn, okBtn;
 
@@ -55,6 +54,9 @@ public class AllotReplenishmentOrderApplyActivity extends BaseActivity implement
 
 		TextView currTimeTV = (TextView) findViewById(R.id.currTimeTV);
 		currTimeTV.setText(getCurrDate());
+		
+		shipperET = (EditText) findViewById(R.id.shipperET);
+		descET = (EditText) findViewById(R.id.descET);
 
 		barcodeET = (EditText) findViewById(R.id.barcodeET);
         barcodeET.setOnEditorActionListener(editorActionListener);
@@ -86,23 +88,25 @@ public class AllotReplenishmentOrderApplyActivity extends BaseActivity implement
         public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
             switch (actionId) {
                 case EditorInfo.IME_ACTION_SEARCH:
-                    verifyBarCode();
+                	if (barcodeET.getText() != null && barcodeET.getText().toString().length() > 0) {
+                        verifyBarCode(barcodeET.getText().toString());
+                    }
                     break;
             }
             return true;
         }
     };
 
-    private void verifyBarCode() {
+    private void verifyBarCode(String barcodeText) {
         //从本地获取
-        varLocal();
+        varLocal(barcodeText);
 
         //从网络获取
         //varNet();
     }
 
-    private void varLocal() {
-        String sql = "select b.style_name,c.clrname,d.sizename,e.fprice"
+    private void varLocal(String barcodeText) {
+        String sql = "select a.style, b.style_name,c.clrname,d.sizename,e.fprice"
                 + " from tc_sku as a"
                 + " left join tc_style as b"
                 + " on a.style = b.style"
@@ -113,10 +117,12 @@ public class AllotReplenishmentOrderApplyActivity extends BaseActivity implement
                 + " left join tc_styleprice as e"
                 + " on a.style = e.style"
                 + " where a.sku = ?";
-        Cursor c = db.rawQuery(sql, new String[]{barcodeET.getText().toString()});
+        Cursor c = db.rawQuery(sql, new String[]{barcodeText});
         if (c.moveToFirst()) {
-            List<Product> list = parseSQLResult(c);
-            data.addAll(list);
+        	Product currProduct = parseSQLResult(c);
+            // 生成List
+            generateList(currProduct);
+            // 刷新列表
             mAdapter.notifyDataSetChanged();
             upateBottomBarInfo();
         }
@@ -124,18 +130,36 @@ public class AllotReplenishmentOrderApplyActivity extends BaseActivity implement
             c.close();
     }
 
-    private List<Product> parseSQLResult(Cursor c) {
-        List<Product> items = new ArrayList<Product>(1);
+    private Product parseSQLResult(Cursor c) {
         Product pro = new Product();
         pro.setBarCode(barcodeET.getText().toString());
+        pro.setStyle(c.getString(c.getColumnIndex("style")));
         pro.setColor(c.getString(c.getColumnIndex("clrname")));
         pro.setSize(c.getString(c.getColumnIndex("sizename")));
-        // TODO 缺款号
+        pro.setPrice(c.getString(c.getColumnIndex("fprice")));
         pro.setCount("1");
-        items.add(pro);
-        return items;
+        return pro;
     }
 
+    private void generateList(Product currProduct) {
+        if (data.size() > 0) {
+            boolean isFlag = false;
+            for (Product product : data) {
+                // 同一件
+                if (currProduct.getBarCode().equals(product.getBarCode())) {
+                    isFlag = true;
+                    product.setCount(String.valueOf(Integer.valueOf(product.getCount()) + 1));
+                }
+            }
+
+            if (!isFlag) {
+                data.add(currProduct);
+            }
+        } else {
+            data.add(currProduct);
+        }
+    }
+    
     private void upateBottomBarInfo() {
         int count = 0;
         for (Product pro : data) {
@@ -149,7 +173,9 @@ public class AllotReplenishmentOrderApplyActivity extends BaseActivity implement
 	public void onClick(View v) {
 		switch (v.getId()) {
             case R.id.okBtn:
-                verifyBarCode();
+            	if (barcodeET.getText() != null && barcodeET.getText().toString().length() > 0) {
+            		verifyBarCode(barcodeET.getText().toString());
+            	}
                 break;
             case R.id.uploadBtn:
                 db.beginTransaction();
@@ -159,19 +185,19 @@ public class AllotReplenishmentOrderApplyActivity extends BaseActivity implement
                     db.execSQL("insert into c_replenishment_order('dj_no','upload_status','dj_date','out_store','apply_people','remark','checkUUID')" +
                                     " values(?,?,?,?,?,?,?)",
                             new Object[]{
-                                    "编号2",
-                                    "已",
-                                    new SimpleDateFormat("yyyyMMdd").format(currentTime),
-                                    "亚马逊",
-                                    "浩南哥",
-                                    "A货",
+		                    		getDJNo(),
+		                            "已上传",
+                                    new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(currentTime),
+                                    shipperET.getText(),
+                                    App.getPreferenceUtils().getPreferenceStr(PreferenceUtils.user_key),
+                                    descET.getText(),
                                     uuid
                             }
                     );
                     for (Product pro : data) {
                         db.execSQL("insert into c_replenishment_order_detail('checkUUID','fahuofang','remark','barcode','color','size','num','style') " +
                                         "values (?,?,?,?,?,?,?,?)",
-                                new Object[]{uuid, "易迅", "一般般", pro.getBarCode(), pro.getColor(), pro.getSize(), pro.getCount(), "41码"}
+                                new Object[]{uuid, shipperET.getText(), descET.getText(), pro.getBarCode(), pro.getColor(), pro.getSize(), pro.getCount(), pro.getStyle()}
                         );
                     }
                     db.setTransactionSuccessful();
@@ -180,7 +206,11 @@ public class AllotReplenishmentOrderApplyActivity extends BaseActivity implement
                 } finally {
                     db.endTransaction();
                 }
-                forwardActivity(AllotReplenishmentOrderQueryActivity.class);
+                
+                // 清除
+                data.clear();
+                
+                finish();
                 break;
         /*
 		case R.id.okBtn:
@@ -255,4 +285,65 @@ public class AllotReplenishmentOrderApplyActivity extends BaseActivity implement
 	    */
 		}
 	}
+	
+	 @Override
+	    protected void onDestroy() {
+	    	super.onDestroy();
+	    	
+	    	// 若有未审核的数据，则存入数据库
+	        if (data.size() > 0) {
+	        	db.beginTransaction();
+	        	try {
+	        		String uuid = UUID.randomUUID().toString();
+	        		Date currentTime = new Date();
+			        		db.execSQL("insert into c_replenishment_order('dj_no','upload_status','dj_date','out_store','apply_people','remark','checkUUID')" +
+		                            " values(?,?,?,?,?,?,?)",
+		                    new Object[]{
+		                    		getDJNo(),
+		                            "未上传",
+		                            new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(currentTime),
+		                            shipperET.getText(),
+		                            App.getPreferenceUtils().getPreferenceStr(PreferenceUtils.user_key),
+		                            descET.getText(),
+		                            uuid
+		                    }
+		            );
+		            for (Product pro : data) {
+		                db.execSQL("insert into c_replenishment_order_detail('checkUUID','fahuofang','remark','barcode','color','size','num','style') " +
+		                                "values (?,?,?,?,?,?,?,?)",
+		                        new Object[]{uuid, shipperET.getText(), descET.getText(), pro.getBarCode(), pro.getColor(), pro.getSize(), pro.getCount(), pro.getStyle()}
+		                );
+		            }
+	        		db.setTransactionSuccessful();
+	        	} catch (Exception e) {
+	        		e.printStackTrace();
+	        	} finally {
+	        		db.endTransaction();
+	        	}
+	        }
+	    }
+	    
+		private String getDJNo() {
+			StringBuffer sb = new StringBuffer();
+			sb.append("IV305152");
+			sb.append(new SimpleDateFormat("yyMMdd", Locale.getDefault()).format(new Date()));
+
+			// 保存checkNo至SP
+			int checkNo = App.getPreferenceUtils().getPreferenceInt("djNoForReplenishment");
+			int i = 0;
+			if (checkNo > 0) {
+				i = checkNo + 1;
+			} else {
+				i = 1;
+			}
+			App.getPreferenceUtils().savePreferenceInt("djNoForReplenishment", i);
+
+			StringBuffer finalCheckNo = new StringBuffer();
+			for (int j = 0; j < 5 - String.valueOf(i).length(); j++) {
+				finalCheckNo.append(0);
+			}
+			finalCheckNo.append(i);
+			sb.append(finalCheckNo.toString());
+			return sb.toString();
+		}
 }

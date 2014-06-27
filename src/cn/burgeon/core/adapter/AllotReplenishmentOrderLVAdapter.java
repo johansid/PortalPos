@@ -1,16 +1,14 @@
 package cn.burgeon.core.adapter;
 
+import java.util.ArrayList;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-
-import java.util.ArrayList;
-
 import cn.burgeon.core.R;
-import cn.burgeon.core.bean.AllotReplenishment;
 import cn.burgeon.core.bean.AllotReplenishmentOrder;
 
 /**
@@ -61,11 +59,13 @@ public class AllotReplenishmentOrderLVAdapter extends BaseAdapter {
         }
 
         // 赋值
-        holder.docnoTV.setText(list.get(position).getDOCNO());
-        holder.billdateIV.setText(list.get(position).getDOCDATE());
-        holder.cdestidIV.setText(list.get(position).getOUT_STORE());
-        holder.statuserTV.setText(list.get(position).getAPPLY_PEOPLE());
-        holder.descTV.setText(list.get(position).getREMARK());
+        AllotReplenishmentOrder allotReplenishmentOrder = list.get(position);
+        holder.docnoTV.setText(allotReplenishmentOrder.getDOCNO());
+        holder.uploadStateTV.setText(allotReplenishmentOrder.getUPLOAD_STATUS());
+        holder.billdateIV.setText(allotReplenishmentOrder.getDOCDATE());
+        holder.cdestidIV.setText(allotReplenishmentOrder.getOUT_STORE());
+        holder.statuserTV.setText(allotReplenishmentOrder.getAPPLY_PEOPLE());
+        holder.descTV.setText(allotReplenishmentOrder.getREMARK());
         return convertView;
     }
 
@@ -77,4 +77,9 @@ public class AllotReplenishmentOrderLVAdapter extends BaseAdapter {
         TextView statuserTV;
         TextView descTV;
     }
+
+	public void setList(ArrayList<AllotReplenishmentOrder> lists) {
+		list = lists;
+        notifyDataSetChanged();
+	}
 }

@@ -1,15 +1,13 @@
 package cn.burgeon.core.adapter;
 
+import java.util.ArrayList;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.EditText;
 import android.widget.TextView;
-
-import java.util.ArrayList;
-
 import cn.burgeon.core.R;
 import cn.burgeon.core.bean.Product;
 
@@ -52,7 +50,7 @@ public class AllotReplenishmentOrderApplyLVAdapter extends BaseAdapter {
 			holder.barcodeTV = (TextView) convertView.findViewById(R.id.barcodeTV);
 			holder.colorTV = (TextView) convertView.findViewById(R.id.colorTV);
 			holder.sizeTV = (TextView) convertView.findViewById(R.id.sizeTV);
-			holder.numET = (EditText) convertView.findViewById(R.id.numET);
+			holder.numET = (TextView) convertView.findViewById(R.id.numET);
 			holder.styleTV = (TextView) convertView.findViewById(R.id.styleTV);
 			convertView.setTag(holder);
 		} else {
@@ -60,10 +58,12 @@ public class AllotReplenishmentOrderApplyLVAdapter extends BaseAdapter {
 		}
 
 		// 赋值
-        holder.barcodeTV.setText(list.get(position).getBarCode());
-        holder.colorTV.setText(list.get(position).getColor());
-        holder.sizeTV.setText(list.get(position).getSize());
-        holder.styleTV.setText(list.get(position).getStyle());
+		Product product = list.get(position);
+        holder.barcodeTV.setText(product.getBarCode());
+        holder.colorTV.setText(product.getColor());
+        holder.sizeTV.setText(product.getSize());
+        holder.numET.setText(product.getCount());
+        holder.styleTV.setText(product.getStyle());
 		return convertView;
 	}
 
@@ -71,7 +71,7 @@ public class AllotReplenishmentOrderApplyLVAdapter extends BaseAdapter {
         TextView barcodeTV;
         TextView colorTV;
         TextView sizeTV;
-        EditText numET;
+        TextView numET;
         TextView styleTV;
 	}
 }

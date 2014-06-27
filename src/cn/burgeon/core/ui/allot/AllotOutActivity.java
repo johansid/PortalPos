@@ -26,7 +26,7 @@ public class AllotOutActivity extends BaseActivity {
 
     private ListView allotOutLV;
     private TextView recodeNumTV;
-    private Button addBtn, queryBtn, delBtn;
+    private Button addBtn, queryBtn;
 
     private ArrayList<AllotOut> lists;
     private AllotOutLVAdapter mAdapter;
@@ -62,7 +62,6 @@ public class AllotOutActivity extends BaseActivity {
         addBtn.setOnClickListener(new ClickEvent());
         queryBtn = (Button) findViewById(R.id.queryBtn);
         queryBtn.setOnClickListener(new ClickEvent());
-        delBtn = (Button) findViewById(R.id.delBtn);
         
         itemOnLongClick();
     }
