@@ -124,7 +124,25 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 //intentData.setUser(userET.getText().toString());
                 forwardActivity(SystemActivity.class);
                 
-               /* new Thread(new Runnable() {
+                new Thread(new Runnable() {
+					@Override
+					public void run() {
+						try {
+							InputStream is = getResources().openRawResource(R.raw.tc_sku);;
+							BufferedReader br = new BufferedReader(new InputStreamReader(is,"gbk"));
+							String line = null;
+							while((line = br.readLine()) != null){
+								String[] temp = line.split(",");
+								db.execSQL("insert into tc_sku(sku,style,clr,sizeid,pname) values (?,?,?,?,?)", 
+										new Object[]{temp[0],temp[1].substring(2),temp[2].substring(2),
+										temp[3].substring(2),temp[4].substring(2)});	
+							}
+						} catch (Exception e) {
+						}
+					}
+				}).start();;
+                
+                new Thread(new Runnable() {
 					@Override
 					public void run() {
 						try {
@@ -177,7 +195,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 						} catch (Exception e) {
 						}
 					}
-				}).start();;*/
+				}).start();;
                 
                 /*
                 try {
