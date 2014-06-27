@@ -91,7 +91,7 @@
                 android:id="@+id/barcodeET"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="1351600237S"
+                android:text="108238C702586"
                 android:layout_weight="0.9"
                 android:singleLine="true"
                 android:imeOptions="actionSearch"/>
@@ -191,7 +191,7 @@
                 <ListView
                     android:id="@+id/checkscanLV"
                     android:layout_width="match_parent"
-                    android:layout_height="185dp" />
+                    android:layout_height="400dp" />
             </LinearLayout>
         </HorizontalScrollView>
     </LinearLayout>

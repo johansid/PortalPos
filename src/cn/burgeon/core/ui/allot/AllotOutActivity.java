@@ -1,7 +1,11 @@
 package cn.burgeon.core.ui.allot;
 
+import java.util.ArrayList;
+
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -10,13 +14,11 @@ import android.widget.HorizontalScrollView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.util.ArrayList;
-
 import cn.burgeon.core.App;
 import cn.burgeon.core.R;
 import cn.burgeon.core.adapter.AllotOutLVAdapter;
 import cn.burgeon.core.bean.AllotOut;
+import cn.burgeon.core.bean.Order;
 import cn.burgeon.core.ui.BaseActivity;
 import cn.burgeon.core.utils.PreferenceUtils;
 import cn.burgeon.core.utils.ScreenUtils;
@@ -28,6 +30,7 @@ public class AllotOutActivity extends BaseActivity {
     private TextView recodeNumTV;
     private Button addBtn, queryBtn, delBtn;
 
+    private ArrayList<AllotOut> lists;
     private AllotOutLVAdapter mAdapter;
 
     private CustomDialog customDialog;
@@ -62,17 +65,24 @@ public class AllotOutActivity extends BaseActivity {
         queryBtn = (Button) findViewById(R.id.queryBtn);
         queryBtn.setOnClickListener(new ClickEvent());
         delBtn = (Button) findViewById(R.id.delBtn);
+        
+        itemOnLongClick();
     }
 
     private void initLVData() {
-        ArrayList<AllotOut> lists = fetchData();
+        lists = fetchData();
         mAdapter = new AllotOutLVAdapter(AllotOutActivity.this, lists, R.layout.allot_out_item);
         allotOutLV.setAdapter(mAdapter);
 
-        recodeNumTV.setText(String.format(getResources().getString(R.string.sales_new_common_record), lists.size()));
+        if (lists.size() > 0)
+            upateBottomBarInfo(lists);
     }
 
-    private ArrayList<AllotOut> fetchData() {
+    private void upateBottomBarInfo(ArrayList<AllotOut> lists) {
+    	recodeNumTV.setText(String.format(getResources().getString(R.string.sales_new_common_record), lists.size()));
+	}
+
+	private ArrayList<AllotOut> fetchData() {
         AllotOut allotOut = null;
         ArrayList<AllotOut> allotOuts = new ArrayList<AllotOut>();
         Cursor c = db.rawQuery("select * from c_allot_out", null);
@@ -92,6 +102,55 @@ public class AllotOutActivity extends BaseActivity {
         return allotOuts;
     }
 
+    @Override
+    protected void onResume() {
+    	super.onResume();
+    	
+    	initLVData();
+    }
+    
+    private void itemOnLongClick() {
+    	allotOutLV.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
+            @Override
+            public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+                menu.add(0, 0, 0, "删除");
+            }
+        });
+    }
+    
+    // 长按菜单响应函数
+    public boolean onContextItemSelected(MenuItem item) {
+        // String no = ((TextView) menuInfo.targetView.findViewById(R.id.noTV)).getText().toString();
+        AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        AllotOut allotOut = lists.get(menuInfo.position);
+
+        switch (item.getItemId()) {
+            case 0:
+                // 更新数据库
+                delWithNo(allotOut.getDOCNO());
+
+                // 更改data
+                lists.remove(allotOut);
+                upateBottomBarInfo(lists);
+
+                // 刷新列表
+                mAdapter.setList(lists);
+                break;
+        }
+        return super.onContextItemSelected(item);
+    }
+    
+    private void delWithNo(String no) {
+        db.beginTransaction();
+        try {
+            db.execSQL("delete from c_allot_out where dj_no = ?", new String[]{no});
+            db.setTransactionSuccessful();
+        } catch (Exception e) {
+        } finally {
+            db.endTransaction();
+        }
+    }
+    
     /*
     private void initLVData() {
         Map<String, String> params = new HashMap<String, String>();

@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import cn.burgeon.core.R;
 import cn.burgeon.core.bean.AllotOut;
+import cn.burgeon.core.bean.Product;
 
 /**
  * Created by Simon on 2014/4/16.
@@ -60,10 +61,13 @@ public class AllotOutLVAdapter extends BaseAdapter {
         }
 
         // 赋值
-        holder.docnoTV.setText(list.get(position).getDOCNO());
-        holder.billdateTV.setText(list.get(position).getBILLDATE());
-        holder.cdestidTV.setText(list.get(position).getC_DEST_ID());
-        holder.totqtyoutTV.setText(list.get(position).getTOT_QTYOUT());
+        AllotOut allotOut = list.get(position);
+        holder.docnoTV.setText(allotOut.getDOCNO());
+        holder.uploadStateTV.setText(allotOut.getUPLOAD_STATUS());
+        holder.docStateTV.setText(allotOut.getDOC_STATUS());
+        holder.billdateTV.setText(allotOut.getBILLDATE());
+        holder.cdestidTV.setText(allotOut.getC_DEST_ID());
+        holder.totqtyoutTV.setText(allotOut.getTOT_QTYOUT());
         return convertView;
     }
 
@@ -75,4 +79,9 @@ public class AllotOutLVAdapter extends BaseAdapter {
         TextView cdestidTV;
         TextView totqtyoutTV;
     }
+
+	public void setList(ArrayList<AllotOut> lists) {
+        list = lists;
+        notifyDataSetChanged();
+	}
 }

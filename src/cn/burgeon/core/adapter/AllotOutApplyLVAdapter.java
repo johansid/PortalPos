@@ -7,10 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.EditText;
 import android.widget.TextView;
 import cn.burgeon.core.R;
-import cn.burgeon.core.bean.AllotOutApply;
 import cn.burgeon.core.bean.Product;
 
 /**
@@ -50,7 +48,7 @@ public class AllotOutApplyLVAdapter extends BaseAdapter {
 			convertView = LayoutInflater.from(mContext).inflate(mLayoutRes, null);
 			holder = new ViewHolder();
 			holder.barcodeTV = (TextView) convertView.findViewById(R.id.barcodeTV);
-			holder.numET = (EditText) convertView.findViewById(R.id.numET);
+			holder.numET = (TextView) convertView.findViewById(R.id.numET);
 			holder.colorTV = (TextView) convertView.findViewById(R.id.colorTV);
 			holder.sizeTV = (TextView) convertView.findViewById(R.id.sizeTV);
 			holder.priceTV = (TextView) convertView.findViewById(R.id.priceTV);
@@ -61,17 +59,19 @@ public class AllotOutApplyLVAdapter extends BaseAdapter {
 		}
 
 		// 赋值
-		holder.barcodeTV.setText(list.get(position).getBarCode());
-		holder.colorTV.setText(list.get(position).getColor());
-		holder.sizeTV.setText(list.get(position).getSize());
-		holder.priceTV.setText(list.get(position).getPrice());
-		holder.styleTV.setText(list.get(position).getStyle());
+		Product product = list.get(position);
+		holder.barcodeTV.setText(product.getBarCode());
+		holder.numET.setText(product.getCount());
+		holder.colorTV.setText(product.getColor());
+		holder.sizeTV.setText(product.getSize());
+		holder.priceTV.setText(product.getPrice());
+		holder.styleTV.setText(product.getStyle());
 		return convertView;
 	}
 
 	static class ViewHolder {
 		TextView barcodeTV;
-		EditText numET;
+		TextView numET;
 		TextView colorTV;
 		TextView sizeTV;
 		TextView priceTV;

@@ -1,5 +1,11 @@
 package cn.burgeon.core.ui.allot;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
+import java.util.UUID;
+
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -12,13 +18,6 @@ import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
-
 import cn.burgeon.core.App;
 import cn.burgeon.core.R;
 import cn.burgeon.core.adapter.AllotOutApplyLVAdapter;
@@ -31,7 +30,8 @@ public class AllotOutApplyActivity extends BaseActivity implements OnClickListen
 
     private ListView allotoutapplyLV;
     private TextView recodeNumTV, totalCountTV;
-    private EditText barcodeET;
+    private EditText shipperET;
+    private EditText descET, barcodeET;
     private Button uploadBtn, okBtn;
 
     private ArrayList<Product> data = new ArrayList<Product>();
@@ -54,6 +54,9 @@ public class AllotOutApplyActivity extends BaseActivity implements OnClickListen
 
         TextView currTimeTV = (TextView) findViewById(R.id.currTimeTV);
         currTimeTV.setText(getCurrDate());
+        
+        shipperET = (EditText) findViewById(R.id.shipperET);
+        descET = (EditText) findViewById(R.id.descET);
 
         barcodeET = (EditText) findViewById(R.id.barcodeET);
         barcodeET.setOnEditorActionListener(editorActionListener);
@@ -85,23 +88,25 @@ public class AllotOutApplyActivity extends BaseActivity implements OnClickListen
         public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
             switch (actionId) {
                 case EditorInfo.IME_ACTION_SEARCH:
-                    verifyBarCode();
+                	if (barcodeET.getText() != null && barcodeET.getText().toString().length() > 0) {
+                        verifyBarCode(barcodeET.getText().toString());
+                    }
                     break;
             }
             return true;
         }
     };
 
-    private void verifyBarCode() {
+    private void verifyBarCode(String barcodeText) {
         //从本地获取
-        varLocal();
+        varLocal(barcodeText);
 
         //从网络获取
         //varNet();
     }
 
-    private void varLocal() {
-        String sql = "select b.style_name,c.clrname,d.sizename,e.fprice"
+    private void varLocal(String barcodeText) {
+        String sql = "select a.style, b.style_name,c.clrname,d.sizename,e.fprice"
                 + " from tc_sku as a"
                 + " left join tc_style as b"
                 + " on a.style = b.style"
@@ -112,10 +117,12 @@ public class AllotOutApplyActivity extends BaseActivity implements OnClickListen
                 + " left join tc_styleprice as e"
                 + " on a.style = e.style"
                 + " where a.sku = ?";
-        Cursor c = db.rawQuery(sql, new String[]{barcodeET.getText().toString()});
+        Cursor c = db.rawQuery(sql, new String[]{barcodeText});
         if (c.moveToFirst()) {
-            List<Product> list = parseSQLResult(c);
-            data.addAll(list);
+        	Product currProduct = parseSQLResult(c);
+            // 生成List
+            generateList(currProduct);
+            // 刷新列表
             mAdapter.notifyDataSetChanged();
             upateBottomBarInfo();
         }
@@ -123,19 +130,36 @@ public class AllotOutApplyActivity extends BaseActivity implements OnClickListen
             c.close();
     }
 
-    private List<Product> parseSQLResult(Cursor c) {
-        List<Product> items = new ArrayList<Product>(1);
+    private Product parseSQLResult(Cursor c) {
         Product pro = new Product();
         pro.setBarCode(barcodeET.getText().toString());
+        pro.setStyle(c.getString(c.getColumnIndex("style")));
         pro.setColor(c.getString(c.getColumnIndex("clrname")));
         pro.setSize(c.getString(c.getColumnIndex("sizename")));
         pro.setPrice(c.getString(c.getColumnIndex("fprice")));
-        // TODO 缺款号
         pro.setCount("1");
-        items.add(pro);
-        return items;
+        return pro;
     }
 
+    private void generateList(Product currProduct) {
+        if (data.size() > 0) {
+            boolean isFlag = false;
+            for (Product product : data) {
+                // 同一件
+                if (currProduct.getBarCode().equals(product.getBarCode())) {
+                    isFlag = true;
+                    product.setCount(String.valueOf(Integer.valueOf(product.getCount()) + 1));
+                }
+            }
+
+            if (!isFlag) {
+                data.add(currProduct);
+            }
+        } else {
+            data.add(currProduct);
+        }
+    }
+    
     private void upateBottomBarInfo() {
         int count = 0;
         for (Product pro : data) {
@@ -149,7 +173,9 @@ public class AllotOutApplyActivity extends BaseActivity implements OnClickListen
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.okBtn:
-                verifyBarCode();
+            	if (barcodeET.getText() != null && barcodeET.getText().toString().length() > 0) {
+            		verifyBarCode(barcodeET.getText().toString());
+            	}
                 break;
             case R.id.uploadBtn:
                 db.beginTransaction();
@@ -159,11 +185,11 @@ public class AllotOutApplyActivity extends BaseActivity implements OnClickListen
                     db.execSQL("insert into c_allot_out('dj_no','upload_status','dj_status','dj_date','in_store','num','checkUUID')" +
                                     " values(?,?,?,?,?,?,?)",
                             new Object[]{
-                                    "编号1",
-                                    "已",
-                                    "是",
-                                    new SimpleDateFormat("yyyyMMdd").format(currentTime),
-                                    "京东",
+                                    getDJNo(),
+                                    "已上传",
+                                    "已完成",
+                                    new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(currentTime),
+                                    shipperET.getText(),
                                     data.size(),//数量count
                                     uuid
                             }
@@ -171,7 +197,7 @@ public class AllotOutApplyActivity extends BaseActivity implements OnClickListen
                     for (Product pro : data) {
                         db.execSQL("insert into c_allot_out_detail('checkUUID','fahuofang','remark','barcode','num','color','size','price','style') " +
                                         "values (?,?,?,?,?,?,?,?,?)",
-                                new Object[]{uuid, "京东", "好东东", pro.getBarCode(), pro.getCount(), pro.getColor(), pro.getSize(), pro.getPrice(), "42码"}
+                                new Object[]{uuid, shipperET.getText(), descET.getText(), pro.getBarCode(), pro.getCount(), pro.getColor(), pro.getSize(), pro.getPrice(), pro.getStyle()}
                         );
                     }
                     db.setTransactionSuccessful();
@@ -180,6 +206,10 @@ public class AllotOutApplyActivity extends BaseActivity implements OnClickListen
                 } finally {
                     db.endTransaction();
                 }
+                
+                // 清除
+                data.clear();
+                
                 finish();
                 break;
         /*
@@ -271,5 +301,66 @@ public class AllotOutApplyActivity extends BaseActivity implements OnClickListen
         */
         }
     }
+    
+    @Override
+    protected void onDestroy() {
+    	super.onDestroy();
+    	
+    	// 若有未审核的数据，则存入数据库
+        if (data.size() > 0) {
+        	db.beginTransaction();
+            try {
+                String uuid = UUID.randomUUID().toString();
+                Date currentTime = new Date();
+                db.execSQL("insert into c_allot_out('dj_no','upload_status','dj_status','dj_date','in_store','num','checkUUID')" +
+                                " values(?,?,?,?,?,?,?)",
+                        new Object[]{
+                                getDJNo(),
+                                "未上传",
+                                "未完成",
+                                new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(currentTime),
+                                shipperET.getText(),
+                                data.size(),//数量count
+                                uuid
+                        }
+                );
+                for (Product pro : data) {
+                    db.execSQL("insert into c_allot_out_detail('checkUUID','fahuofang','remark','barcode','num','color','size','price','style') " +
+                                    "values (?,?,?,?,?,?,?,?,?)",
+                            new Object[]{uuid, shipperET.getText(), descET.getText(), pro.getBarCode(), pro.getCount(), pro.getColor(), pro.getSize(), pro.getPrice(), pro.getStyle()}
+                    );
+                }
+                db.setTransactionSuccessful();
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                db.endTransaction();
+            }
+        }
+    }
+    
+	private String getDJNo() {
+		StringBuffer sb = new StringBuffer();
+		sb.append("IV305152");
+		sb.append(new SimpleDateFormat("yyMMdd", Locale.getDefault()).format(new Date()));
+
+		// 保存checkNo至SP
+		int checkNo = App.getPreferenceUtils().getPreferenceInt("djNo");
+		int i = 0;
+		if (checkNo > 0) {
+			i = checkNo + 1;
+		} else {
+			i = 1;
+		}
+		App.getPreferenceUtils().savePreferenceInt("djNo", i);
+
+		StringBuffer finalCheckNo = new StringBuffer();
+		for (int j = 0; j < 5 - String.valueOf(i).length(); j++) {
+			finalCheckNo.append(0);
+		}
+		finalCheckNo.append(i);
+		sb.append(finalCheckNo.toString());
+		return sb.toString();
+	}
 
 }
