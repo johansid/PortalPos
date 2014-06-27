@@ -4,8 +4,10 @@ import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
 
 import android.app.Application;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap.CompressFormat;
 import android.util.DisplayMetrics;
+import cn.burgeon.core.db.DbHelper;
 import cn.burgeon.core.ic.ImageCacheManager;
 import cn.burgeon.core.ic.ImageCacheManager.CacheType;
 import cn.burgeon.core.net.RequestManager;
@@ -21,6 +23,8 @@ public class App extends Application {
     private static final String SIPPSWD = "pbdev";
     private SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
     private String SIPPSWDMD5;
+    private DbHelper helper;
+    protected SQLiteDatabase db;
 
     private static SimonHttpStack simonHttpStack;
 
@@ -61,6 +65,9 @@ public class App extends Application {
 
         SDF.setLenient(false);
         SIPPSWDMD5 = MD5(SIPPSWD);
+        
+        helper = new DbHelper(this);
+        db = helper.getWritableDatabase();
     }
 
     public String MD5(String s) {
@@ -111,6 +118,10 @@ public class App extends Application {
 
     public String getSIPPSWDMD5() {
         return SIPPSWDMD5;
+    }
+    
+    public SQLiteDatabase getDB(){
+    	return db;
     }
 
 }

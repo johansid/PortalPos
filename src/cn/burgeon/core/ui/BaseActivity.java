@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
@@ -38,7 +39,6 @@ public class BaseActivity extends Activity {
     public final static String PAR_KEY = "ParcelableKey";
 
     App mApp;
-    private DbHelper helper;
     protected SQLiteDatabase db;
 
     // 进度条
@@ -47,12 +47,12 @@ public class BaseActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d("BaseActivity", "=======onCreate======");
         setupFullscreen();
         mApp = (App) getApplication();
-        helper = new DbHelper(this);
+        db = mApp.getDB();
         //因为getWritableDatabase内部调用了mContext.openOrCreateDatabase(mName, 0, mFactory);  
         //所以要确保context已初始化,我们可以把实例化DBManager的步骤放在Activity的onCreate里  
-        db = helper.getWritableDatabase();
     }
     
     @Override

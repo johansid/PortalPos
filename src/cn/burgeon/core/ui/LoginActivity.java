@@ -15,6 +15,7 @@ import android.content.res.Resources.NotFoundException;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -137,6 +138,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 										new Object[]{temp[0],temp[1].substring(2),temp[2].substring(2),
 										temp[3].substring(2),temp[4].substring(2)});	
 							}
+							Log.d(TAG, "tc_sku done");
 						} catch (Exception e) {
 						}
 					}
@@ -158,6 +160,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 										,temp[6].substring(2),temp[7].substring(2),temp[8].substring(2)
 										,temp[9].substring(2),temp[10].substring(2),temp[11].substring(2)});	
 							}
+							Log.d(TAG, "tc_style done");
 						} catch (Exception e) {
 						}
 					}
@@ -175,6 +178,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 								db.execSQL("insert into tc_styleprice(style,store,fprice) values (?,?,?)", 
 										new Object[]{temp[0],temp[1].substring(2),temp[2].substring(2)});	
 							}
+							Log.d(TAG, "tc_styleprice done");
 						} catch (Exception e) {
 						}
 					}
@@ -192,6 +196,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 								db.execSQL("insert into tdefclr(clr,clrname) values (?,?)", 
 										new Object[]{temp[0],temp[1].substring(2)});	
 							}
+							Log.d(TAG, "tdefclr done");
 						} catch (Exception e) {
 						}
 					}
