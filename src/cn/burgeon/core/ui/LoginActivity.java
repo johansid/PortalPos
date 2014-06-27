@@ -201,6 +201,24 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 						}
 					}
 				}).start();;
+				
+				new Thread(new Runnable() {
+					@Override
+					public void run() {
+						try {
+							InputStream is = getResources().openRawResource(R.raw.tdefsize);;
+							BufferedReader br = new BufferedReader(new InputStreamReader(is,"gbk"));
+							String line = null;
+							while((line = br.readLine()) != null){
+								String[] temp = line.split(",");
+								db.execSQL("insert into tdefsize(sizeid,sizename) values (?,?)", 
+										new Object[]{temp[0],temp[1].substring(2)});
+							}
+							Log.d(TAG, "tdefsize done");
+						} catch (Exception e) {
+						}
+					}
+				}).start();;
                 
                 /*
                 try {
