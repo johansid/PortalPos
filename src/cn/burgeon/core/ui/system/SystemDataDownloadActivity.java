@@ -677,12 +677,15 @@ public class SystemDataDownloadActivity extends BaseActivity{
     		String line = null; 
     		String[]data = null;
            
+    		db.beginTransaction();
             while ((line = reader.readLine()) != null) { 
             	data = line.split(",");
   		        if(LocalDebug) Log.d(TAG,"____" + data.length );
   		        //让我们来插表吧
 			              插表(filePath,data);               
             }
+            db.setTransactionSuccessful();
+            db.endTransaction();
             reader.close();
         } catch (IOException e) {
             e.printStackTrace();

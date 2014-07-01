@@ -123,8 +123,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 //IntentData intentData = new IntentData();
                 //intentData.setStore(storeSpinner.getSelectedItem().toString());
                 //intentData.setUser(userET.getText().toString());
-                forwardActivity(SystemActivity.class);
                 
+                /*
                 new Thread(new Runnable() {
 					@Override
 					public void run() {
@@ -132,18 +132,23 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 							InputStream is = getResources().openRawResource(R.raw.tc_sku);;
 							BufferedReader br = new BufferedReader(new InputStreamReader(is,"gbk"));
 							String line = null;
+							String[] temp = null;
+							db.beginTransaction();
 							while((line = br.readLine()) != null){
-								String[] temp = line.split(",");
+								temp = line.split(",");
 								db.execSQL("insert into tc_sku(sku,style,clr,sizeid,pname) values (?,?,?,?,?)", 
 										new Object[]{temp[0],temp[1].substring(2),temp[2].substring(2),
 										temp[3].substring(2),temp[4].substring(2)});	
+								
 							}
+							db.setTransactionSuccessful();
+							db.endTransaction();
 							Log.d(TAG, "tc_sku done");
 						} catch (Exception e) {
 						}
 					}
 				}).start();;
-                
+               
                 new Thread(new Runnable() {
 					@Override
 					public void run() {
@@ -218,7 +223,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 						} catch (Exception e) {
 						}
 					}
-				}).start();;
+				}).start();;*/
+				
+				forwardActivity(SystemActivity.class);
                 
                 /*
                 try {
